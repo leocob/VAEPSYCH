@@ -80,7 +80,9 @@ def training_loop(
             "target_KLD_weight": target_KLD_weight,
             "increment" : increment,
             # "kld_multiplier": kld_multiplier,
-            "beta": beta
+            "beta": beta,
+            "num_latent": num_latent,
+            
         })            
 
         if epoch in batch_dilation_steps:
