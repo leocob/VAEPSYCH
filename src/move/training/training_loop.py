@@ -70,7 +70,7 @@ def training_loop(
     target_kld_weight = beta * (num_latent**-1)
     increment = target_kld_weight / len(kld_warmup_steps)
 
-    with open("warmup_check.txt", "w") as f:
+    with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "w") as f:
         f.write(str(f"beta = {beta}\n"))
         f.write(str(f"target_kld_weight = {target_kld_weight}\n"))
         f.write(str(f"increment = {increment}\n"))
@@ -80,7 +80,7 @@ def training_loop(
             kld_multiplier += increment
             kld_weight = beta * kld_multiplier
             
-            with open("warmup_check.txt", "a") as f:
+            with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "a") as f:
                 f.write(str(f"epoch = {epoch}\n"))
                 f.write(str(f"kld_multiplier = {kld_multiplier}\n"))
                 f.write(str(f"kld_weight = {kld_weight}\n"))
