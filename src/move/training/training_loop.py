@@ -63,9 +63,6 @@ def training_loop(
     counter = 0
 
     kld_weight = 0
-    # kld_rate = 20 / len(kld_warmup_steps)
-    # kld_multiplier = 1 + kld_rate
-
 
     target_KLD_weight = beta * (num_latent**-1)
     increment = target_KLD_weight / len(kld_warmup_steps)
