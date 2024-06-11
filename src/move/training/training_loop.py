@@ -66,31 +66,25 @@ def training_loop(
     # kld_rate = 20 / len(kld_warmup_steps)
     # kld_multiplier = 1 + kld_rate
 
-    # write beta to file
 
-    target_KLD_weight = beta * (num_latent**-1) 
+    target_KLD_weight = beta * (num_latent**-1)
+    increment = target_KLD_weight / len(kld_warmup_steps)
 
-    # Calculate the necessary kld_w at the target step to match target_KLD_weight
-    tomatch = target_KLD_weight / beta
-
-    # Calculate the required increment per step
-    increment = tomatch / len(kld_warmup_steps)
-
-    with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "w") as f:
-        f.write(str(f"beta = {beta}\n"))
-        f.write(str(f"num_latent = {num_latent}\n"))
-        f.write(str(f"target_KLD_weight = {target_KLD_weight:.10f}\n"))
-        f.write(str(f"increment = {increment:.10f}\n"))
+    warmup_log = []
     for epoch in range(1, num_epochs + 1):
         if epoch in kld_warmup_steps:
 
             kld_multiplier += increment  # Increment kld_w
             kld_weight = beta * kld_multiplier
-            
-            with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "a") as f:
-                f.write(str(f"epoch = {epoch}\n"))
-                f.write(str(f"kld_multiplier = {kld_multiplier:.10f}\n"))
-                f.write(str(f"kld_weight = {kld_weight:.10f}\n"))
+
+            results.append({
+            "epoch": epoch,
+            "kld_weight": kld_weight,
+            "target_KLD_weight": target_KLD_weight,
+            "increment" : increment,
+            # "kld_multiplier": kld_multiplier,
+            "beta": beta
+        })            
 
         if epoch in batch_dilation_steps:
             train_dataloader = dilate_batch(train_dataloader)
@@ -112,5 +106,7 @@ def training_loop(
             else:
                 min_likelihood = valid_likelihood
                 counter = 0
+    warmup_df = pd.DataFrame(warmup_log)
+    warmup_df.to_csv("/faststorage/jail/project/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_log.csv", index=False)
 
     return *outputs, kld_weight
