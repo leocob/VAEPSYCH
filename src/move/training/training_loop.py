@@ -62,6 +62,7 @@ def training_loop(
     counter = 0
 
     kld_weight = 0.0
+    kld_multiplier = 0
     # kld_rate = 20 / len(kld_warmup_steps)
     # kld_multiplier = 1 + kld_rate
 
