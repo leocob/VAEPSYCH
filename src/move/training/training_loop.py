@@ -79,7 +79,7 @@ def training_loop(
     for epoch in range(1, num_epochs + 1):
         if epoch in kld_warmup_steps:
 
-            kld_multiplier += increment
+            kld_multiplier += increment  # Increment kld_w
             kld_weight = beta * kld_multiplier
             
             with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "a") as f:
