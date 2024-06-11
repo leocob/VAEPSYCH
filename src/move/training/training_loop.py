@@ -68,13 +68,18 @@ def training_loop(
 
     # write beta to file
 
-    target_kld_weight = beta * (num_latent**-1)
-    increment = target_kld_weight / len(kld_warmup_steps)
+    target_KLD_weight = beta * (num_latent**-1) 
+
+    # Calculate the necessary kld_w at the target step to match target_KLD_weight
+    tomatch = target_KLD_weight / beta
+
+    # Calculate the required increment per step
+    increment = tomatch / len(kld_warmup_steps)
 
     with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "w") as f:
         f.write(str(f"beta = {beta}\n"))
         f.write(str(f"num_latent = {num_latent}\n"))
-        f.write(str(f"target_kld_weight = {target_kld_weight:.10f}\n"))
+        f.write(str(f"target_KLD_weight = {target_KLD_weight:.10f}\n"))
         f.write(str(f"increment = {increment:.10f}\n"))
     for epoch in range(1, num_epochs + 1):
         if epoch in kld_warmup_steps:
