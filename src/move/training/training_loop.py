@@ -74,8 +74,8 @@ def training_loop(
     with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "w") as f:
         f.write(str(f"beta = {beta}\n"))
         f.write(str(f"num_latent = {num_latent}\n"))
-        f.write(str(f"target_kld_weight = {target_kld_weight}\n"))
-        f.write(str(f"increment = {increment}\n"))
+        f.write(str(f"target_kld_weight = {target_kld_weight:.10f}\n"))
+        f.write(str(f"increment = {increment:.10f}\n"))
     for epoch in range(1, num_epochs + 1):
         if epoch in kld_warmup_steps:
 
@@ -84,8 +84,8 @@ def training_loop(
             
             with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "a") as f:
                 f.write(str(f"epoch = {epoch}\n"))
-                f.write(str(f"kld_multiplier = {kld_multiplier}\n"))
-                f.write(str(f"kld_weight = {kld_weight}\n"))
+                f.write(str(f"kld_multiplier = {kld_multiplier:.10f}\n"))
+                f.write(str(f"kld_weight = {kld_weight:.10f}\n"))
 
         if epoch in batch_dilation_steps:
             train_dataloader = dilate_batch(train_dataloader)
