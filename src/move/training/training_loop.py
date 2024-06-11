@@ -77,7 +77,7 @@ def training_loop(
             kld_multiplier += increment  # Increment kld_w
             kld_weight = beta * kld_multiplier
 
-            results.append({
+            warmup_log.append({
             "epoch": epoch,
             "kld_weight": kld_weight,
             "target_KLD_weight": target_KLD_weight,
@@ -106,6 +106,7 @@ def training_loop(
             else:
                 min_likelihood = valid_likelihood
                 counter = 0
+
     warmup_df = pd.DataFrame(warmup_log)
     warmup_df.to_csv("/faststorage/jail/project/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_log.csv", index=False)
 
