@@ -61,7 +61,7 @@ def training_loop(
     min_likelihood = float("inf")
     counter = 0
 
-    kld_weight = 1
+    kld_weight = 0
     kld_multiplier = 0
     # kld_rate = 20 / len(kld_warmup_steps)
     # kld_multiplier = 1 + kld_rate
@@ -73,6 +73,7 @@ def training_loop(
 
     with open("/home/leocob/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_check.txt", "w") as f:
         f.write(str(f"beta = {beta}\n"))
+        f.write(str(f"num_latent = {num_latent}\n"))
         f.write(str(f"target_kld_weight = {target_kld_weight}\n"))
         f.write(str(f"increment = {increment}\n"))
     for epoch in range(1, num_epochs + 1):
