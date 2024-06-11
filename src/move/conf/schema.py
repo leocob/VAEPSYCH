@@ -92,8 +92,6 @@ class TaskConfig:
 
     batch_size: Optional[int]
     model: Optional[VAEConfig]
-    num_latent: Optional[int]
-    beta: Optional[float]
     training_loop: Optional[TrainingLoopConfig]
 
 

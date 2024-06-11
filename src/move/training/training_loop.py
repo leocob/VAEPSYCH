@@ -107,6 +107,9 @@ def training_loop(
                 counter = 0
 
     warmup_df = pd.DataFrame(warmup_log)
-    warmup_df.to_csv("/faststorage/jail/project/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_log.csv", index=False)
+    # outputfile = "/faststorage/jail/project/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_log.csv"
+
+    # warmup_df.to_csv("/faststorage/jail/project/igpv/SCZ-RWE/results/2024-06-08-MOVE_trial/kldw_warmup_trial/warmup_log.csv", index=False)
+    warmup_df.to_csv("warmup_log.csv", index=False)
 
     return *outputs, kld_weight

@@ -21,9 +21,9 @@ training_loop:
     - 100
     - 150
   kld_warmup_steps:
-    - 15
-    - 20
-    - 25
+    - 3
+    - 6
+    - 9
   early_stopping: false
   patience: 0
   
