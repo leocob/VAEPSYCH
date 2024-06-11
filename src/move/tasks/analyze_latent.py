@@ -160,6 +160,8 @@ def analyze_latent(config: MOVEConfig) -> None:
         index=df_index,
     )
 
+    entire_latent_space_df = pd.DataFrame(latent_space, index=df_index)
+
     with open("embeddings.txt", "w") as f:
         f.write(f"embedding.shape: {embedding.shape}\n")
         f.write(f"embedding.dtype: {embedding.dtype}\n")
@@ -217,23 +219,21 @@ def analyze_latent(config: MOVEConfig) -> None:
                 is_nan,
             )
             fig_df[feature_name] = np.where(is_nan, np.nan, feature_values)
+            entire_latent_space_df[feature_name] = np.where(is_nan, np.nan, feature_values)
         else:
             feature_values = feature_values
             fig = viz.plot_latent_space_with_con(
                 embedding, feature_name, feature_values
             )
             fig_df[feature_name] = np.where(feature_values == 0, np.nan, feature_values)
+            entire_latent_space_df[feature_name] = np.where(feature_values == 0, np.nan, feature_values)
 
         # Remove non-alpha characters
         safe_feature_name = re.sub(r"[^\w\s]", "", feature_name)
         fig_path = str(output_path / f"latent_space_{safe_feature_name}.png")
         fig.savefig(fig_path, bbox_inches="tight")
 
-    # latent space is a numpy array
-    # convert to pandas dataframe
-    entire_latent_space_df = pd.DataFrame(latent_space, index=df_index)
-    # save latent_space as a numpy array
-    np.save(output_path / "entire_latent_space.npy", latent_space)
+
     entire_latent_space_df.to_csv(output_path / "entire_latent_space.tsv", sep="\t")
 
     fig_df.to_csv(output_path / "2D_latent_space.tsv", sep="\t")
