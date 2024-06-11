@@ -33,6 +33,8 @@ def training_loop(
     kld_warmup_steps: list[int] = [],
     early_stopping: bool = False,
     patience: int = 0,
+    num_latent: int = 0,
+    beta: float = 1.0
 ) -> TrainingLoopOutput:
     """
     Trains a VAE model with batch dilation and KLD warm-up. Optionally,
@@ -59,14 +61,29 @@ def training_loop(
     min_likelihood = float("inf")
     counter = 0
 
-    kld_weight = 0.0
-    kld_rate = 20 / len(kld_warmup_steps)
-    kld_multiplier = 1 + kld_rate
+    # kld_weight = 0.0
+    # kld_rate = 20 / len(kld_warmup_steps)
+    # kld_multiplier = 1 + kld_rate
 
+    # write beta to file
+
+    target_kld_weight = beta * (num_latent**-1)
+    increment = target_kld_weight / len(kld_warmup_steps)
+
+    with open("warmup_check.txt", "w") as f:
+        f.write(str(f"beta = {beta}\n"))
+        f.write(str(f"target_kld_weight = {target_kld_weight}\n"))
+        f.write(str(f"increment = {increment}\n"))
     for epoch in range(1, num_epochs + 1):
         if epoch in kld_warmup_steps:
-            kld_weight = 0.05 * kld_multiplier
-            kld_multiplier += kld_rate
+
+            kld_multiplier += increment
+            kld_weight = beta * kld_multiplier
+            
+            with open("warmup_check.txt", "a") as f:
+                f.write(str(f"epoch = {epoch}\n"))
+                f.write(str(f"kld_multiplier = {kld_multiplier}\n"))
+                f.write(str(f"kld_weight = {kld_weight}\n"))
 
         if epoch in batch_dilation_steps:
             train_dataloader = dilate_batch(train_dataloader)
