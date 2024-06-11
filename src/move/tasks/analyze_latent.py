@@ -127,6 +127,8 @@ def analyze_latent(config: MOVEConfig) -> None:
             task_config.training_loop,
             model=model,
             train_dataloader=train_dataloader,
+            beta=task_config.model.beta,
+            num_latent=task_config.model.num_latent
         )
         losses = output[:-1]
         torch.save(model.state_dict(), model_path)
@@ -157,6 +159,29 @@ def analyze_latent(config: MOVEConfig) -> None:
         columns=["dim0", "dim1"],
         index=df_index,
     )
+
+    with open("embeddings.txt", "w") as f:
+        f.write(f"embedding.shape: {embedding.shape}\n")
+        f.write(f"embedding.dtype: {embedding.dtype}\n")
+        f.write(f"embedding[0]: {embedding[0]}\n")
+        f.write(f"embedding[1]: {embedding[1]}\n")
+        f.write(f"embedding[2]: {embedding[2]}\n")
+        f.write(f"embedding[3]: {embedding[3]}\n")
+        # embedding.shape: (500, 2)
+        # embedding.dtype: float32
+        # embedding[0]: [20.939016  -7.5990796]
+        # embedding[1]: [5.520945  4.6615987]
+        # embedding[2]: [-6.5492954 11.363279 ]
+        # embedding[3]: [ 7.593824  -3.3607504]
+
+    with open("latent_space.txt", "w") as f:
+        f.write(f"latent_space.shape: {latent_space.shape}\n")
+        f.write(f"latent_space.dtype: {latent_space.dtype}\n")
+        f.write(f"type(latent_space): {type(latent_space)}\n")
+        f.write(f"latent_space[0]: {latent_space[0]}\n")
+        f.write(f"latent_space[1]: {latent_space[1]}\n")
+        f.write(f"latent_space[2]: {latent_space[2]}\n")
+
 
     for feature_name in task_config.feature_names:
         logger.debug(f"Generating plot: latent space + '{feature_name}'")
@@ -204,7 +229,14 @@ def analyze_latent(config: MOVEConfig) -> None:
         fig_path = str(output_path / f"latent_space_{safe_feature_name}.png")
         fig.savefig(fig_path, bbox_inches="tight")
 
-    fig_df.to_csv(output_path / "latent_space.tsv", sep="\t")
+    # latent space is a numpy array
+    # convert to pandas dataframe
+    entire_latent_space_df = pd.DataFrame(latent_space, index=df_index)
+    # save latent_space as a numpy array
+    np.save(output_path / "entire_latent_space.npy", latent_space)
+    entire_latent_space_df.to_csv(output_path / "entire_latent_space.tsv", sep="\t")
+
+    fig_df.to_csv(output_path / "2D_latent_space.tsv", sep="\t")
 
     logger.info("Reconstructing")
     cat_recons, con_recons = model.reconstruct(test_dataloader)

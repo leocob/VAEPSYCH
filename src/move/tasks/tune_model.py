@@ -126,9 +126,11 @@ def tune_model(config: MOVEConfig) -> float:
             model.to(device)
 
             hydra.utils.call(
-                task_config.training_loop,
-                model=model,
-                train_dataloader=train_dataloader,
+            task_config.training_loop,
+            model=model,
+            train_dataloader=train_dataloader,
+            beta=task_config.model.beta,
+            num_latent=task_config.model.num_latent
             )
 
             model.eval()
@@ -192,6 +194,8 @@ def tune_model(config: MOVEConfig) -> float:
             task_config.training_loop,
             model=model,
             train_dataloader=train_dataloader,
+            beta=task_config.model.beta,
+            num_latent=task_config.model.num_latent
         )
         model.eval()
         logger.info("Reconstructing")

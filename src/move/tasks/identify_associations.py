@@ -150,10 +150,11 @@ def identify_associations(config: MOVEConfig):
 
                 model.to(device)
                 hydra.utils.call(
-                    task_config.training_loop,
-                    model=model,
-                    train_dataloader=train_dataloader,
-                )
+                task_config.training_loop,
+                model=model,
+                train_dataloader=train_dataloader,
+                beta=task_config.model.beta,
+                num_latent=task_config.model.num_latent)
                 if task_config.save_refits:
                     torch.save(model.state_dict(), model_path)
             model.eval()
@@ -231,10 +232,14 @@ def identify_associations(config: MOVEConfig):
                     logger.debug(f"Training refit {j + 1}/{task_config.num_refits}")
                     model.to(device)
                     hydra.utils.call(
-                        task_config.training_loop,
-                        model=model,
-                        train_dataloader=train_dataloader,
-                    )
+                    task_config.training_loop,
+                    model=model,
+                    train_dataloader=train_dataloader,
+                    beta=task_config.model.beta,
+                    num_latent=task_config.model.num_latent
+                )
+
+
                     if task_config.save_refits:
                         torch.save(model.state_dict(), model_path)
                 model.eval()

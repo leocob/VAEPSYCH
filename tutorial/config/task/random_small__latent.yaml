@@ -11,8 +11,11 @@ feature_names:
 model:
   num_hidden:
     - 1000
-  num_latent: 150
+  num_latent: 3
 
 training_loop:
   lr: 1e-4
-  num_epochs: 40
+  num_epochs: 12
+  # num_latent: 3
+  # beta: 0.001
+# maybe Ineed to add the bet aand the num_latent
