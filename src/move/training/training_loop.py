@@ -4,6 +4,7 @@ from torch.utils.data import DataLoader
 
 from move.models.vae import VAE
 
+import pandas as pd
 TrainingLoopOutput = tuple[list[float], list[float], list[float], list[float], float]
 
 
