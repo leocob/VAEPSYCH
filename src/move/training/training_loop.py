@@ -63,7 +63,6 @@ def training_loop(
     counter = 0
 
     kld_weight = 0
-    kld_multiplier = 0
     # kld_rate = 20 / len(kld_warmup_steps)
     # kld_multiplier = 1 + kld_rate
 
@@ -75,8 +74,8 @@ def training_loop(
     for epoch in range(1, num_epochs + 1):
         if epoch in kld_warmup_steps:
 
-            kld_multiplier += increment  # Increment kld_w
-            kld_weight = beta * kld_multiplier
+            kld_weight += increment  # Increment kld_multiplier
+
 
             warmup_log.append({
             "epoch": epoch,
