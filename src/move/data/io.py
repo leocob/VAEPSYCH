@@ -129,7 +129,7 @@ def read_names(path: PathLike) -> list[str]:
 
 
 def read_tsv(
-    path: PathLike, sample_names: Optional[list[str]] = None
+    path: PathLike, sample_names: Optional[list[str]] = None, input_type: str = "categorical", p: float = 0.01
 ) -> tuple[ObjectArray, np.ndarray]:
     """Read a dataset from a TSV file. The TSV is expected to have an index
     column (0th index).
@@ -146,6 +146,38 @@ def read_tsv(
     if sample_names is not None:
         data.index = data.index.astype(str, False)
         data = data.loc[sample_names]
+
+    if input_type == "categorical":
+        percentage_of_ones = (data == 1).mean()
+        columns_to_keep = percentage_of_ones[percentage_of_ones >= p].index
+        data = data[columns_to_keep]
+        columns_removed = percentage_of_ones[percentage_of_ones < p].index
+
+        # transform index to list
+        columns_to_keep = columns_to_keep.tolist()
+        # write list to file
+        with open(f"{path}_features_kept_more_than_{p}.txt", "w") as file:
+            for column in columns_to_keep:
+                file.write(f"{column}\n")
+
+
+        columns_to_remove = columns_removed.tolist()
+        with open(f"{path}_features_removed_less_than_{p}.txt", "w") as file:
+            for column in columns_to_remove:
+                file.write(f"{column}\n")
+
+    elif input_type == "continuous":
+        percentage_of_nonas = data.notna().mean()
+        columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
+        data = data[columns_to_keep]
+        columns_removed = percentage_of_nonas[percentage_of_nonas < p].index
+
+        columns_removed = columns_removed.tolist()
+
+        with open(f"{path}_features_removed_less_than_{p}.txt", "w") as file:
+            for column in columns_removed:
+                file.write(f"{column}\n")
+
     return data.columns.values, data.values
 
 
