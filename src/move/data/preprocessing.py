@@ -88,7 +88,7 @@ def one_hot_encode_single(mapping: dict[str, int], value: Optional[str]) -> IntA
 #     scaled_x[np.isnan(scaled_x)] = 0
 #     return scaled_x, mask_1d
 
-def scale(x: np.array, split_mask, names, interim_data_path, input_config_name) -> tuple[FloatArray, BoolArray]:
+def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, input_config_name) -> tuple[FloatArray, BoolArray]:
     """Center to mean and scale to unit variance. Convert NaN values to 0.
 
     Args:
@@ -98,34 +98,50 @@ def scale(x: np.array, split_mask, names, interim_data_path, input_config_name) 
         Tuple containing (1) scaled output and (2) a 1D mask marking columns
         (i.e., features) without zero variance
     """
-    x_train = x[split_mask]
-    x_test = x[~split_mask]
 
-    # Do I want a log transformation?
-    logx_train = np.log2(x_train + 1)
-    logx_test = np.log2(x_test + 1)
-
-
-    mask_1d = ~np.isclose(np.nanstd(logx_train, axis=0), 0.0)
-    
     imputer = SimpleImputer(strategy='mean')
     scaler = StandardScaler()
+    if train_test_splits is None:
 
-    scaled_x_train = scaler.fit_transform(imputer.fit_transform(logx_train[:, mask_1d]))
-    scaled_x_test = scaler.transform(imputer.transform(logx_test[:, mask_1d]))
+        
+        x_log = np.log2(x + 1)
 
-    scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
+        mask_1d = ~np.isclose(np.nanstd(x_log, axis=0), 0.0)
 
-    # print mean of means
+        scaled_x = scaler.fit_transform(imputer.fit_transform(x_log[:, mask_1d]))
 
-    print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
-    print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
-    print(f"Mean of means of scaled_x_test {scaled_x_test.mean(axis=0).mean()}")
-    print(f"Mean of stds of scaled_x_test {scaled_x_test.std(axis=0).mean()}")
-    print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
-    print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
- 
-    plot_distr(x_train, logx_train, scaled_x_train, names, interim_data_path, input_config_name)
+        print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
+        print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
+
+        plot_distr(x, x_log, scaled_x, names, interim_data_path, input_config_name)
+
+
+    else:
+        x_train = x[split_mask]
+        x_test = x[~split_mask]
+
+        # Do I want a log transformation?
+        logx_train = np.log2(x_train + 1)
+        logx_test = np.log2(x_test + 1)
+
+
+        mask_1d = ~np.isclose(np.nanstd(logx_train, axis=0), 0.0)
+        
+        scaled_x_train = scaler.fit_transform(imputer.fit_transform(logx_train[:, mask_1d]))
+        scaled_x_test = scaler.transform(imputer.transform(logx_test[:, mask_1d]))
+
+        scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
+
+        # print mean of means
+
+        print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
+        print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
+        print(f"Mean of means of scaled_x_test {scaled_x_test.mean(axis=0).mean()}")
+        print(f"Mean of stds of scaled_x_test {scaled_x_test.std(axis=0).mean()}")
+        print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
+        print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
+    
+        plot_distr(x_train, logx_train, scaled_x_train, names, interim_data_path, input_config_name)
 
     return scaled_x, mask_1d
 
