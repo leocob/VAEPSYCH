@@ -73,6 +73,9 @@ def encode_data(config: DataConfig):
             names = names[mask_1d]
             logger.debug(f"Columns with zero variance: {np.sum(~mask_1d)}")
         io.dump_names(interim_data_path / f"{input_config.name}.txt", names)
+        # convert values to pandas dataframe
+        values_df = pd.DataFrame(values, columns=names)
+        values_df.to_csv(interim_data_path / f"{input_config.name}.tsv", sep="\t", index=True)
         np.save(interim_data_path / f"{input_config.name}.npy", values)
 
 
