@@ -41,7 +41,7 @@ def encode_data(config: DataConfig):
     # So I'm sure that the split mask is always the most recent one, as long as I don't move the train_test_splits.tsv file
 
     train_test_splits = pd.read_csv(train_test_path, sep = "\t")
-    split_mask = train_test_splits["Split"].values == "Train"
+    split_mask = train_test_splits["Split"].values == "train"
     np.save(split_path, split_mask)
 
 
