@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 from math import ceil
+from matplotlib.backends.backend_pdf import PdfPages
 
 
 from move.core.typing import BoolArray, FloatArray, IntArray
@@ -124,54 +125,77 @@ def scale(x: np.array, split_mask, names, interim_data_path, input_config_name) 
     print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
     print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
  
-    # plot_distr(x_train, logx_train, scaled_x_train, names, interim_data_path, input_config_name)
-    
+    plot_distr(x_train, logx_train, scaled_x_train, names, interim_data_path, input_config_name)
+
     return scaled_x, mask_1d
 
 
+def plot_distr(data_before_log, data_after_log, data_after_log_scaled, names, interim_data_path, input_config_name):
+    n_features = data_before_log.shape[1]
+    n_cols = 3
+    n_rows = 10  # Number of features to plot per page
+    n_pages = ceil(n_features / n_rows)
 
-# def plot_distr(data_before_log, data_after_log, data_after_log_scaled, names, interim_data_path, input_config_name):
+    pdf_path = f'{interim_data_path}/{input_config_name}.pdf'
 
-#     n_features = data_before_log.shape[1]
-#     n_cols = 3
-#     n_rows = 5  # Number of features to plot per page
-#     n_pages = ceil(n_features / n_rows)
+    with PdfPages(pdf_path) as pdf:
+        for page in range(n_pages):
+            fig, axes = plt.subplots(n_rows, n_cols, figsize=(15, 5*n_rows))
 
-#     for page in range(n_pages):
-#         fig, axes = plt.subplots(n_rows, n_cols, figsize=(15, 5*n_rows))
-#         fig.suptitle(f'Distribution of features (Page {page+1}/{n_pages})', fontsize=16)
+            for i in range(n_rows):
+                feature_idx = page * n_rows + i
+                if feature_idx >= n_features:
+                    break
 
-#         for i in range(n_rows):
-#             feature_idx = page * n_rows + i
-#             if feature_idx >= n_features:
-#                 break
+                feature_name = names[feature_idx]
 
-#             feature_name = names[feature_idx]
+                # print(f"Type of data_before {type(data_before_log)}")
+                # print(data_before_log)
+                # print(data_after_log[:, feature_idx])
+                # print(f"Type of data_after {type(data_after_log)}")
+                # print(data_after_log)
+                # print(f"Type of data_after_scaled {type(data_after_log_scaled)}")
+                # print(data_after_log_scaled)
 
-#             # Before log transformation
-#             sns.histplot(data_before_log[:, feature_idx], kde=True, ax=axes[i, 0])
-#             axes[i, 0].set_title(f'{feature_name}\nBefore Log')
-#             axes[i, 0].set_xlabel('Value')
+                # Before log transformation
+                sns.histplot(data_before_log[:, feature_idx], kde=True, ax=axes[i, 0])
+                axes[i, 0].set_title(f'{feature_name}\nTraining set distr before Log-transf')
+                axes[i, 0].set_xlabel('Value')
+                mean_before = np.nanmean(data_before_log[:, feature_idx], axis=0)
+                std_before = np.nanstd(data_before_log[:, feature_idx], axis=0)
+                axes[i, 0].text(0.95, 0.95, f'Mean: {mean_before:.2f}\nStd: {std_before:.2f}', 
+                                verticalalignment='top', horizontalalignment='right', 
+                                transform=axes[i, 0].transAxes, bbox=dict(facecolor='white', alpha=0.5))
 
-#             # After log transformation
-#             sns.histplot(data_after_log[:, feature_idx], kde=True, ax=axes[i, 1])
-#             axes[i, 1].set_title(f'{feature_name}\nAfter Log')
-#             axes[i, 1].set_xlabel('Value')
+                # After log transformation
+                sns.histplot(data_after_log[:, feature_idx], kde=True, ax=axes[i, 1])
+                axes[i, 1].set_title(f'{feature_name}\nTraining set distr after Log-transf')
+                axes[i, 1].set_xlabel('Value')
+                mean_after = np.nanmean(data_after_log[:, feature_idx], axis=0)
+                std_after = np.nanstd(data_after_log[:, feature_idx], axis=0)
+                axes[i, 1].text(0.95, 0.95, f'Mean: {mean_after:.2f}\nStd: {std_after:.2f}', 
+                                verticalalignment='top', horizontalalignment='right', 
+                                transform=axes[i, 1].transAxes, bbox=dict(facecolor='white', alpha=0.5))
 
-#             # After scaling
-#             sns.histplot(data_after_log_scaled[:, feature_idx], kde=True, ax=axes[i, 2])
-#             axes[i, 2].set_title(f'{feature_name}\nAfter Scaling')
-#             axes[i, 2].set_xlabel('Value')
+                # After scaling
+                sns.histplot(data_after_log_scaled[:, feature_idx], kde=True, ax=axes[i, 2])
+                axes[i, 2].set_title(f'{feature_name}\nTraining set distr after Log + z-score norm')
+                axes[i, 2].set_xlabel('Value')
+                mean_scaled = np.nanmean(data_after_log_scaled[:, feature_idx], axis=0)
+                std_scaled = np.nanstd(data_after_log_scaled[:, feature_idx], axis=0)
+                axes[i, 2].text(0.95, 0.95, f'Mean: {mean_scaled:.2f}\nStd: {std_scaled:.2f}', 
+                                verticalalignment='top', horizontalalignment='right', 
+                                transform=axes[i, 2].transAxes, bbox=dict(facecolor='white', alpha=0.5))
 
-#         # Remove any unused subplots
-#         for i in range(feature_idx % n_rows + 1, n_rows):
-#             for j in range(n_cols):
-#                 fig.delaxes(axes[i, j])
+            # Remove any unused subplots
+            for j in range(i + 1, n_rows):
+                for k in range(n_cols):
+                    fig.delaxes(axes[j, k])
 
-#         plt.tight_layout()
-#         plt.savefig(f'{interim_data_path}/{input_config_name}_page{page+1}.pdf')
-#         plt.close()
+            plt.tight_layout()
+            pdf.savefig(fig)
+            plt.close()
 
-#     print(f"Plots saved to {interim_data_path}/{input_config_name}_page*.pdf")
+    print(f"Plots saved to {pdf_path}")
 
-#     return None
+    return None
