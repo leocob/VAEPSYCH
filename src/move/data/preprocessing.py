@@ -103,12 +103,13 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
     scaler = StandardScaler()
     if train_test_splits is None:
 
-        
-        x_log = np.log2(x + 1)
 
-        mask_1d = ~np.isclose(np.nanstd(x_log, axis=0), 0.0)
+        mask_1d = ~np.isclose(np.nanstd(x, axis=0), 0.0)
 
-        scaled_x = scaler.fit_transform(imputer.fit_transform(x_log[:, mask_1d]))
+        scaled_x = scaler.fit_transform((x[:, mask_1d]))
+        # scaled_x = standardize(x[:, mask_1d], axis=0)
+        scaled_x[np.isnan(scaled_x)] = 0  
+
 
         print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
         print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
@@ -120,15 +121,12 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         x_train = x[split_mask]
         x_test = x[~split_mask]
 
-        # Do I want a log transformation?
-        logx_train = np.log2(x_train + 1)
-        logx_test = np.log2(x_test + 1)
-
-
         mask_1d = ~np.isclose(np.nanstd(logx_train, axis=0), 0.0)
         
-        scaled_x_train = scaler.fit_transform(imputer.fit_transform(logx_train[:, mask_1d]))
-        scaled_x_test = scaler.transform(imputer.transform(logx_test[:, mask_1d]))
+        scaled_x_train = scaler.fit_transform(x_train[:, mask_1d])
+        scaled_x_train[np.isnan(scaled_x_train)] = 0
+        scaled_x_test = scaler.transform(x_test[:, mask_1d])
+        scaled_x_test[np.isnan(scaled_x_test)] = 0
 
         scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
 
@@ -141,7 +139,7 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
         print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
     
-        plot_distr(x_train, logx_train, scaled_x_train, names, interim_data_path, input_config_name)
+        plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
 
     return scaled_x, mask_1d
 
