@@ -129,7 +129,7 @@ def read_names(path: PathLike) -> list[str]:
 
 
 def read_tsv(
-    path: PathLike, sample_names: Optional[list[str]] = None, input_type: str = "categorical", p: float = 0.01
+    path: PathLike, sample_names: Optional[list[str]] = None, input_type: str = "categorical", p: float = 0
 ) -> tuple[ObjectArray, np.ndarray]:
     """Read a dataset from a TSV file. The TSV is expected to have an index
     column (0th index).
@@ -173,8 +173,10 @@ def read_tsv(
                 file.write(f"{column}\n")
 
     elif input_type == "continuous":
+
         percentage_of_nonas = data.notna().mean()
-        logger.warning(f"Percentage of non-NAs: {percentage_of_nonas}")
+
+        # logger.warning(f"Percentage of non-NAs: {percentage_of_nonas}")
         columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
 
 
