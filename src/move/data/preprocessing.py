@@ -107,8 +107,8 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         mask_1d = ~np.isclose(np.nanstd(x, axis=0), 0.0)
 
         scaled_x = scaler.fit_transform((x[:, mask_1d]))
-        # scaled_x = standardize(x[:, mask_1d], axis=0)
         scaled_x[np.isnan(scaled_x)] = 0  
+        # scaled_x = standardize(x[:, mask_1d], axis=0)
 
 
         print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
