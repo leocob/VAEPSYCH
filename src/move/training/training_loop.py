@@ -35,7 +35,7 @@ def training_loop(
     early_stopping: bool = False,
     patience: int = 0,
     num_latent: int = 0,
-    beta: float = 0.001
+    beta: float = 1
 ) -> TrainingLoopOutput:
     """
     Trains a VAE model with batch dilation and KLD warm-up. Optionally,
@@ -64,7 +64,11 @@ def training_loop(
 
     kld_weight = 0
 
-    target_KLD_weight = beta * (num_latent**-1)
+    # Original code
+    # target_KLD_weight = beta * (num_latent**-1)
+
+    # Removing latent dimension from the KLD weight
+    target_KLD_weight = beta
     increment = target_KLD_weight / len(kld_warmup_steps)
 
     warmup_log = []
