@@ -112,8 +112,8 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         # scaled_x = standardize(x[:, mask_1d], axis=0)
 
 
-        print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
-        print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
+        # print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
+        # print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
 
         plot_distr(x, scaled_x, names, interim_data_path, input_config_name)
 
@@ -133,12 +133,12 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
 
         # print mean of means
 
-        print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
-        print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
-        print(f"Mean of means of scaled_x_test {scaled_x_test.mean(axis=0).mean()}")
-        print(f"Mean of stds of scaled_x_test {scaled_x_test.std(axis=0).mean()}")
-        print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
-        print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
+        # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
+        # print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
+        # print(f"Mean of means of scaled_x_test {scaled_x_test.mean(axis=0).mean()}")
+        # print(f"Mean of stds of scaled_x_test {scaled_x_test.std(axis=0).mean()}")
+        # print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
+        # print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
     
         # plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
 
