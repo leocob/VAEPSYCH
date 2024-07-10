@@ -174,7 +174,7 @@ def read_tsv(
 
     elif input_type == "continuous":
         percentage_of_nonas = data.notna().mean()
-        # logger.info(f"Percentage of non-NAs: {percentage_of_nonas}")
+        logger.warning(f"Percentage of non-NAs: {percentage_of_nonas}")
         columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
 
 
@@ -188,7 +188,7 @@ def read_tsv(
                 file.write(f"{column}\n")
 
         if columns_to_keep.empty:
-            logger.info(f"No columns with more than {p} non-NAs in dataset {path}")
+            logger.warning(f"No columns with more than {p} non-NAs in dataset {path}")
             return None, None
 
         else:
