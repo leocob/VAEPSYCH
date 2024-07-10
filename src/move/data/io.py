@@ -143,6 +143,8 @@ def read_tsv(
         features)
     """
     data = pd.read_csv(path, index_col=0, sep="\t")
+    print("Before filtering in read_tsv function")
+    print(data)
     if sample_names is not None:
         data.index = data.index.astype(str, False)
         data = data.loc[sample_names]
