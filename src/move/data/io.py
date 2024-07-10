@@ -143,13 +143,13 @@ def read_tsv(
         features)
     """
     data = pd.read_csv(path, index_col=0, sep="\t")
-    print("Before filtering in read_tsv function")
-    print(data)
+    # print("Before filtering in read_tsv function")
+    # print(data)
     if sample_names is not None:
         data.index = data.index.astype(str, False)
         data = data.loc[sample_names]
-        print("After selecting for my samples")
-        print(data)
+        # print("After selecting for my samples")
+        # print(data)
 
     if input_type == "categorical":
         percentage_of_ones = (data == 1).mean()
@@ -172,7 +172,7 @@ def read_tsv(
 
     elif input_type == "continuous":
         percentage_of_nonas = data.notna().mean()
-        print(f"Percentage of non-NAs: {percentage_of_nonas}")
+        plogger.info(f"Percentage of non-NAs: {percentage_of_nonas}")
         columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
 
 
@@ -186,13 +186,12 @@ def read_tsv(
                 file.write(f"{column}\n")
 
         if columns_to_keep.empty:
-            # raise a warning here
-            print(f"No columns with more than {p} non-NAs in dataset {path}")
+            logger.info(f"No columns with more than {p} non-NAs in dataset {path}")
+            return None, None
 
         else:
             data = data[columns_to_keep]
-            # skip the dataset
-            return None, None
+            
         
     # TODO: add sweetviz report
 
