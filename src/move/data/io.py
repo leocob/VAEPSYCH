@@ -148,6 +148,8 @@ def read_tsv(
     if sample_names is not None:
         data.index = data.index.astype(str, False)
         data = data.loc[sample_names]
+        print("After selecting for my samples")
+        print(data)
 
     if input_type == "categorical":
         percentage_of_ones = (data == 1).mean()
@@ -170,6 +172,7 @@ def read_tsv(
 
     elif input_type == "continuous":
         percentage_of_nonas = data.notna().mean()
+        print(f"Percentage of non-NAs: {percentage_of_nonas}")
         columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
         data = data[columns_to_keep]
         columns_removed = percentage_of_nonas[percentage_of_nonas < p].index
