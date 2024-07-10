@@ -174,7 +174,7 @@ def read_tsv(
 
     elif input_type == "continuous":
         percentage_of_nonas = data.notna().mean()
-        logger.info(f"Percentage of non-NAs: {percentage_of_nonas}")
+        # logger.info(f"Percentage of non-NAs: {percentage_of_nonas}")
         columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
 
 
