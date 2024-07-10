@@ -10,7 +10,6 @@ from move.core.logging import get_logger
 from move.data import io, preprocessing
 import warnings
 
-
 def encode_data(config: DataConfig):
     """Encodes categorical and continuous datasets specified in configuration.
     Categorical data is one-hot encoded, whereas continuous data is z-score

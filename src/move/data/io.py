@@ -19,7 +19,7 @@ from omegaconf import DictConfig
 
 from move import HYDRA_VERSION_BASE, conf
 from move.core.typing import BoolArray, FloatArray, ObjectArray, PathLike
-
+from move.core.logging import get_logger
 
 def read_config(
     data_config_name: Optional[str], task_config_name: Optional[str], *args
@@ -142,6 +142,8 @@ def read_tsv(
         Tuple containing (1) feature names and (2) 2D matrix (samples x
         features)
     """
+    
+    logger = get_logger(__name__)
     data = pd.read_csv(path, index_col=0, sep="\t")
     # print("Before filtering in read_tsv function")
     # print(data)
