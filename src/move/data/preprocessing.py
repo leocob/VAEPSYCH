@@ -114,14 +114,14 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
         print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
 
-        plot_distr(x, x_log, scaled_x, names, interim_data_path, input_config_name)
+        plot_distr(x, scaled_x, names, interim_data_path, input_config_name)
 
 
     else:
         x_train = x[split_mask]
         x_test = x[~split_mask]
 
-        mask_1d = ~np.isclose(np.nanstd(logx_train, axis=0), 0.0)
+        mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
         
         scaled_x_train = scaler.fit_transform(x_train[:, mask_1d])
         scaled_x_train[np.isnan(scaled_x_train)] = 0
@@ -139,7 +139,7 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
         print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
     
-        plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
+        # plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
 
     return scaled_x, mask_1d
 
