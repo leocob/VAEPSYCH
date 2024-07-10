@@ -174,7 +174,9 @@ def read_tsv(
         percentage_of_nonas = data.notna().mean()
         print(f"Percentage of non-NAs: {percentage_of_nonas}")
         columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
-        data = data[columns_to_keep]
+
+
+
         columns_removed = percentage_of_nonas[percentage_of_nonas < p].index
 
         columns_removed = columns_removed.tolist()
@@ -182,7 +184,16 @@ def read_tsv(
         with open(f"{path}_features_removed_less_than_{p}.txt", "w") as file:
             for column in columns_removed:
                 file.write(f"{column}\n")
-                
+
+        if columns_to_keep.empty:
+            # raise a warning here
+            print(f"No columns with more than {p} non-NAs in dataset {path}")
+
+        else:
+            data = data[columns_to_keep]
+            # skip the dataset
+            return None, None
+        
     # TODO: add sweetviz report
 
     return data.columns.values, data.values

@@ -65,20 +65,25 @@ def encode_data(config: DataConfig):
         filepath = raw_data_path / f"{input_config.name}.tsv"
         names, values = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0.01)
 
+        if values is None:
+            logger.warning(f"No data found for '{input_config.name}'")
+            continue
 
-        if scale:
-            input_config_name = input_config.name
-            print(values)
-            values, mask_1d = preprocessing.scale(values, train_test_splits, split_mask, names, interim_data_path, input_config_name)
-            # values, mask_1d = preprocessing.scale(values, split_mask)
-            names = names[mask_1d]
-            logger.debug(f"Columns with zero variance: {np.sum(~mask_1d)}")
-            
-        io.dump_names(interim_data_path / f"{input_config.name}.txt", names)
-        # convert values to pandas dataframe
-        values_df = pd.DataFrame(values, columns=names)
-        values_df.to_csv(interim_data_path / f"{input_config.name}.tsv", sep="\t", index=True)
-        np.save(interim_data_path / f"{input_config.name}.npy", values)
+        else:
+
+            if scale:
+                input_config_name = input_config.name
+                print(values)
+                values, mask_1d = preprocessing.scale(values, train_test_splits, split_mask, names, interim_data_path, input_config_name)
+                # values, mask_1d = preprocessing.scale(values, split_mask)
+                names = names[mask_1d]
+                logger.debug(f"Columns with zero variance: {np.sum(~mask_1d)}")
+                
+            io.dump_names(interim_data_path / f"{input_config.name}.txt", names)
+            # convert values to pandas dataframe
+            values_df = pd.DataFrame(values, columns=names)
+            values_df.to_csv(interim_data_path / f"{input_config.name}.tsv", sep="\t", index=True)
+            np.save(interim_data_path / f"{input_config.name}.npy", values)
 
 
 
