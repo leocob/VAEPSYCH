@@ -68,6 +68,7 @@ def encode_data(config: DataConfig):
 
         if scale:
             input_config_name = input_config.name
+            print(values)
             values, mask_1d = preprocessing.scale(values, train_test_splits, split_mask, names, interim_data_path, input_config_name)
             # values, mask_1d = preprocessing.scale(values, split_mask)
             names = names[mask_1d]
