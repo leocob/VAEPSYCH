@@ -74,8 +74,8 @@ def encode_data(config: DataConfig):
                 input_config_name = input_config.name
                 # print(values)
                 # uncomment for genomeDK
-                # values, mask_1d = preprocessing.scale(values, train_test_splits, split_mask, names, interim_data_path, input_config_name)
-                values, mask_1d = preprocessing.scale(values)
+                values, mask_1d = preprocessing.scale(values, train_test_splits, split_mask, names, interim_data_path, input_config_name)
+                # values, mask_1d = preprocessing.scale(values)
                 names = names[mask_1d]
                 logger.debug(f"Columns with zero variance: {np.sum(~mask_1d)}")
                 
