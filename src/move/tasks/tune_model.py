@@ -134,7 +134,13 @@ def tune_model(config: MOVEConfig) -> float:
             )
 
             model.eval()
-            latent, *_ = model.latent(test_dataloader, kld_weight=1)
+            
+            latent, *_ = model.latent(test_dataloader, kld_weight=1) 
+            # It doesn't matter what KLD you use. We don't care about the loss function, I don't need that for calculating the latent spaces
+
+            # Leo version
+            # latent, *_, test_likelihood = model.latent(test_dataloader, kld_weight=1)
+            # But I want the test_likelihood in the reconstruction, while doing hyperparameter tuning! 
 
             if cosine_sim0 is None:
                 cosine_sim0 = cosine_similarity(latent)
@@ -212,6 +218,10 @@ def tune_model(config: MOVEConfig) -> float:
                 batch_size=task_config.batch_size,
             )
             cat_recons, con_recons = model.reconstruct(dataloader)
+            # TODO: instead of reconstruct and I use model.latent, I can get the test_likelihood but remember to do it only on the test set
+
+            # TODO: Ricardo suggested me to get the test_likelihood from here and add it to the record
+            
             con_recons = np.split(con_recons, np.cumsum(model.continuous_shapes[:-1]), axis=1)
             for cat, cat_recon, dataset_name in zip(
                 cat_list, cat_recons, config.data.categorical_names
@@ -241,7 +251,7 @@ def tune_model(config: MOVEConfig) -> float:
                     split=split_name,
                 )
                 records.append(record)
-
+        
         logger.info("Writing results")
         df_path = output_path / "reconstruction_stats.tsv"
         header = not df_path.exists()
@@ -251,7 +261,7 @@ def tune_model(config: MOVEConfig) -> float:
     if task_type == "reconstruction":
         task_config = cast(TuneModelReconstructionConfig, task_config)
         _tune_reconstruction(task_config)
-    elif task_type == "stability":
+    # elif task_type == "stability": #TODO: try this, if not check where the models are saved and ask Ricardo
         task_config = cast(TuneModelStabilityConfig, task_config)
         _tune_stability(task_config)
 
