@@ -237,7 +237,7 @@ def tune_model(config: MOVEConfig) -> float:
                 latent, *_, test_likelihood = model.latent(dataloader, kld_weight=1)
 
                 print(f"label: {label}")
-                label_dict = {key: value for key, value in label_pairs}
+                label_dict = {key: value for key, value in label}
                 df_test_tmp = pd.DataFrame({"job_num": job_num, **dict(label_dict), "test_likelihood": test_likelihood})
                 df_test_likelihood = pd.concat([df_test_likelihood, df_test_tmp])
             #     record_test_likelihood = _get_record(
