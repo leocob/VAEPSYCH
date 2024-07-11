@@ -170,12 +170,16 @@ def tune_model(config: MOVEConfig) -> float:
     ):
         split_path = interim_path / "split_mask.npy"
         if split_path.exists():
+            print("Split mask exists ")
             split_mask: BoolArray = np.load(split_path)
         else:
+
             num_samples = cat_list[0].shape[0] if cat_list else con_list[0].shape[0]
             split_mask = split_samples(num_samples, 0.9)
             np.save(split_path, split_mask)
 
+        print(f"cat_list[0].shape[0]: {cat_list}")
+        print(f"con_list[0].shape[0]: {con_list}")
         train_dataloader = make_dataloader(
             cat_list,
             con_list,
@@ -257,6 +261,13 @@ def tune_model(config: MOVEConfig) -> float:
         header = not df_path.exists()
         df = pd.DataFrame.from_records(records)
         df.to_csv(df_path, sep="\t", mode="a", header=header, index=False)
+
+    # if task_type == "reconstruction":
+    #     task_config = cast(TuneModelReconstructionConfig, task_config)
+    #     _tune_reconstruction(task_config)
+    # elif task_type == "stability":
+    #     task_config = cast(TuneModelStabilityConfig, task_config)
+    #     _tune_stability(task_config)
 
     if task_type == "reconstruction":
         # print(f"Task type: {task_type}")
