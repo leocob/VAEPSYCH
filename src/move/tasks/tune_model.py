@@ -170,7 +170,6 @@ def tune_model(config: MOVEConfig) -> float:
     ):
         split_path = interim_path / "split_mask.npy"
         if split_path.exists():
-            print("Split mask exists ")
             split_mask: BoolArray = np.load(split_path)
         else:
 
@@ -234,7 +233,20 @@ def tune_model(config: MOVEConfig) -> float:
             # if mask is test, I can get the test_likelihood
             if split_name == "test":
                 latent, *_, test_likelihood = model.latent(dataloader, kld_weight=1)
-                print(f"Test likelihood: {test_likelihood}")
+
+            else:
+                test_likelihood = "NA"
+
+            record = _get_record(
+                test_likelihood,
+                job_num=job_num,
+                **dict(label),
+                metric="test_likelihood",
+                dataset=dataset_name,
+                split=split_name,
+            )
+            records.append(record)
+                # print(f"Test likelihood: {test_likelihood}")
             # TODO: instead of reconstruct and I use model.latent, I can get the test_likelihood but remember to do it only on the test set
 
             # TODO: Ricardo suggested me to get the test_likelihood from here and add it to the record
