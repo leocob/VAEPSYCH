@@ -730,6 +730,7 @@ class VAE(nn.Module):
         con_recon = con_recon.numpy()
 
         assert row == num_samples
+        print(f"Test_likelihood from latent function: {test_likelihood}")
         return (
             latent,
             latent_var,
