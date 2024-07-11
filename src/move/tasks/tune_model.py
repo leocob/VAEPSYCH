@@ -262,7 +262,7 @@ def tune_model(config: MOVEConfig) -> float:
         task_config = cast(TuneModelReconstructionConfig, task_config)
         _tune_reconstruction(task_config)
     # elif task_type == "stability": #TODO: try this, if not check where the models are saved and ask Ricardo
-        task_config = cast(TuneModelStabilityConfig, task_config)
-        _tune_stability(task_config)
+        task_config_stab = cast(TuneModelStabilityConfig, task_config)
+        _tune_stability(task_config_stab)
 
     return 0.0
