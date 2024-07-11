@@ -259,13 +259,13 @@ def tune_model(config: MOVEConfig) -> float:
         df.to_csv(df_path, sep="\t", mode="a", header=header, index=False)
 
     if task_type == "reconstruction":
-        print(f"Task type: {task_type}")
-        print(f"Task config: {task_config}")
-        task_config = cast(TuneModelReconstructionConfig, task_config)
-        print(f"Task config: {task_config}")
-        _tune_reconstruction(task_config)
-    elif task_type == "stability": #TODO: try this, if not check where the models are saved and ask Ricardo
-        task_config = cast(TuneModelStabilityConfig, task_config)
-        _tune_stability(task_config)
+        # print(f"Task type: {task_type}")
+        # print(f"Task config: {task_config}")
+        task_config_rec = cast(TuneModelReconstructionConfig, task_config)
+        # print(f"Task config: {task_config}")
+        _tune_reconstruction(task_config_rec)
+    # elif task_type == "stability": #TODO: try this, if not check where the models are saved and ask Ricardo
+        task_config_stab = cast(TuneModelStabilityConfig, task_config)
+        _tune_stability(task_config_stab)
 
     return 0.0
