@@ -220,6 +220,7 @@ def tune_model(config: MOVEConfig) -> float:
         label = [hp.split("=") for hp in hydra_config.job.override_dirname.split(",")]
         records = []
         records_test_likelihood = []
+        df_test_likelihood = pd.DataFrame()
         splits = zip(["train", "test"], [split_mask, ~split_mask])
         for split_name, mask in splits:
             dataloader = make_dataloader(
@@ -235,13 +236,15 @@ def tune_model(config: MOVEConfig) -> float:
             if split_name == "test":
                 latent, *_, test_likelihood = model.latent(dataloader, kld_weight=1)
 
-                record_test_likelihood = _get_record(
-                test_likelihood,
-                job_num=job_num,
-                **dict(label),
-                metric="test_likelihood"
-            )
-                records_test_likelihood.append(record_test_likelihood)
+                df_test_tmp = pd.DataFrame({"job_num": job_num, **dict(label), "test_likelihood": test_likelihood})
+                df_test_likelihood = pd.concat([df_test_likelihood, df_test_tmp])
+            #     record_test_likelihood = _get_record(
+            #     test_likelihood,
+            #     job_num=job_num,
+            #     **dict(label),
+            #     metric="test_likelihood"
+            # )
+                # records_test_likelihood.append(record_test_likelihood)
 
 
 # IS the test likelihood across the categories? YeahI think it's in total
@@ -288,7 +291,7 @@ def tune_model(config: MOVEConfig) -> float:
         df = pd.DataFrame.from_records(records)
         df.to_csv(df_path, sep="\t", mode="a", header=header, index=False)
 
-        df_test_likelihood = pd.DataFrame.from_records(records_test_likelihood)
+        # df_test_likelihood = pd.DataFrame.from_records(records_test_likelihood)
         df_test_likelihood.to_csv(output_path / "test_likelihood.tsv", sep="\t", mode="a", header=header, index=False)
 
 
