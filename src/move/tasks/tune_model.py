@@ -219,6 +219,7 @@ def tune_model(config: MOVEConfig) -> float:
         logger.info("Computing reconstruction metrics")
         label = [hp.split("=") for hp in hydra_config.job.override_dirname.split(",")]
         records = []
+        records_test_likelihood = []
         splits = zip(["train", "test"], [split_mask, ~split_mask])
         for split_name, mask in splits:
             dataloader = make_dataloader(
@@ -234,18 +235,17 @@ def tune_model(config: MOVEConfig) -> float:
             if split_name == "test":
                 latent, *_, test_likelihood = model.latent(dataloader, kld_weight=1)
 
-            else:
-                test_likelihood = "NA"
-
-            record = _get_record(
+                record_test_likelihood = _get_record(
                 test_likelihood,
                 job_num=job_num,
                 **dict(label),
-                metric="test_likelihood",
-                dataset=dataset_name,
-                split=split_name,
+                metric="test_likelihood"
             )
-            records.append(record)
+                records_test_likelihood.append(record_test_likelihood)
+
+
+# IS the test likelihood across the categories? YeahI think it's in total
+
                 # print(f"Test likelihood: {test_likelihood}")
             # TODO: instead of reconstruct and I use model.latent, I can get the test_likelihood but remember to do it only on the test set
 
@@ -280,12 +280,17 @@ def tune_model(config: MOVEConfig) -> float:
                     split=split_name,
                 )
                 records.append(record)
-        
+
+
         logger.info("Writing results")
         df_path = output_path / "reconstruction_stats.tsv"
         header = not df_path.exists()
         df = pd.DataFrame.from_records(records)
         df.to_csv(df_path, sep="\t", mode="a", header=header, index=False)
+
+        df_test_likelihood = pd.DataFrame.from_records(records_test_likelihood)
+        df_test_likelihood.to_csv(output_path / "test_likelihood.tsv", sep="\t", mode="a", header=header, index=False)
+
 
     if task_type == "reconstruction":
         task_config = cast(TuneModelReconstructionConfig, task_config)
