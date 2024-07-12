@@ -639,43 +639,10 @@ class VAE(nn.Module):
     def latent(
         self, dataloader: DataLoader, kld_weight: float
     ) -> tuple[FloatArray, FloatArray, IntArray, IntArray, FloatArray, float, float]:
-"""
-Iterate through validation or test dataset
 
-Args:
-    dataloader: Dataloader with test dataset
-    kld_weight: KLD weight
-
-Returns:
-    A tuple containing:
-        latent: array of VAE latent space mean vectors values
-        latent_var: array of VAE latent space logvar vectors values
-        cat_recon: reconstructed categorical data
-        cat_class: input categorical data
-        con_recon: reconstructions of continuous data
-        test_loss: total loss on test set
-        test_likelihood: total likelihood on test set
-"""
-"""
-        Iterate through validation or test dataset
-        
-        Args:
-            dataloader: Dataloader with test dataset
-            kld_weight: KLD weight
-        
-        Returns:
-            A tuple containing:
-                latent: array of VAE latent space mean vectors values
-                latent_var: array of VAE latent space logvar vectors values
-                cat_recon: reconstructed categorical data
-                cat_class: input categorical data
-                con_recon: reconstructions of continuous data
-                test_loss: total loss on test set
-                test_likelihood: total likelihood on test set
         """
-                """
         Iterate through validation or test dataset
-
+    
         Args:
             dataloader: Dataloader with test dataset
             kld_weight: KLD weight
