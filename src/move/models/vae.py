@@ -400,7 +400,8 @@ class VAE(nn.Module):
         # 0.5 * sum(1 + log(sigma^2) - mu^2 - sigma^2)
         KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / (batch_size)
 
-        KLD_weight = self.beta * kld_w
+        # KLD_weight = self.beta * kld_w
+        KLD_weight = kld_w
         loss = CE + MSE + KLD * KLD_weight
 
         return loss, CE, MSE, KLD * KLD_weight
@@ -638,7 +639,41 @@ class VAE(nn.Module):
     def latent(
         self, dataloader: DataLoader, kld_weight: float
     ) -> tuple[FloatArray, FloatArray, IntArray, IntArray, FloatArray, float, float]:
+"""
+Iterate through validation or test dataset
+
+Args:
+    dataloader: Dataloader with test dataset
+    kld_weight: KLD weight
+
+Returns:
+    A tuple containing:
+        latent: array of VAE latent space mean vectors values
+        latent_var: array of VAE latent space logvar vectors values
+        cat_recon: reconstructed categorical data
+        cat_class: input categorical data
+        con_recon: reconstructions of continuous data
+        test_loss: total loss on test set
+        test_likelihood: total likelihood on test set
+"""
+"""
+        Iterate through validation or test dataset
+        
+        Args:
+            dataloader: Dataloader with test dataset
+            kld_weight: KLD weight
+        
+        Returns:
+            A tuple containing:
+                latent: array of VAE latent space mean vectors values
+                latent_var: array of VAE latent space logvar vectors values
+                cat_recon: reconstructed categorical data
+                cat_class: input categorical data
+                con_recon: reconstructions of continuous data
+                test_loss: total loss on test set
+                test_likelihood: total likelihood on test set
         """
+                """
         Iterate through validation or test dataset
 
         Args:
@@ -696,6 +731,7 @@ class VAE(nn.Module):
             # Evaluate
             cat_out, con_out, mu, logvar = self(tensor)
 
+            Moves the `mu` tensor to the device specified by `self.device`. This is necessary to ensure that the tensor is on the same device as the model parameters, allowing for efficient computation on the GPU if available.
             mu = mu.to(self.device)
             logvar = logvar.to(self.device)
             batch = len(mu)
