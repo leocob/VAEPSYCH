@@ -698,7 +698,7 @@ class VAE(nn.Module):
             # Evaluate
             cat_out, con_out, mu, logvar = self(tensor)
 
-            Moves the `mu` tensor to the device specified by `self.device`. This is necessary to ensure that the tensor is on the same device as the model parameters, allowing for efficient computation on the GPU if available.
+            # Moves the `mu` tensor to the device specified by `self.device`. This is necessary to ensure that the tensor is on the same device as the model parameters, allowing for efficient computation on the GPU if available.
             mu = mu.to(self.device)
             logvar = logvar.to(self.device)
             batch = len(mu)
