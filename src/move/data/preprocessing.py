@@ -239,7 +239,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         # print(scaled_x_df.query("ID == 1219925"))
 
         print(f"scaled_x_df.query(ID==9321548):")
-        print(scaled_x_df.query("ID == 9321548"))
+        print(scaled_x_df.query("ID == '9321548'"))
         # print(scaled_x_df["ID == 1219925"])
         print(scaled_x_df.query("index == 610"))
         print(scaled_x_df.query("index == 172"))
