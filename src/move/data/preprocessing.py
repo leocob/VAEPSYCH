@@ -227,6 +227,9 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         
 
         scaled_x_train = scaler.fit_transform(x_train.loc[:, mask_1d])
+
+        print(f"scaled_x_train: {scaled_x_train}")
+
         scaled_x_train[np.isnan(scaled_x_train)] = 0
 
         scaled_x_test = scaler.transform(x_test.loc[:, mask_1d])
