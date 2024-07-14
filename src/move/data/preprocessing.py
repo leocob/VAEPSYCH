@@ -190,8 +190,13 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     print(f"x.shape: {x.shape}")
     print(f"x.query(ID==1219925):")
     print(x.query("ID == '1219925'"))
-    print(x.iloc[609:611])
-    print(x.iloc[171:173])
+
+    row = x[x.index == "1219925"]
+    print(f"row: {row}")
+    row_number = x.index.get_indexer(x.query("ID == '1219925'").index)[0]
+    print(f"row_number: {row_number}")
+    # print(x.iloc[609:611])
+    print(x.iloc[168:173])
     # print(f"x \n{x}")
     if train_test_splits is None:
 
