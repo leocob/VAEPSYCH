@@ -139,6 +139,7 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
 
         print(f"scaled_x: {scaled_x}")
+        print(f"scaled_x.query('index == 170'): {scaled_x.query('index == 170')}")
         # print mean of means
 
         # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
