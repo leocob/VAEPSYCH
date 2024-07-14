@@ -348,6 +348,9 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     print(f"row: {row}")
     row_number = scaled_x_df.index.get_indexer(row.index)[0]
     print(f"row_number: {row_number}")
+
+    print(f"x.shape: {x.shape}")
+    print(f"scaled_x_df.shape: {scaled_x_df.shape}")
     # now print the row number
     
 
