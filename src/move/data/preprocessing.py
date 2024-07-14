@@ -194,7 +194,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     row_number = x.index.get_indexer(row.index)[0]
     print(f"row_number: {row_number}")
     # print(x.iloc[609:611])
-    print(x.iloc[170])
+    # print(x.iloc[170])
     # print(f"x \n{x}")
     if train_test_splits is None:
 
