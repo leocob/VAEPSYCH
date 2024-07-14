@@ -127,10 +127,10 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
 
         mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
         
-        print(f"x_train[170,:]: {x_train[170,:]}")
+        print(f"x_train[5997,:]: {x_train[5997,:]}")
 
         scaled_x_train = scaler.fit_transform(x_train[:, mask_1d])
-        print(f"scaled_x_train[170,:]: {scaled_x_train[170,:]}")
+        print(f"scaled_x_train[5997,:]: {scaled_x_train[5997,:]}")
         scaled_x_train[np.isnan(scaled_x_train)] = 0
         print(f"scaled_x_train: {scaled_x_train}")
         scaled_x_test = scaler.transform(x_test[:, mask_1d])
@@ -139,7 +139,7 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
 
         print(f"scaled_x: {scaled_x}")
-        print(f"scaled_x[170,:]: {scaled_x[170,:]}")
+        print(f"scaled_x[5997,:]: {scaled_x[5997,:]}")
         # print mean of means
 
         # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
