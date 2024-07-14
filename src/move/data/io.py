@@ -145,15 +145,15 @@ def read_tsv(
     
     logger = get_logger(__name__)
     data = pd.read_csv(path, index_col=0, sep="\t")
-    # print("Before filtering in read_tsv function")
-    # print(data)
+    print("Before filtering in read_tsv function")
+    print(data)
     if sample_names is not None:
         print(f"length Sample names: {len(sample_names)}") # 6000
         data.index = data.index.astype(str, False) # 22092
         data = data.loc[sample_names]
-        print(f"data after filtering for sample name:\n{data}") # 60000
-        # print("After selecting for my samples")
-        # print(data)
+        print(f"data after filtering for sample name:\n{data}") # 6000
+        print("After selecting for my samples")
+        print(data)
 
     if input_type == "categorical":
         percentage_of_ones = (data == 1).mean()
