@@ -236,8 +236,9 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         print(f"type of scaled_x_train: {type(scaled_x_train)}")
 
         scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
-        print(f"type of x: {type(x)}")
-        print(f"x : \n {x}")
+        print(f"scaled_x:\n {scaled_x}")
+
+
         scaled_x_df = pd.DataFrame(scaled_x, columns=x[mask_1d].columns)
 
         # print index of scaled_x
