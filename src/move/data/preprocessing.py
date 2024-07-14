@@ -235,14 +235,11 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         scaled_x_df = pd.DataFrame(scaled_x, columns=x.loc[:,mask_1d].columns)
         scaled_x_df.index = x.index
 
-        # print(f"scaled_x_df.query(ID==1219925):")
-        # print(scaled_x_df.query("ID == 1219925"))
 
-        print(f"scaled_x_df.query(ID==9321548):")
-        print(scaled_x_df.query("ID == '9321548'"))
-        # print(scaled_x_df["ID == 1219925"])
-        print(scaled_x_df.query("index == 610"))
-        print(scaled_x_df.query("index == 172"))
+        print(f"scaled_x_df.query(ID==1219925):")
+        print(scaled_x_df.query("ID == '1219925'"))
+        print(scaled_x_df.loc[610])
+        print(scaled_x_df.loc[172])
         scaled_x_df.to_csv("scaled_x_df.tsv", sep="\t", index=True)
 
         # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
