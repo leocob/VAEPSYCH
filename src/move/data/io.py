@@ -145,21 +145,21 @@ def read_tsv(
     
     logger = get_logger(__name__)
     data = pd.read_csv(path, index_col=0, sep="\t")
-    print("Before filtering in read_tsv function")
-    print(data)
-    print(f"data.query(index == 610): {data.query('index == 610')}")
+    # print("Before filtering in read_tsv function")
+    # print(data)
+    # print(f"data.query(index == 610): {data.query('index == 610')}")
     print(f"data.query(ID==1219925): {data.query('ID==1219925')}")
 
     if sample_names is not None:
         # print(f"length Sample names: {len(sample_names)}") # 6000
         data.index = data.index.astype(str, False) # 22092
         data = data.loc[sample_names]
-        print(f"data after filtering for sample name:\n{data}") # 6000 with IDS
-        # print("After selecting for my samples")
-        print(data)
-        print(f"data.query(index == 610): {data.query('index == 610')}")
-        print(f"data.query(index == 172): {data.query('index == 172')}")
-        print(f"data.query(ID==1219925): {data.query('ID==1219925')}")
+        # print(f"data after filtering for sample name:\n{data}") # 6000 with IDS
+        # # print("After selecting for my samples")
+        # print(data)
+        # print(f"data.query(index == 610): {data.query('index == 610')}")
+        # print(f"data.query(index == 172): {data.query('index == 172')}")
+        # print(f"data.query(ID==1219925): {data.query('ID==1219925')}")
 
         
     if input_type == "categorical":
