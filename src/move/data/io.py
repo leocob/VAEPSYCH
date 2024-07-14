@@ -203,7 +203,7 @@ def read_tsv(
 
         print(f"data.index.values")
         print(data.index.values)
-    return data.columns.values, data.values
+    return data.columns.values, data.values, data 
 
 
 def load_mappings(path: PathLike) -> dict[str, dict[str, int]]:
