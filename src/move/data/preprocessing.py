@@ -226,9 +226,20 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         # print(f"mask1d shape: {mask_1d.shape}")
         
 
-        scaled_x_train = scaler.fit_transform(x_train.loc[:, mask_1d])
+        # scaled_x_train = scaler.fit_transform(x_train.loc[:, mask_1d])
+
+        scaled_x_train = x_train.copy()
+
+        scaled_x_train.loc[:, mask_1d] = scaler.fit_transform(x_train.loc[:, mask_1d])
 
         print(f"scaled_x_train: {scaled_x_train}")
+        print(f"scaled_x_train.shape: {scaled_x_train.shape}")
+
+        row = scaled_x_train[scaled_x_train.index == "1219925"]
+        print(f"row: {row}")
+        row_number = scaled_x_train.index.get_indexer(row.index)[0]
+
+
 
         scaled_x_train[np.isnan(scaled_x_train)] = 0
 
