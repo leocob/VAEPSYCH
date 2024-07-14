@@ -356,7 +356,9 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     x_num = x.to_numpy()
     print(f"x_num.shape: {x_num.shape}")
     print(f"x_num[170,:]")
+    print(x_num[170,:])
     print(f"x_num[139,:]")
+    print(x_num[139,:])
 
     print("scaled_x[139,:]")
     print(scaled_x[139,:])
