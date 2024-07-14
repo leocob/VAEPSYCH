@@ -189,9 +189,9 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     print(f"x: {x}")
     print(f"x.shape: {x.shape}")
     print(f"x.query(ID==1219925):")
-    print(x.query("ID == 1219925"))
-    print(x.query("index == 610"))
-    print(x.query("index == 172"))
+    print(x.query("ID == '1219925'"))
+    print(x.iloc[609:611])
+    print(x.iloc[171:173])
     # print(f"x \n{x}")
     if train_test_splits is None:
 
@@ -258,8 +258,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         # # row_number = scaled_x_df.index[scaled_x_df['ID'] == '1219925'].tolist()
         # print(f"row_number: {row_number}")
         # print(f"index of ID 1219925: {scaled_x_df.query('ID == 1219925').index[0]}")
-        # print(scaled_x_df.iloc[609:611])
-        # print(scaled_x_df.iloc[171:173])
+        print(scaled_x_df.iloc[609:611])
+        print(scaled_x_df.iloc[171:173])
 
         # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
         # print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
