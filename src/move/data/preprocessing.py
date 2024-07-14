@@ -72,93 +72,9 @@ def one_hot_encode_single(mapping: dict[str, int], value: Optional[str]) -> IntA
     return encoded_value
 
 
-
-# # scale on dataframe and not on numpy array. I want to see the damn IDs 14/07/2024 - 18:25
-# def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_path, input_config_name) -> tuple[FloatArray, BoolArray]:
-#     """Center to mean and scale to unit variance. Convert NaN values to 0.
-
-#     Args:
-#         x: 2D array with samples in its rows and features in its columns
-
-#     Returns:
-#         Tuple containing (1) scaled output and (2) a 1D mask marking columns
-#         (i.e., features) without zero variance
-#     """
-
-#     imputer = SimpleImputer(strategy='mean')
-#     scaler = StandardScaler()
-#     x = data
-
-#     print(f"x: {x}")
-#     print(f"x.shape: {x.shape}")
-#     print(f"x.query(ID==1219925):")
-#     row = x[x.index == "1219925"]
-#     print(f"row: {row}")
-#     row_number = x.index.get_indexer(row.index)[0]
-#     print(f"row_number: {row_number}")
-
-#     # x is a pandas dataframe. Keep only the rows that are in the train set
-#     x_train = x.iloc[split_mask]
-#     x_test = x.iloc[~split_mask]
-
-#     mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
-
-
-#     # Scale the training data
-#     scaled_x_train = scaler.fit_transform(x_train.loc[:, mask_1d])
-
-#     # Convert the scaled training data to a DataFrame
-#     scaled_x_train = pd.DataFrame(scaled_x_train, columns=x_train.loc[:, mask_1d].columns, index=x_train.index)
-
-#     scaled_x_train[np.isnan(scaled_x_train)] = 0
-
-#     scaled_x_test = scaler.transform(x_test.loc[:, mask_1d])
-#     scaled_x_test = pd.DataFrame(scaled_x_test, columns=x_test.loc[:, mask_1d].columns, index=x_test.index)
-#     scaled_x_test[np.isnan(scaled_x_test)] = 0
-
-#     # concatenate
-#     scaled_x_df = pd.concat([scaled_x_train, scaled_x_test], axis=0)
-
-#     # convert to numpy array
-#     scaled_x = scaled_x_df.to_numpy()
-
-#     print("scaled_x_df[scaled_x_df.index == 1219925]")
-#     row = scaled_x_df[scaled_x_df.index == "1219925"]
-#     print(f"row: {row}")
-#     row_number = scaled_x_df.index.get_indexer(row.index)[0]
-#     print(f"row_number: {row_number}")
-
-#     print(f"x.shape: {x.shape}")
-#     print(f"scaled_x_df.shape: {scaled_x_df.shape}")
-
-
-#     x_num = x.to_numpy()
-#     print(f"x_num.shape: {x_num.shape}")
-#     print(f"x_num[170,:]")
-#     print(x_num[170,:])
-#     print(f"x_num[139,:]")
-#     print(x_num[139,:])
-
-#     print("scaled_x[139,:]")
-#     print(scaled_x[139,:])
-
-
-
-#     # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
-#     # print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
-#     # print(f"Mean of means of scaled_x_test {scaled_x_test.mean(axis=0).mean()}")
-#     # print(f"Mean of stds of scaled_x_test {scaled_x_test.std(axis=0).mean()}")
-#     # print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
-#     # print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
-
-#     # plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
-
-#     return scaled_x, mask_1d, scaled_x_df
-
-
-# scale on dataframe and not on numpy array. I want to see the damn IDs 14/07/2024 - 18:25
 def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_path, input_config_name) -> tuple[FloatArray, BoolArray]:
     """Center to mean and scale to unit variance. Convert NaN values to 0.
+    Perform operations on pandas dataframes preserving the IDs and the original order
 
     Args:
         x: 2D array with samples in its rows and features in its columns
@@ -172,13 +88,13 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaler = StandardScaler()
     x = data
 
-    print(f"x: {x}")
-    print(f"x.shape: {x.shape}")
-    print(f"x.query(ID==1219925):")
-    row = x[x.index == "1219925"]
-    print(f"row: {row}")
-    row_number = x.index.get_indexer(row.index)[0]
-    print(f"row_number: {row_number}")
+    # print(f"x: {x}")
+    # print(f"x.shape: {x.shape}")
+    # print(f"x.query(ID==1219925):")
+    # row = x[x.index == "1219925"]
+    # print(f"row: {row}")
+    # row_number = x.index.get_indexer(row.index)[0]
+    # print(f"row_number: {row_number}")
 
     # x is a pandas dataframe. Keep only the rows that are in the train set
     # x = data  # Assuming this isasdasdads your original dataframe
@@ -229,25 +145,25 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     # convert to numpy array
     scaled_x = scaled_x_df.to_numpy()
 
-    print("scaled_x_df[scaled_x_df.index == 1219925]")
-    row = scaled_x_df[scaled_x_df.index == "1219925"]
-    print(f"row: {row}")
-    row_number = scaled_x_df.index.get_indexer(row.index)[0]
-    print(f"row_number: {row_number}")
+    # print("scaled_x_df[scaled_x_df.index == 1219925]")
+    # row = scaled_x_df[scaled_x_df.index == "1219925"]
+    # print(f"row: {row}")
+    # row_number = scaled_x_df.index.get_indexer(row.index)[0]
+    # print(f"row_number: {row_number}")
 
-    print(f"x.shape: {x.shape}")
-    print(f"scaled_x_df.shape: {scaled_x_df.shape}")
+    # print(f"x.shape: {x.shape}")
+    # print(f"scaled_x_df.shape: {scaled_x_df.shape}")
 
 
-    x_num = x.to_numpy()
-    print(f"x_num.shape: {x_num.shape}")
-    print(f"x_num[170,:]")
-    print(x_num[170,:])
-    print(f"x_num[139,:]")
-    print(x_num[139,:])
+    # x_num = x.to_numpy()
+    # print(f"x_num.shape: {x_num.shape}")
+    # print(f"x_num[170,:]")
+    # print(x_num[170,:])
+    # print(f"x_num[139,:]")
+    # print(x_num[139,:])
 
-    print("scaled_x[139,:]")
-    print(scaled_x[139,:])
+    # print("scaled_x[139,:]")
+    # print(scaled_x[139,:])
 
 
 
