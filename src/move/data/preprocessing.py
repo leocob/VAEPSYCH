@@ -351,6 +351,18 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
     print(f"x.shape: {x.shape}")
     print(f"scaled_x_df.shape: {scaled_x_df.shape}")
+
+
+    x_num = x.to_numpy()
+    print(f"x_num.shape: {x_num.shape}")
+    print(f"x_num[170,:]")
+    print(f"x_num[139,:]")
+
+    print("scaled_x[139,:]")
+    print(scaled_x[139,:])
+
+
+    # When I concatenate I think the row number gets scrambled?
     # now print the row number
     
 
