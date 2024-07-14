@@ -72,105 +72,8 @@ def one_hot_encode_single(mapping: dict[str, int], value: Optional[str]) -> IntA
     return encoded_value
 
 
-# def scale(x: np.ndarray) -> tuple[FloatArray, BoolArray]:
-#     """Center to mean and scale to unit variance. Convert NaN values to 0.
 
-#     Args:
-#         x: 2D array with samples in its rows and features in its columns
-
-#     Returns:
-#         Tuple containing (1) scaled output and (2) a 1D mask marking columns
-#         (i.e., features) without zero variance
-#     """
-#     logx = np.log2(x + 1)
-#     mask_1d = ~np.isclose(np.nanstd(logx, axis=0), 0.0)
-#     scaled_x = standardize(logx[:, mask_1d], axis=0)
-#     scaled_x[np.isnan(scaled_x)] = 0
-#     return scaled_x, mask_1d
-
-# def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, input_config_name) -> tuple[FloatArray, BoolArray]:
-#     """Center to mean and scale to unit variance. Convert NaN values to 0.
-
-#     Args:
-#         x: 2D array with samples in its rows and features in its columns
-
-#     Returns:
-#         Tuple containing (1) scaled output and (2) a 1D mask marking columns
-#         (i.e., features) without zero variance
-#     """
-
-#     imputer = SimpleImputer(strategy='mean')
-#     scaler = StandardScaler()
-#     if train_test_splits is None:
-
-        
-#         mask_1d = ~np.isclose(np.nanstd(x, axis=0), 0.0)
-
-#         scaled_x = scaler.fit_transform((x[:, mask_1d]))
-
-#         scaled_x[np.isnan(scaled_x)] = 0  
-#         # scaled_x = standardize(x[:, mask_1d], axis=0)
-
-
-#         # print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
-#         # print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
-
-#         plot_distr(x, scaled_x, names, interim_data_path, input_config_name)
-
-
-#     else:
-
-#         print(f"Split mask: {split_mask}")
-#         print(f"Train test splits: {train_test_splits}")
-#         x_train = x[split_mask]
-#         x_test = x[~split_mask]
-
-#         mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
-#         # I make sure the mask is True for all of them, meaning that all the columns have std != 0
-#         # print(f"mask_1d: {mask_1d}")
-#         # print(f"mask1d shape: {mask_1d.shape}")
-        
-#         # print(f"x_test[5997,:]: {x_test[5997,:]}")
-
-#         # print(f"x_train[:, mask_1d]: {x_train[:, mask_1d]}")
-#         x_traindf = pd.DataFrame(x_train, columns=names)
-#         print(f"x_traindf:\n {x_traindf}")
-#         scaled_x_train = scaler.fit_transform(x_train[:, mask_1d])
-#         scaled_xtraindf = pd.DataFrame(scaled_x_train, columns=names[mask_1d])
-#         print(f"scaled_xtraindf:\n {scaled_xtraindf}")
-#         # scaled_x_train[np.isnan(scaled_x_train)] = 0
-#         # print(f"scaled_x_train: {scaled_x_train}")
-#         scaled_x_test = scaler.transform(x_test[:, mask_1d])
-#         # scaled_x_test[np.isnan(scaled_x_test)] = 0
-#         # print(f"scaled_x_test[5997,:]: {scaled_x_test[5997,:]}")
-
-#         scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
-
-#         # print index of scaled_x
-#         # convert scaled_x to pandas dataframe
-#         scaled_x_df = pd.DataFrame(scaled_x, columns=names[mask_1d])
-#         # print scaled_x_df from index 0 to 4799
-#         print(f"scaled_x_df: \n{scaled_x_df.iloc[:4800]}")
-#         print(f"scaled_x_df: \n{scaled_x_df.query('index == 4797')}")
-#         # print(f"scaled_x_df[5997,:]: {scaled_x_df.iloc[5997,:]}")
-#         # print(f"scaled_x: {scaled_x}")
-#         # print(f"scaled_x[5997,:]: {scaled_x[5997,:]}")
-#         # print mean of means
-
-#         # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
-#         # print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
-#         # print(f"Mean of means of scaled_x_test {scaled_x_test.mean(axis=0).mean()}")
-#         # print(f"Mean of stds of scaled_x_test {scaled_x_test.std(axis=0).mean()}")
-#         # print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
-#         # print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
-    
-#         # plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
-
-#     return scaled_x, mask_1d
-
-
-
-# scale on dataframe and not on numpy array. I want to see the damn IDs
+# # scale on dataframe and not on numpy array. I want to see the damn IDs 14/07/2024 - 18:25
 # def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_path, input_config_name) -> tuple[FloatArray, BoolArray]:
 #     """Center to mean and scale to unit variance. Convert NaN values to 0.
 
@@ -193,105 +96,64 @@ def one_hot_encode_single(mapping: dict[str, int], value: Optional[str]) -> IntA
 #     print(f"row: {row}")
 #     row_number = x.index.get_indexer(row.index)[0]
 #     print(f"row_number: {row_number}")
-#     # print(x.iloc[609:611])
-#     # print(x.iloc[170])
-#     # print(f"x \n{x}")
 
-#     print("SPLIT MASK")
-#     print(split_mask)
-#     print(type(split_mask))
-#     if train_test_splits is None:
+#     # x is a pandas dataframe. Keep only the rows that are in the train set
+#     x_train = x.iloc[split_mask]
+#     x_test = x.iloc[~split_mask]
 
-        
-#         mask_1d = ~np.isclose(np.nanstd(x, axis=0), 0.0)
-
-#         scaled_x = scaler.fit_transform((x[:, mask_1d]))
-
-#         scaled_x[np.isnan(scaled_x)] = 0  
-#         # scaled_x = standardize(x[:, mask_1d], axis=0)
+#     mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
 
 
-#         # print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
-#         # print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
+#     # Scale the training data
+#     scaled_x_train = scaler.fit_transform(x_train.loc[:, mask_1d])
 
-#         plot_distr(x, scaled_x, names, interim_data_path, input_config_name)
+#     # Convert the scaled training data to a DataFrame
+#     scaled_x_train = pd.DataFrame(scaled_x_train, columns=x_train.loc[:, mask_1d].columns, index=x_train.index)
+
+#     scaled_x_train[np.isnan(scaled_x_train)] = 0
+
+#     scaled_x_test = scaler.transform(x_test.loc[:, mask_1d])
+#     scaled_x_test = pd.DataFrame(scaled_x_test, columns=x_test.loc[:, mask_1d].columns, index=x_test.index)
+#     scaled_x_test[np.isnan(scaled_x_test)] = 0
+
+#     # concatenate
+#     scaled_x_df = pd.concat([scaled_x_train, scaled_x_test], axis=0)
+
+#     # convert to numpy array
+#     scaled_x = scaled_x_df.to_numpy()
+
+#     print("scaled_x_df[scaled_x_df.index == 1219925]")
+#     row = scaled_x_df[scaled_x_df.index == "1219925"]
+#     print(f"row: {row}")
+#     row_number = scaled_x_df.index.get_indexer(row.index)[0]
+#     print(f"row_number: {row_number}")
+
+#     print(f"x.shape: {x.shape}")
+#     print(f"scaled_x_df.shape: {scaled_x_df.shape}")
 
 
-#     else:
+#     x_num = x.to_numpy()
+#     print(f"x_num.shape: {x_num.shape}")
+#     print(f"x_num[170,:]")
+#     print(x_num[170,:])
+#     print(f"x_num[139,:]")
+#     print(x_num[139,:])
 
-#         # print(f"Split mask: {split_mask}")
-#         # print(f"Train test splits: {train_test_splits}")
-#         x_train = x[split_mask]
-#         x_test = x[~split_mask]
-
-#         mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
-#         # I make sure the mask is True for all of them, meaning that all the columns have std != 0
-#         # print(f"mask_1d: {mask_1d}")
-#         # print(f"mask1d shape: {mask_1d.shape}")
-        
-
-#         # scaled_x_train = scaler.fit_transform(x_train.loc[:, mask_1d])
-
-#         scaled_x_train = x_train.copy()
-
-#         scaled_x_train.loc[:, mask_1d] = scaler.fit_transform(x_train.loc[:, mask_1d])
-
-#         print(f"scaled_x_train: {scaled_x_train}")
-#         print(f"scaled_x_train.shape: {scaled_x_train.shape}")
-
-#         row = scaled_x_train[scaled_x_train.index == "1219925"]
-#         print(f"row: {row}")
-#         row_number = scaled_x_train.index.get_indexer(row.index)[0]
+#     print("scaled_x[139,:]")
+#     print(scaled_x[139,:])
 
 
 
-#         scaled_x_train[np.isnan(scaled_x_train)] = 0
+#     # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
+#     # print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
+#     # print(f"Mean of means of scaled_x_test {scaled_x_test.mean(axis=0).mean()}")
+#     # print(f"Mean of stds of scaled_x_test {scaled_x_test.std(axis=0).mean()}")
+#     # print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
+#     # print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
 
-#         scaled_x_test = scaler.transform(x_test.loc[:, mask_1d])
-#         scaled_x_test[np.isnan(scaled_x_test)] = 0
-
-
-#         scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
-
-#         scaled_x_df = pd.DataFrame(scaled_x, columns=x.loc[:,mask_1d].columns)
-#         scaled_x_df.index = x.index
-
-#         # print(type(scaled_x_df))
-#         # print structure
-#         # print(f"scaled_x_df: \n{scaled_x_df}")
-#         # print(f"scaled_x_df.shape: {scaled_x_df.shape}")
-#         # print the index
-#         # print(f"scaled_x_df.index: {scaled_x_df.index}")
-
-#         print("scaled_x_df[scaled_x_df.index == 1219925]")
-#         row = scaled_x_df[scaled_x_df.index == "1219925"]
-#         print(f"row: {row}")
-#         row_number = scaled_x_df.index.get_indexer(row.index)[0]
-#         print(f"row_number: {row_number}")
-#         # now print the row number
-        
-
-#         # print(f"scaled_x_df.query(ID==1219925):")
-#         # print(scaled_x_df.query("ID == '1219925'"))
-#         # print(f"scaled_x_df.loc[1219925]:")
-#         # print(scaled_x_df.loc[ID1219925])
-#         # print(f"scaled_x_df.index.get_loc(1219925): {scaled_x_df.index.get_loc(1219925)}")
-#         # # row_number = scaled_x_df.index[scaled_x_df['ID'] == '1219925'].tolist()
-#         # print(f"row_number: {row_number}")
-#         # print(f"index of ID 1219925: {scaled_x_df.query('ID == 1219925').index[0]}")
- 
-
-#         # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
-#         # print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
-#         # print(f"Mean of means of scaled_x_test {scaled_x_test.mean(axis=0).mean()}")
-#         # print(f"Mean of stds of scaled_x_test {scaled_x_test.std(axis=0).mean()}")
-#         # print(f"Mean of means of scaled_x {scaled_x.mean(axis=0).mean()}")
-#         # print(f"Mean of stds of scaled_x {scaled_x.std(axis=0).mean()}")
-    
-#         # plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
+#     # plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
 
 #     return scaled_x, mask_1d, scaled_x_df
-
 
 
 # scale on dataframe and not on numpy array. I want to see the damn IDs 14/07/2024 - 18:25
@@ -319,26 +181,50 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     print(f"row_number: {row_number}")
 
     # x is a pandas dataframe. Keep only the rows that are in the train set
+    # x = data  # Assuming this isasdasdads your original dataframe
+
+    # Create a copy of x to preserve the original order
+    x_copy = x.copy()
+
+    # Split the data
     x_train = x.iloc[split_mask]
     x_test = x.iloc[~split_mask]
 
     mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
 
-
     # Scale the training data
-    scaled_x_train = scaler.fit_transform(x_train.loc[:, mask_1d])
+    scaler.fit(x_train.loc[:, mask_1d])
 
-    # Convert the scaled training data to a DataFrame
-    scaled_x_train = pd.DataFrame(scaled_x_train, columns=x_train.loc[:, mask_1d].columns, index=x_train.index)
+    # Scale both training and test data
+    scaled_x_train = pd.DataFrame(
+        scaler.transform(x_train.loc[:, mask_1d]),
+        columns=x_train.loc[:, mask_1d].columns,
+        index=x_train.index
+    )
 
+    scaled_x_test = pd.DataFrame(
+        scaler.transform(x_test.loc[:, mask_1d]),
+        columns=x_test.loc[:, mask_1d].columns,
+        index=x_test.index
+    )
+
+    # Replace NaN values with 0
     scaled_x_train[np.isnan(scaled_x_train)] = 0
-
-    scaled_x_test = scaler.transform(x_test.loc[:, mask_1d])
-    scaled_x_test = pd.DataFrame(scaled_x_test, columns=x_test.loc[:, mask_1d].columns, index=x_test.index)
     scaled_x_test[np.isnan(scaled_x_test)] = 0
 
-    # concatenate
-    scaled_x_df = pd.concat([scaled_x_train, scaled_x_test], axis=0)
+    # Create a DataFrame with the same index as the original x
+    scaled_x_df = pd.DataFrame(index=x.index)
+
+    # Fill in the scaled values
+    scaled_x_df.loc[scaled_x_train.index, scaled_x_train.columns] = scaled_x_train
+    scaled_x_df.loc[scaled_x_test.index, scaled_x_test.columns] = scaled_x_test
+
+    # Add back any columns that weren't scaled (where mask_1d is False)
+    for col in x.columns[~mask_1d]:
+        scaled_x_df[col] = x[col]
+
+    # Ensure the column order matches the original x
+    scaled_x_df = scaled_x_df[x.columns]
 
     # convert to numpy array
     scaled_x = scaled_x_df.to_numpy()
@@ -363,19 +249,6 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     print("scaled_x[139,:]")
     print(scaled_x[139,:])
 
-
-    # When I concatenate I think the row number gets scrambled?
-    # now print the row number
-    
-
-    # print(f"scaled_x_df.query(ID==1219925):")
-    # print(scaled_x_df.query("ID == '1219925'"))
-    # print(f"scaled_x_df.loc[1219925]:")
-    # print(scaled_x_df.loc[ID1219925])
-    # print(f"scaled_x_df.index.get_loc(1219925): {scaled_x_df.index.get_loc(1219925)}")
-    # # row_number = scaled_x_df.index[scaled_x_df['ID'] == '1219925'].tolist()
-    # print(f"row_number: {row_number}")
-    # print(f"index of ID 1219925: {scaled_x_df.query('ID == 1219925').index[0]}")
 
 
     # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
