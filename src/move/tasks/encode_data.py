@@ -66,7 +66,7 @@ def encode_data(config: DataConfig):
         print("continuous input")
         print(f"names: {names}")
         # print(f"values: {values}")
-        print(f"values[170]: {values[170,:]}")
+        print(f"values[5997]: {values[5997,:]}")
         if values is None:
             logger.warning(f"No data found for '{input_config.name}'")
             continue
