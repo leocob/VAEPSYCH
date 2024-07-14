@@ -208,8 +208,8 @@ def read_tsv(
         
     # TODO: add sweetviz report
 
-        print(f"data.index.values")
-        print(data.index.values)
+        # print(f"data.index.values")
+        # print(data.index.values)
     return data.columns.values, data.values, data 
 
 
