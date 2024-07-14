@@ -149,7 +149,7 @@ def scale(x: np.array, train_test_splits, split_mask, names, interim_data_path, 
         # print index of scaled_x
         # convert scaled_x to pandas dataframe
         scaled_x_df = pd.DataFrame(scaled_x, columns=names[mask_1d])
-        print(scaled_x_df[:,0:4799])
+        print(scaled_x_df[:,0:4798])
         print(f"scaled_x_df: \n{scaled_x_df.query('index == 4797')}")
         # print(f"scaled_x_df[5997,:]: {scaled_x_df.iloc[5997,:]}")
         # print(f"scaled_x: {scaled_x}")
