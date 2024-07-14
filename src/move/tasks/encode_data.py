@@ -62,7 +62,7 @@ def encode_data(config: DataConfig):
         action_name = "Encoding" if scale else "Reading"
         logger.info(f"{action_name} '{input_config.name}'")
         filepath = raw_data_path / f"{input_config.name}.tsv"
-        names, values = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0)
+        names, values, data = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0)
         print("continuous input")
         print(f"names: {names}")
         # print(f"values: {values}")
@@ -77,7 +77,7 @@ def encode_data(config: DataConfig):
                 input_config_name = input_config.name
                 # print(values)
                 # uncomment for genomeDK
-                values, mask_1d = preprocessing.scale(values, train_test_splits, split_mask, names, interim_data_path, input_config_name)
+                values, mask_1d = preprocessing.scale(values, data, train_test_splits, split_mask, names, interim_data_path, input_config_name)
                 # print(f"values: {values}")
                 print(f"values[5997]: {values[5997,:]}")
                 # values, mask_1d = preprocessing.scale(values)
