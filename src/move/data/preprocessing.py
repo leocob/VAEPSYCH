@@ -237,6 +237,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
         scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
         print(f"scaled_x:\n {scaled_x}")
+        print(f"scaled_x[4797,:]: {scaled_x[4797,:]}")
 
 
         scaled_x_df = pd.DataFrame(scaled_x, columns=x.loc[:,mask_1d].columns)
