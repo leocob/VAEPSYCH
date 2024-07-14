@@ -185,6 +185,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     imputer = SimpleImputer(strategy='mean')
     scaler = StandardScaler()
     x = data
+
+    print(f"x \n{x}")
     if train_test_splits is None:
 
         
