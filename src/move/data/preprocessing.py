@@ -196,6 +196,10 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     # print(x.iloc[609:611])
     # print(x.iloc[170])
     # print(f"x \n{x}")
+
+    print("SPLIT MASK")
+    print(split_mask)
+    print(type(split_mask))
     if train_test_splits is None:
 
         
