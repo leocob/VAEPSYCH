@@ -76,7 +76,6 @@ class TrainingLoopConfig:
     batch_dilation_steps: list[int] = MISSING
     early_stopping: bool = MISSING
     patience: int = MISSING
-    num_latent: int = MISSING
     beta: float = MISSING
     num_hidden: list[int] = MISSING
 

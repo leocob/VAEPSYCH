@@ -139,6 +139,10 @@ class VAE(nn.Module):
         # Reconstruction - output layers
         self.out = nn.Linear(self.num_hidden[0], self.input_size)  # to output
 
+
+        print(f"VAE ({self.input_size} ⇄ {' ⇄ '.join(map(str, self.num_hidden))}"
+            f" ⇄ {self.num_latent})")
+            
     def encode(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         """
         Encodes the data in the data loader and returns the encoded matrix.
@@ -758,8 +762,11 @@ class VAE(nn.Module):
             test_likelihood,
         )
 
-    def __repr__(self) -> str:
-        return (
-            f"VAE ({self.input_size} ⇄ {' ⇄ '.join(map(str, self.num_hidden))}"
-            f" ⇄ {self.num_latent})"
-        )
+    # def __repr__(self) -> str:
+    #     return (
+    #         f"VAE ({self.input_size} ⇄ {' ⇄ '.join(map(str, self.num_hidden))}"
+    #         f" ⇄ {self.num_latent})"
+    #     )
+
+
+

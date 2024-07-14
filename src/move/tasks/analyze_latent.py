@@ -128,7 +128,7 @@ def analyze_latent(config: MOVEConfig) -> None:
             model=model,
             train_dataloader=train_dataloader,
             beta=task_config.model.beta,
-            num_latent=task_config.model.num_latent
+            num_latent=task_config.training_loop.num_latent
         )
         # TODO: changed this 14/07/2024 - 11:09
         # But it's weird because it looks like it's not selecting epock_kldloss but then it is plotted...?

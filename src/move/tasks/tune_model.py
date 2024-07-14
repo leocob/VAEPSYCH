@@ -32,6 +32,7 @@ from move.data import io
 from move.data.dataloaders import MOVEDataset, make_dataloader, split_samples
 from move.models.vae import VAE
 
+
 TaskType = Literal["reconstruction", "stability"]
 
 
@@ -131,7 +132,6 @@ def tune_model(config: MOVEConfig) -> float:
             model=model,
             train_dataloader=train_dataloader,
             beta=task_config.model.beta,
-            num_latent=task_config.model.num_latent,
             num_hidden=task_config.model.num_hidden
             )
 
@@ -215,7 +215,6 @@ def tune_model(config: MOVEConfig) -> float:
             model=model,
             train_dataloader=train_dataloader,
             beta=task_config.model.beta,
-            num_latent=task_config.model.num_latent,
         )
 
         # output: TrainingLoopOutput = hydra.utils.call(
@@ -253,7 +252,7 @@ def tune_model(config: MOVEConfig) -> float:
         # Find all matches
         matches = re.findall(pattern, hydra_config.job.override_dirname)
 
-        print(matches)
+        # print(matches)
 
         # convert the matches into a list of list
         label = [list(match) for match in matches]
@@ -261,13 +260,13 @@ def tune_model(config: MOVEConfig) -> float:
 
         # label2 = [hp for hp in hydra_config.job.override_dirname.split(",")]
         # print(f"label2")
-        print(f"label: {label}")
+        # print(f"label: {label}")
 
         # print(f"label: {label}")
         # print each key-value pair in the label
         # print each element with their index
-        for i in range(len(label)):
-            print(f"index: {i}, element: {label[i]}")
+        # for i in range(len(label)):
+        #     print(f"index: {i}, element: {label[i]}")
         # for key, value in label:
         #     print(f"key: {key}, value: {value}")
         records = []
@@ -342,6 +341,8 @@ def tune_model(config: MOVEConfig) -> float:
         df = pd.DataFrame.from_records(records)
         df.to_csv(df_path, sep="\t", mode="a", header=header, index=False)
 
+        # print structure of the model
+        print(str(model))
         # df_test_likelihood = pd.DataFrame.from_records(records_test_likelihood)
         df_test_likelihood.to_csv(output_path / "test_likelihood.tsv", sep="\t", mode="a", header=header, index=False)
 
