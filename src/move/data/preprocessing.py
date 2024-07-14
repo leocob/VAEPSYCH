@@ -238,12 +238,12 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         scaled_x_df = pd.DataFrame(scaled_x, columns=x.loc[:,mask_1d].columns)
         scaled_x_df.index = x.index
 
-        print(type(scaled_x_df))
+        # print(type(scaled_x_df))
         # print structure
-        print(f"scaled_x_df: \n{scaled_x_df}")
-        print(f"scaled_x_df.shape: {scaled_x_df.shape}")
+        # print(f"scaled_x_df: \n{scaled_x_df}")
+        # print(f"scaled_x_df.shape: {scaled_x_df.shape}")
         # print the index
-        print(f"scaled_x_df.index: {scaled_x_df.index}")
+        # print(f"scaled_x_df.index: {scaled_x_df.index}")
 
         print("scaled_x_df[scaled_x_df.index == 1219925]")
         row = scaled_x_df[scaled_x_df.index == "1219925"]
