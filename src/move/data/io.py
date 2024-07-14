@@ -148,11 +148,10 @@ def read_tsv(
     # print("Before filtering in read_tsv function")
     # print(data)
     if sample_names is not None:
-        print(f"length Sample names: {len(sample_names)}") # 
-        data.index = data.index.astype(str, False)
-        print(f"Data index: {data.index}") # 22092
+        print(f"length Sample names: {len(sample_names)}") # 6000
+        data.index = data.index.astype(str, False) # 22092
         data = data.loc[sample_names]
-        print(f"data after filtering for sample name: {data}")
+        print(f"data after filtering for sample name:\n{data}") # 60000
         # print("After selecting for my samples")
         # print(data)
 
