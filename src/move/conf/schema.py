@@ -78,6 +78,7 @@ class TrainingLoopConfig:
     patience: int = MISSING
     num_latent: int = MISSING
     beta: float = MISSING
+    num_hidden: list[int] = MISSING
 
 
 @dataclass

@@ -43,6 +43,7 @@ class VAE(nn.Module):
         continuous_shapes: Optional[list[int]] = None,
         categorical_weights: Optional[list[int]] = None,
         continuous_weights: Optional[list[int]] = None,
+        # num_hidden: list[int] = [200, 200],
         num_hidden: list[int] = [200, 200],
         num_latent: int = 20,
         beta: float = 0.01,
@@ -99,6 +100,8 @@ class VAE(nn.Module):
 
         # Initialize simple attributes
         self.beta = beta
+        # num_hidden = [200, 200]
+        print(f"num_hidden: {num_hidden}")
         self.num_hidden = num_hidden
         self.num_latent = num_latent
         self.dropout = dropout
@@ -459,7 +462,10 @@ class VAE(nn.Module):
 
             cat_out, con_out, mu, logvar = self(tensor)
 
-            loss, bce, sse, kld, con_err, cat_err = self.loss_function(
+            # loss, bce, sse, kld, con_err, cat_err = self.loss_function(
+            #     cat, cat_out, con, con_out, mu, logvar, kld_w
+            # )
+            loss, bce, sse, kld = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_w
             )
             loss.backward()

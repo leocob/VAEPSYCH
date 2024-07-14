@@ -3,6 +3,7 @@ __all__ = ["tune_model"]
 from pathlib import Path
 from random import shuffle
 from typing import Any, Literal, cast
+import re
 
 import hydra
 import numpy as np
@@ -130,7 +131,8 @@ def tune_model(config: MOVEConfig) -> float:
             model=model,
             train_dataloader=train_dataloader,
             beta=task_config.model.beta,
-            num_latent=task_config.model.num_latent
+            num_latent=task_config.model.num_latent,
+            num_hidden=task_config.model.num_hidden
             )
 
             model.eval()
@@ -202,6 +204,7 @@ def tune_model(config: MOVEConfig) -> float:
             task_config.model,
             continuous_shapes=train_dataset.con_shapes,
             categorical_shapes=train_dataset.cat_shapes,
+            num_hidden=task_config.training_loop.num_hidden,
         )
         model.to(device)
         logger.debug(f"Model: {model}")
@@ -212,7 +215,7 @@ def tune_model(config: MOVEConfig) -> float:
             model=model,
             train_dataloader=train_dataloader,
             beta=task_config.model.beta,
-            num_latent=task_config.model.num_latent
+            num_latent=task_config.model.num_latent,
         )
 
         # output: TrainingLoopOutput = hydra.utils.call(
@@ -243,6 +246,30 @@ def tune_model(config: MOVEConfig) -> float:
         logger.info("Reconstructing")
         logger.info("Computing reconstruction metrics")
         label = [hp.split("=") for hp in hydra_config.job.override_dirname.split(",")]
+
+
+        pattern = r'([^,=]+)=(\[[^\]]*\]|[^,]+)'
+
+        # Find all matches
+        matches = re.findall(pattern, hydra_config.job.override_dirname)
+
+        print(matches)
+
+        # convert the matches into a list of list
+        label = [list(match) for match in matches]
+        # print(f"hydra_config.job.override_dirname: {hydra_config.job.override_dirname}")
+
+        # label2 = [hp for hp in hydra_config.job.override_dirname.split(",")]
+        # print(f"label2")
+        print(f"label: {label}")
+
+        # print(f"label: {label}")
+        # print each key-value pair in the label
+        # print each element with their index
+        for i in range(len(label)):
+            print(f"index: {i}, element: {label[i]}")
+        # for key, value in label:
+        #     print(f"key: {key}, value: {value}")
         records = []
         # records_test_likelihood = []
         df_test_likelihood = pd.DataFrame()

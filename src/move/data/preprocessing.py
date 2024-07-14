@@ -84,10 +84,18 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         (i.e., features) without zero variance
     """
 
+    # print every input
+
+
+
+
     imputer = SimpleImputer(strategy='mean')
     scaler = StandardScaler()
     x = data
 
+
+    # TODO: REMEMBER TO UNCOMMENT THIS FOR GENOMEDK
+    # x = np.log2(x+1)
     # print(f"x: {x}")
     # print(f"x.shape: {x.shape}")
     # print(f"x.query(ID==1219925):")
@@ -107,6 +115,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     x_test = x.iloc[~split_mask]
 
     mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
+
 
     # Scale the training data
     scaler.fit(x_train.loc[:, mask_1d])
