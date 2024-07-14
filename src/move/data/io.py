@@ -148,7 +148,7 @@ def read_tsv(
     # print("Before filtering in read_tsv function")
     # print(data)
     # print(f"data.query(index == 610): {data.query('index == 610')}")
-    print(f"data.query(ID==1219925): {data.query('ID==1219925')}")
+    # print(f"data.query(ID==1219925): {data.query('ID==1219925')}")
 
     if sample_names is not None:
         # print(f"length Sample names: {len(sample_names)}") # 6000
