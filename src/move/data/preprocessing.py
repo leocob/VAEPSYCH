@@ -219,6 +219,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         # print(f"x_train[:, mask_1d]: {x_train[:, mask_1d]}")
         # x_traindf = pd.DataFrame(x_train, columns=names)
         print(f"x_train:\n {x_train}")
+        print(f"x_train[:, mask_1d]: {x_train[:, mask_1d]}")
         scaled_x_train = scaler.fit_transform(x_train[:, mask_1d])
         # scaled_xtraindf = pd.DataFrame(scaled_x_train, columns=names[mask_1d])
         print(f"scaled_x_train:\n {scaled_x_train}")
