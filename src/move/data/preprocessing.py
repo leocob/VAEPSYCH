@@ -224,11 +224,11 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         # scaled_x_train = pd.DataFrame(scaled_x_train, columns=data[mask_1d].columns)
         # scaled_xtraindf = pd.DataFrame(scaled_x_train, columns=names[mask_1d])
         print(f"scaled_x_train:\n {scaled_x_train}")
-        # scaled_x_train[np.isnan(scaled_x_train)] = 0
+        scaled_x_train[np.isnan(scaled_x_train)] = 0
         # print(f"scaled_x_train: {scaled_x_train}")
         scaled_x_test = scaler.transform(x_test.loc[:, mask_1d])
         # scaled_x_test = pd.DataFrame(scaled_x_test, columns=data[mask_1d].columns)
-        # scaled_x_test[np.isnan(scaled_x_test)] = 0
+        scaled_x_test[np.isnan(scaled_x_test)] = 0
         # print(f"scaled_x_test[5997,:]: {scaled_x_test[5997,:]}")
 
         print(f"scaled_x_test:\n {scaled_x_test}")
