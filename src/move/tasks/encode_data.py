@@ -48,7 +48,7 @@ def encode_data(config: DataConfig):
     for dataset_name in config.categorical_names:
         logger.info(f"Encoding '{dataset_name}'")
         filepath = raw_data_path / f"{dataset_name}.tsv"
-        names, values = io.read_tsv(filepath, sample_names, input_type = "categorical", p = 0)
+        names, values, data = io.read_tsv(filepath, sample_names, input_type = "categorical", p = 0)
 
         values, mapping = preprocessing.one_hot_encode(values)
         mappings[dataset_name] = mapping
