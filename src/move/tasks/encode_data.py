@@ -77,7 +77,7 @@ def encode_data(config: DataConfig):
                 input_config_name = input_config.name
                 # print(values)
                 # uncomment for genomeDK
-                values, mask_1d = preprocessing.scale(values, data, train_test_splits, split_mask, names, interim_data_path, input_config_name)
+                values, mask_1d, scaled_x_df = preprocessing.scale(values, data, train_test_splits, split_mask, names, interim_data_path, input_config_name)
                 # print(f"values: {values}")
                 print(f"values[4797]: {values[4797,:]}")
                 # values, mask_1d = preprocessing.scale(values)
@@ -86,8 +86,10 @@ def encode_data(config: DataConfig):
                 
             io.dump_names(interim_data_path / f"{input_config.name}.txt", names)
             # convert values to pandas dataframe
-            values_df = pd.DataFrame(values, columns=names)
-            values_df.to_csv(interim_data_path / f"{input_config.name}.tsv", sep="\t", index=True)
+
+            # values_df = pd.DataFrame(values, columns=names)
+            # values_df.to_csv(interim_data_path / f"{input_config.name}.tsv", sep="\t", index=True)
+            scaled_x_df.to_csv(interim_data_path / f"{input_config.name}.tsv", sep="\t", index=True)
             np.save(interim_data_path / f"{input_config.name}.npy", values)
 
 

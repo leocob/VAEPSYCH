@@ -263,7 +263,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     
         # plot_distr(x_train, x_train, scaled_x_train, names, interim_data_path, input_config_name)
 
-    return scaled_x, mask_1d
+    return scaled_x, mask_1d, scaled_x_df
 
 
 def plot_distr(data_before_log, data_after_log, data_after_log_scaled, names, interim_data_path, input_config_name):
