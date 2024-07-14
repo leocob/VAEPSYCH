@@ -148,8 +148,11 @@ def read_tsv(
     # print("Before filtering in read_tsv function")
     # print(data)
     if sample_names is not None:
+        print(f"Sample names: {sample_names}")
         data.index = data.index.astype(str, False)
+        print(f"Data index: {data.index}")
         data = data.loc[sample_names]
+        print(f"data after filtering for sample name: {data}")
         # print("After selecting for my samples")
         # print(data)
 
