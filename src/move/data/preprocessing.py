@@ -238,7 +238,10 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
         print(f"scaled_x_df.query(ID==1219925):")
         print(scaled_x_df.query("ID == '1219925'"))
-        row_number = scaled_x_df.index[scaled_x_df['ID'] == '1219925'].tolist()
+        print(f"scaled_x_df.loc[1219925]:")
+        print(scaled_x_df.loc[1219925])
+        print(f"scaled_x_df.index.get_loc(1219925): {scaled_x_df.index.get_loc(1219925)}")
+        # row_number = scaled_x_df.index[scaled_x_df['ID'] == '1219925'].tolist()
         print(f"row_number: {row_number}")
         print(f"index of ID 1219925: {scaled_x_df.query('ID == 1219925').index[0]}")
         print(scaled_x_df.iloc[609:611])
