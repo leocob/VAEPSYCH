@@ -221,11 +221,13 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         print(f"x_train:\n {x_train}")
         print(f"x_train[:, mask_1d]: {x_train.loc[:, mask_1d]}")
         scaled_x_train = scaler.fit_transform(x_train.loc[:, mask_1d])
+        # scaled_x_train = pd.DataFrame(scaled_x_train, columns=data[mask_1d].columns)
         # scaled_xtraindf = pd.DataFrame(scaled_x_train, columns=names[mask_1d])
         print(f"scaled_x_train:\n {scaled_x_train}")
         # scaled_x_train[np.isnan(scaled_x_train)] = 0
         # print(f"scaled_x_train: {scaled_x_train}")
         scaled_x_test = scaler.transform(x_test.loc[:, mask_1d])
+        # scaled_x_test = pd.DataFrame(scaled_x_test, columns=data[mask_1d].columns)
         # scaled_x_test[np.isnan(scaled_x_test)] = 0
         # print(f"scaled_x_test[5997,:]: {scaled_x_test[5997,:]}")
 
@@ -234,6 +236,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         print(f"type of scaled_x_train: {type(scaled_x_train)}")
 
         scaled_x = np.concatenate((scaled_x_train, scaled_x_test), axis=0)
+        scaled_x_df = pd.DataFrame(scaled_x, columns=data[mask_1d].columns)
 
         # print index of scaled_x
         # convert scaled_x to pandas dataframe
