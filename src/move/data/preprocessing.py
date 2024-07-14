@@ -188,8 +188,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
     print(f"x: {x}")
     print(f"x.shape: {x.shape}")
-    print(f"x.query(ID==1011448): {x.query('ID==1011448')}")
-    print(f"x.query(ID==9319643): {x.query('ID==9319643')}")
+    print(f"x.query(ID==1219925): {x.query('ID==1219925')}")
+    
 
     # print(f"x \n{x}")
     if train_test_splits is None:
