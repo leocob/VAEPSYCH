@@ -391,8 +391,10 @@ class VAE(nn.Module):
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
                 MSE = self.calculate_con_error(con_in, con_out, loss)
+                # MSE, con_errors = self.calculate_con_error(con_in, con_out, loss)
             else:
                 MSE = loss(con_out, con_in) / (batch_size * self.num_continuous)
+                # con_errors = []
 
         # see Appendix B from VAE paper:
         # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
@@ -404,7 +406,9 @@ class VAE(nn.Module):
         KLD_weight = kld_w
         loss = CE + MSE + KLD * KLD_weight
 
+
         return loss, CE, MSE, KLD * KLD_weight
+        # return loss, CE, MSE, KLD * KLD_weight, con_errors, cat_errors
 
     def encoding(
         self,
@@ -455,7 +459,7 @@ class VAE(nn.Module):
 
             cat_out, con_out, mu, logvar = self(tensor)
 
-            loss, bce, sse, kld = self.loss_function(
+            loss, bce, sse, kld, con_err, cat_err = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_w
             )
             loss.backward()
@@ -465,9 +469,12 @@ class VAE(nn.Module):
 
             if self.num_continuous > 0:
                 epoch_sseloss += sse.data.item()
+                # if not self.con_weights is None:
+                    # con_errors = con_errors + np.array([float(j.detach()) for j in con_err])
 
             if self.num_categorical > 0:
                 epoch_bceloss += bce.data.item()
+                # cat_errors = cat_errors + np.array([float(j) for j in cat_err])
 
             optimizer.step()
 
@@ -486,7 +493,9 @@ class VAE(nn.Module):
             epoch_loss / len(train_loader),
             epoch_bceloss / len(train_loader),
             epoch_sseloss / len(train_loader),
-            epoch_kldloss / len(train_loader),
+            epoch_kldloss / len(train_loader)
+            # con_errors / len(train_loader), 
+            # cat_errors / len(train_loader)
         )
 
     def make_cat_recon_out(self, length: int) -> tuple[torch.Tensor, torch.Tensor, int]:

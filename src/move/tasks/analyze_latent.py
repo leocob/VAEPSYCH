@@ -130,7 +130,10 @@ def analyze_latent(config: MOVEConfig) -> None:
             beta=task_config.model.beta,
             num_latent=task_config.model.num_latent
         )
+        # TODO: changed this 14/07/2024 - 11:09
+        # But it's weird because it looks like it's not selecting epock_kldloss but then it is plotted...?
         losses = output[:-1]
+        # losses = output[:-3]
         torch.save(model.state_dict(), model_path)
         logger.info("Generating visualizations")
         logger.debug("Generating plot: loss curves")

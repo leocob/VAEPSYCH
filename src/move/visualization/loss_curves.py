@@ -13,7 +13,7 @@ from move.visualization.style import (
     style_settings,
 )
 
-LOSS_LABELS = ("Loss", "Cross-Entropy", "Sum of Squared Errors", "KLD")
+LOSS_LABELS = ("Loss", "Cross-Entropy", "MSE", "KLD")
 
 
 def plot_loss_curves(

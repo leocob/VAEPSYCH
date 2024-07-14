@@ -214,12 +214,37 @@ def tune_model(config: MOVEConfig) -> float:
             beta=task_config.model.beta,
             num_latent=task_config.model.num_latent
         )
+
+        # output: TrainingLoopOutput = hydra.utils.call(
+        #     task_config.training_loop,
+        #     model=model,
+        #     train_dataloader=train_dataloader,
+        #     beta=task_config.model.beta,
+        #     num_latent=task_config.model.num_latent
+        # )
+
+        # Added 14/07/2024 - 11:15 to save the loss curves
+        # losses = output[:-3]
+        # torch.save(model.state_dict(), model_path)
+        # logger.info("Generating visualizations")
+        # logger.debug("Generating plot: loss curves")
+        # fig = viz.plot_loss_curves(losses)
+        # # job_num = hydra_config.job.num + 1
+        # fig_path = str(output_path / f"loss_curve_{job_num}.png")
+        # fig.savefig(fig_path, bbox_inches="tight")
+        # fig_df = pd.DataFrame(dict(zip(viz.LOSS_LABELS, losses)))
+        # fig_df.index.name = "epoch"
+        # fig_df.to_csv(output_path / f"loss_curve_{job_num}.tsv", sep="\t")
+        # # save output to tsv file
+        # output_df = pd.DataFrame(output, columns=["epoch_loss", "bce_loss", "sse_loss", "kld_loss"])
+
+
         model.eval()
         logger.info("Reconstructing")
         logger.info("Computing reconstruction metrics")
         label = [hp.split("=") for hp in hydra_config.job.override_dirname.split(",")]
         records = []
-        records_test_likelihood = []
+        # records_test_likelihood = []
         df_test_likelihood = pd.DataFrame()
         splits = zip(["train", "test"], [split_mask, ~split_mask])
         for split_name, mask in splits:
@@ -252,12 +277,6 @@ def tune_model(config: MOVEConfig) -> float:
                 # records_test_likelihood.append(record_test_likelihood)
 
 
-# IS the test likelihood across the categories? YeahI think it's in total
-
-                # print(f"Test likelihood: {test_likelihood}")
-            # TODO: instead of reconstruct and I use model.latent, I can get the test_likelihood but remember to do it only on the test set
-
-            # TODO: Ricardo suggested me to get the test_likelihood from here and add it to the record
             
             con_recons = np.split(con_recons, np.cumsum(model.continuous_shapes[:-1]), axis=1)
             for cat, cat_recon, dataset_name in zip(
