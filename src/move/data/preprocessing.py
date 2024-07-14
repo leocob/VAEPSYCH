@@ -238,8 +238,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
         print(f"scaled_x_df.query(ID==1219925):")
         print(scaled_x_df.query("ID == '1219925'"))
-        print(scaled_x_df.loc[610])
-        print(scaled_x_df.loc[172])
+        print(scaled_x_df.iloc[609:611])
+        print(scaled_x_df.iloc[171:173])
 
         # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
         # print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
