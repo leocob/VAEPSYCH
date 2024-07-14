@@ -240,7 +240,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         # print(scaled_x_df["ID == 1219925"])
         print(scaled_x_df.query("index == 610"))
         print(scaled_x_df.query("index == 172"))
-        scaled_x_df.to_csv(interim_data_path / f"{input_config.name}_scaled_x_df.tsv", sep="\t", index=True)
+        scaled_x_df.to_csv("scaled_x_df.tsv", sep="\t", index=True)
 
         # print(f"Mean of means of scaled_x_train {scaled_x_train.mean(axis=0).mean()}")
         # print(f"Mean of stds of scaled_x_train {scaled_x_train.std(axis=0).mean()}")
