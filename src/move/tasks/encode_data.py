@@ -63,7 +63,9 @@ def encode_data(config: DataConfig):
         logger.info(f"{action_name} '{input_config.name}'")
         filepath = raw_data_path / f"{input_config.name}.tsv"
         names, values = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0)
-
+        print("continuous input")
+        print(f"names: {names}")
+        print(f"values: {values}")
         if values is None:
             logger.warning(f"No data found for '{input_config.name}'")
             continue
@@ -75,6 +77,7 @@ def encode_data(config: DataConfig):
                 # print(values)
                 # uncomment for genomeDK
                 values, mask_1d = preprocessing.scale(values, train_test_splits, split_mask, names, interim_data_path, input_config_name)
+                print(f"values: {values}")
                 # values, mask_1d = preprocessing.scale(values)
                 names = names[mask_1d]
                 logger.debug(f"Columns with zero variance: {np.sum(~mask_1d)}")
