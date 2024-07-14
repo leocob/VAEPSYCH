@@ -239,7 +239,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         print(f"scaled_x:\n {scaled_x}")
 
 
-        scaled_x_df = pd.DataFrame(scaled_x, columns=x[mask_1d].columns)
+        scaled_x_df = pd.DataFrame(scaled_x, columns=x.loc[:,mask_1d].columns)
 
         # print index of scaled_x
         # convert scaled_x to pandas dataframe
