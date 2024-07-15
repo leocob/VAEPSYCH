@@ -77,7 +77,6 @@ class TrainingLoopConfig:
     early_stopping: bool = MISSING
     patience: int = MISSING
     beta: float = MISSING
-    num_hidden: list[int] = MISSING
 
 
 @dataclass

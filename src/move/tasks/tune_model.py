@@ -204,7 +204,7 @@ def tune_model(config: MOVEConfig) -> float:
             task_config.model,
             continuous_shapes=train_dataset.con_shapes,
             categorical_shapes=train_dataset.cat_shapes,
-            num_hidden=task_config.training_loop.num_hidden,
+            num_hidden=task_config.model.num_hidden,
         )
         model.to(device)
         logger.debug(f"Model: {model}")
@@ -341,10 +341,7 @@ def tune_model(config: MOVEConfig) -> float:
         df = pd.DataFrame.from_records(records)
         df.to_csv(df_path, sep="\t", mode="a", header=header, index=False)
 
-        # print structure of the model
-        # print(str(model))
-        # write the str of the model to a file called job_num
-        # create directory output_path / f"models_structures/
+
         structures_path = output_path / "models_structures"
         structures_path.mkdir(exist_ok=True, parents=True)
         with open(structures_path / f"{job_num}_model_structure.txt", "w") as f:

@@ -26,7 +26,5 @@ training_loop:
     - 9
   early_stopping: false
   patience: 0
-  num_hidden:
-    - 1200
 
   

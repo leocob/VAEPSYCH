@@ -35,7 +35,7 @@ def training_loop(
     early_stopping: bool = False,
     patience: int = 0,
     beta: float = 1,
-    num_hidden: list[int] = [120,120],
+    # num_hidden: list[int] = [120,120],
 ) -> TrainingLoopOutput:
     """
     Trains a VAE model with batch dilation and KLD warm-up. Optionally,
@@ -87,7 +87,7 @@ def training_loop(
             # "kld_multiplier": kld_multiplier,
             "beta": beta,
             # "num_latent": num_latent,
-            "num_hidden": num_hidden,
+            # "num_hidden": num_hidden,
             
         })            
 
