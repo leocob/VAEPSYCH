@@ -25,12 +25,11 @@ hydra:
       # task.model.num_hidden: "[200, 200]" # doesn't work
       # task.model.num_hidden: "[[200, 200]]" # doesn't work
       # task.model.num_hidden: "[500]"
-      task.training_loop.num_epochs: 12
+      task.training_loop.num_epochs: 10
       task.model.num_latent: 3
       task.training_loop.beta: 0.0001
-      # task.training_loop.num_hidden: "[100,150],[220,440]" # doesn't work
-      # task.training_loop.num_hidden: "[[100,150]],[[220, 440]]" # doesn't work
       task.training_loop.num_hidden: "[100,150],[220,440]" # doesn't work
+      # task.training_loop.num_hidden: "[[100,150]],[[220, 440]]" # doesn't work
       # task.training_loop.num_hidden: "[[100],[150]],[[220], [440]]" # doesn't work
       # task.training_loop.num_hidden: "[150],[300],[450],[600],[800]" # this is what I used on genomeDK
 

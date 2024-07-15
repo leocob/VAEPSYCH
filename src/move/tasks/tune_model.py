@@ -342,7 +342,15 @@ def tune_model(config: MOVEConfig) -> float:
         df.to_csv(df_path, sep="\t", mode="a", header=header, index=False)
 
         # print structure of the model
-        print(str(model))
+        # print(str(model))
+        # write the str of the model to a file called job_num
+        # create directory output_path / f"models_structures/
+        structures_path = output_path / "models_structures"
+        structures_path.mkdir(exist_ok=True, parents=True)
+        with open(structures_path / f"{job_num}_model_structure.txt", "w") as f:
+            f.write(str(model))
+
+
         # df_test_likelihood = pd.DataFrame.from_records(records_test_likelihood)
         df_test_likelihood.to_csv(output_path / "test_likelihood.tsv", sep="\t", mode="a", header=header, index=False)
 
