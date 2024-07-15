@@ -28,7 +28,8 @@ def get_logger(name: str):
         path.mkdir(exist_ok=True)
         fmt = "[%(asctime)s] [%(levelname)-5s - %(name)s]: %(message)s"
         formatter = logging.Formatter(fmt, datefmt="%Y-%m-%d %H:%M:%S")
-        file_handler = logging.FileHandler(path / f"{name}.log", encoding="utf-8")
+        now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        file_handler = logging.FileHandler(path / f"{name}_{now}.log", encoding="utf-8")
         file_handler.setFormatter(formatter)
         file_handler.setLevel(logging.DEBUG)
 
