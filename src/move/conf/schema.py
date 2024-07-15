@@ -62,6 +62,7 @@ class VAEConfig(ModelConfig):
     continuous_weights: list[int] = MISSING
     num_hidden: list[int] = MISSING
     num_latent: int = MISSING
+    num_layers: int = MISSING
     beta: float = MISSING
     dropout: float = MISSING
     cuda: bool = False

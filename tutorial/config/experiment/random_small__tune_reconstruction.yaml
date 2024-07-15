@@ -20,4 +20,7 @@ hydra:
       task.training_loop.num_epochs: 10
       task.model.num_latent: 3
       task.training_loop.beta: 0.0001
-      task.model.num_hidden: "[100,150],[220,440]" # WORKS
+      task.model.num_layers: 1, 2, 3
+      task.model.num_hidden: "[400], [600], [800]"
+      # task.model.num_hidden: "[100,150], [200,120]" # WORKS also like this
+      # task.model.num_hidden: "[100,150,133], [200,120,110]" # WORKS also like this

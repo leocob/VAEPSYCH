@@ -49,6 +49,7 @@ class VAE(nn.Module):
         beta: float = 0.01,
         dropout: float = 0.2,
         cuda: bool = False,
+        num_layers: int = 1,
     ):
 
         if num_latent < 1:
@@ -100,8 +101,7 @@ class VAE(nn.Module):
 
         # Initialize simple attributes
         self.beta = beta
-        # num_hidden = [200, 200]
-        print(f"num_hidden: {num_hidden}")
+        num_hidden = list(num_hidden) * num_layers
         self.num_hidden = num_hidden
         self.num_latent = num_latent
         self.dropout = dropout
