@@ -17,4 +17,4 @@ categorical_inputs:               # a list of categorical datasets
 
 continuous_inputs:                # a list of continuous datasets
   - name: random.small.metagenomics
-  - name: random.small.proteomics
+  # - name: random.small.proteomics

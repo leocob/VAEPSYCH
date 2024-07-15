@@ -58,11 +58,14 @@ def training_loop(
             kld_weight (float): final KLD after dilations during the training
     """
 
-    outputs = [[] for _ in range(4)]
+    outputs = [[] for _ in range(6)]
     min_likelihood = float("inf")
     counter = 0
 
     kld_weight = 0
+
+    cat_loss = list()
+    con_loss = list()
 
     # Original code
     # target_KLD_weight = beta * (num_latent**-1)

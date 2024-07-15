@@ -128,11 +128,11 @@ def analyze_latent(config: MOVEConfig) -> None:
             model=model,
             train_dataloader=train_dataloader,
             beta=task_config.model.beta,
-            num_latent=task_config.training_loop.num_latent
         )
         # TODO: changed this 14/07/2024 - 11:09
         # But it's weird because it looks like it's not selecting epock_kldloss but then it is plotted...?
-        losses = output[:-1]
+        print(f"output: {output}")
+        losses = output[:-1] # the -1 is to not keep the kld_weight
         # losses = output[:-3]
         torch.save(model.state_dict(), model_path)
         logger.info("Generating visualizations")

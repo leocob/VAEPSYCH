@@ -9,6 +9,7 @@ import hydra
 import numpy as np
 import pandas as pd
 import torch
+import move.visualization as viz
 from hydra.core.hydra_config import HydraConfig
 from hydra.types import RunMode
 from matplotlib.cbook import boxplot_stats
@@ -217,28 +218,44 @@ def tune_model(config: MOVEConfig) -> float:
             beta=task_config.model.beta,
         )
 
-        # output: TrainingLoopOutput = hydra.utils.call(
-        #     task_config.training_loop,
-        #     model=model,
-        #     train_dataloader=train_dataloader,
-        #     beta=task_config.model.beta,
-        #     num_latent=task_config.model.num_latent
-        # )
+        output: TrainingLoopOutput = hydra.utils.call(
+            task_config.training_loop,
+            model=model,
+            train_dataloader=train_dataloader,
+            beta=task_config.model.beta,
+        )
 
+        # model_path = output_path / "model.pt"
         # Added 14/07/2024 - 11:15 to save the loss curves
+        print(f"output: {output}")
+
+        # print each element of output
+        for i in range(len(output)):
+            print(f"index: {i}, element: {output[i]}")
+
+        losses = output[:-1]
+        print(f"len(output): {len(output)}")
+        print(f"len(losses): {len(losses)}")
+        for i in range(len(losses)):
+            print(f"index: {i}, element: {losses[i]}")
+        # save output to python file
+
         # losses = output[:-3]
         # torch.save(model.state_dict(), model_path)
-        # logger.info("Generating visualizations")
-        # logger.debug("Generating plot: loss curves")
+        logger.info("Generating visualizations")
+        logger.debug("Generating plot: loss curves")
         # fig = viz.plot_loss_curves(losses)
-        # # job_num = hydra_config.job.num + 1
-        # fig_path = str(output_path / f"loss_curve_{job_num}.png")
+        # fig_path = str(output_path / f"{job_num}_loss_curve.png")
         # fig.savefig(fig_path, bbox_inches="tight")
-        # fig_df = pd.DataFrame(dict(zip(viz.LOSS_LABELS, losses)))
-        # fig_df.index.name = "epoch"
-        # fig_df.to_csv(output_path / f"loss_curve_{job_num}.tsv", sep="\t")
-        # # save output to tsv file
-        # output_df = pd.DataFrame(output, columns=["epoch_loss", "bce_loss", "sse_loss", "kld_loss"])
+        fig_df = pd.DataFrame(dict(zip(viz.LOSS_LABELS, losses)))
+        # add first column as job_num
+        fig_df.insert(0, "job_num", job_num)
+        fig_df.index.name = "epoch"
+        # write header
+        if not (output_path / "loss_curve.tsv").exists():
+            fig_df.to_csv(output_path / "loss_curve.tsv", sep="\t", header=True, index=True)
+        else:
+            fig_df.to_csv(output_path / "loss_curve.tsv", sep="\t", mode="a", header=False)
 
 
         model.eval()

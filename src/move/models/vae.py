@@ -7,6 +7,7 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 
+import numpy as np
 from move.core.typing import FloatArray, IntArray
 
 logger = logging.getLogger("vae.py")
@@ -342,8 +343,8 @@ class VAE(nn.Module):
         MSE = torch.sum(
             con_errors * torch.Tensor(self.continuous_weights).to(self.device)
         )
-        return MSE
-
+        # return MSE
+        return MSE, con_errors
     # Reconstruction + KL divergence losses summed over all elements and batch
     def loss_function(
         self,
@@ -397,11 +398,11 @@ class VAE(nn.Module):
 
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
-                MSE = self.calculate_con_error(con_in, con_out, loss)
-                # MSE, con_errors = self.calculate_con_error(con_in, con_out, loss)
+                # MSE = self.calculate_con_error(con_in, con_out, loss)
+                MSE, con_errors = self.calculate_con_error(con_in, con_out, loss)
             else:
                 MSE = loss(con_out, con_in) / (batch_size * self.num_continuous)
-                # con_errors = []
+                con_errors = []
 
         # see Appendix B from VAE paper:
         # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
@@ -414,8 +415,8 @@ class VAE(nn.Module):
         loss = CE + MSE + KLD * KLD_weight
 
 
-        return loss, CE, MSE, KLD * KLD_weight
-        # return loss, CE, MSE, KLD * KLD_weight, con_errors, cat_errors
+        # return loss, CE, MSE, KLD * KLD_weight
+        return loss, CE, MSE, KLD * KLD_weight, con_errors, cat_errors
 
     def encoding(
         self,
@@ -447,6 +448,8 @@ class VAE(nn.Module):
         epoch_kldloss = 0
         epoch_sseloss = 0
         epoch_bceloss = 0
+        con_errors = np.array([])
+        cat_errors = np.array([])
 
         for _, (cat, con) in enumerate(train_loader):
             # Move input to GPU if requested
@@ -466,12 +469,12 @@ class VAE(nn.Module):
 
             cat_out, con_out, mu, logvar = self(tensor)
 
-            # loss, bce, sse, kld, con_err, cat_err = self.loss_function(
-            #     cat, cat_out, con, con_out, mu, logvar, kld_w
-            # )
-            loss, bce, sse, kld = self.loss_function(
+            loss, bce, sse, kld, con_err, cat_err = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_w
             )
+            # loss, bce, sse, kld = self.loss_function(
+            #     cat, cat_out, con, con_out, mu, logvar, kld_w
+            # )
             loss.backward()
 
             epoch_loss += loss.data.item()
@@ -479,12 +482,21 @@ class VAE(nn.Module):
 
             if self.num_continuous > 0:
                 epoch_sseloss += sse.data.item()
-                # if not self.con_weights is None:
-                    # con_errors = con_errors + np.array([float(j.detach()) for j in con_err])
-
+                if not self.continuous_weights is None:
+                    new_errors = np.array([float(j.detach()) for j in con_err])
+                    # print(f"new_errors: {new_errors}")
+                    if con_errors.size == 0:
+                        # print("con_errors.size == 0")
+                        con_errors = new_errors
+                    else:
+                        # Ensure the shapes are compatible for addition
+                        # print("con_errors = con_errors + new_errors")
+                        con_errors = con_errors + new_errors
             if self.num_categorical > 0:
+                # print("self.num_categorical > 0")
                 epoch_bceloss += bce.data.item()
-                # cat_errors = cat_errors + np.array([float(j) for j in cat_err])
+                cat_errors = cat_errors + np.array([float(j) for j in cat_err])
+                print(f"cat_err: {cat_errors}")
 
             optimizer.step()
 
@@ -503,9 +515,9 @@ class VAE(nn.Module):
             epoch_loss / len(train_loader),
             epoch_bceloss / len(train_loader),
             epoch_sseloss / len(train_loader),
-            epoch_kldloss / len(train_loader)
-            # con_errors / len(train_loader), 
-            # cat_errors / len(train_loader)
+            epoch_kldloss / len(train_loader),
+            con_errors / len(train_loader), 
+            cat_errors / len(train_loader)
         )
 
     def make_cat_recon_out(self, length: int) -> tuple[torch.Tensor, torch.Tensor, int]:
@@ -722,7 +734,10 @@ class VAE(nn.Module):
             logvar = logvar.to(self.device)
             batch = len(mu)
 
-            loss, bce, sse, _ = self.loss_function(
+            # loss, bce, sse, _ = self.loss_function(
+            #     cat, cat_out, con, con_out, mu, logvar, kld_weight
+            # )
+            loss, bce, sse, kld, con_err, cat_err = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_weight
             )
             test_likelihood += bce + sse
