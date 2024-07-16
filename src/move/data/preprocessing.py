@@ -149,7 +149,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaled_x_df.loc[scaled_x_test.index, scaled_x_test.columns] = scaled_x_test
 
     # Add back any columns that weren't scaled (where mask_1d is False)
-    for col in x_copu.columns[~mask_1d]:
+    for col in x_copy.columns[~mask_1d]:
         scaled_x_df[col] = x[col]
 
     # Ensure the column order matches the original x
