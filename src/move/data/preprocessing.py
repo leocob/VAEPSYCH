@@ -93,10 +93,6 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaler = StandardScaler()
     x = data
 
-    # print(f"x.shape: {x.shape}")
-    # print(f"x: {x}")
-    print(f"x.columns: {x.columns}")
-
     # TODO: REMEMBER TO UNCOMMENT THIS FOR GENOMEDK
     # x = np.log2(x+1)
     # print(f"x: {x}")
@@ -119,7 +115,6 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
     mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
 
-    print(f"np.isclose(np.nanstd(x_train, axis=0), 0.0): {np.isclose(np.nanstd(x_train, axis=0), 0.0)}")
 
     # Scale the training data
     scaler.fit(x_train.loc[:, mask_1d])
