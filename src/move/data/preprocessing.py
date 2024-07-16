@@ -149,7 +149,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     #     scaled_x_df[col] = x[col]
 
     # Ensure the column order matches the original x
-    scaled_x_df = scaled_x_df[x.columns]
+    scaled_x_df = scaled_x_df[x_copy.columns]
 
     # convert to numpy array
     scaled_x = scaled_x_df.to_numpy()
