@@ -138,7 +138,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaled_x_test[np.isnan(scaled_x_test)] = 0
 
     # Create a DataFrame with the same index as the original x
-    scaled_x_df = pd.DataFrame(index=x.index)
+    scaled_x_df = pd.DataFrame(index=x_copy.index)
 
     # Fill in the scaled values
     scaled_x_df.loc[scaled_x_train.index, scaled_x_train.columns] = scaled_x_train
