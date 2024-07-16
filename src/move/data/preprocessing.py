@@ -95,6 +95,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
     print(f"x.shape: {x.shape}")
     print(f"x: {x}")
+    print(f"x.columns: {x.columns}")
 
     # TODO: REMEMBER TO UNCOMMENT THIS FOR GENOMEDK
     # x = np.log2(x+1)
