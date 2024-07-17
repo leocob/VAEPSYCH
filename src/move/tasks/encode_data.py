@@ -59,7 +59,11 @@ def encode_data(config: DataConfig):
     if mappings:
         io.dump_mappings(interim_data_path / "mappings.json", mappings)
 
+
+    print(f"config.continuous_inputs: {config.continuous_inputs}")
     for input_config in config.continuous_inputs:
+        print(input_config)
+        print(str(input_config))
         scale = not hasattr(input_config, "scale") or input_config.scale
         action_name = "Encoding" if scale else "Reading"
         logger.info(f"{action_name} '{input_config.name}'")
