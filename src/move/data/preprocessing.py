@@ -87,6 +87,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     # print every input
 
 
+    if input_config_name == "n_suicide_attempts":
+        data = np.log(data+1)
 
 
     imputer = SimpleImputer(strategy='mean')

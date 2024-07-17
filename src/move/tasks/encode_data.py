@@ -60,7 +60,6 @@ def encode_data(config: DataConfig):
         io.dump_mappings(interim_data_path / "mappings.json", mappings)
 
 
-    print(f"config.continuous_inputs: {config.continuous_inputs}")
     for input_config in config.continuous_inputs:
         # print(input_config)
         # print(str(input_config))
@@ -69,11 +68,6 @@ def encode_data(config: DataConfig):
         logger.info(f"{action_name} '{input_config.name}'")
         filepath = raw_data_path / f"{input_config.name}.tsv"
         names, values, data = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0)
-
-        print(f"input_config.name: {input_config.name}")
-        print(f"names: {names}")
-        print(f"values: {values}")
-        
         # print("continuous input")
         # print(f"names: {names}")
         # print(f"values: {values}")
