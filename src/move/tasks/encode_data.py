@@ -32,17 +32,18 @@ def encode_data(config: DataConfig):
     split_path = interim_data_path / "split_mask.npy"
     train_test_splits_file_name = Path(config.train_test_splits_file_name)
     train_test_path = raw_data_path / train_test_splits_file_name
+    print(train_test_path)
 
-    if not train_test_path.exists():
-        warnings.warn(f"Train test split file not found: {train_test_path}. Are you sure you don't want to use a train test split?")
-        train_test_splits = None
+    # if not train_test_path.exists():
+    #     warnings.warn(f"Train test split file not found: {train_test_path}. Are you sure you don't want to use a train test split?")
+    #     train_test_splits = None
     
-    else:
+    # else:
         # Will read train test split everytime I run the encoding_data, even if the split mask is already there
         # So I'm sure that the split mask is always the most recent one, as long as I don't move the train_test_splits.tsv file
-        train_test_splits = pd.read_csv(train_test_path, sep = "\t")
-        split_mask = train_test_splits["Split"].values == "train"
-        np.save(split_path, split_mask)
+    train_test_splits = pd.read_csv(train_test_path, sep = "\t")
+    split_mask = train_test_splits["Split"].values == "train"
+    np.save(split_path, split_mask)
 
 
     mappings = {}
