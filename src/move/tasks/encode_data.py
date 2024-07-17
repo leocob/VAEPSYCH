@@ -62,13 +62,18 @@ def encode_data(config: DataConfig):
 
     print(f"config.continuous_inputs: {config.continuous_inputs}")
     for input_config in config.continuous_inputs:
-        print(input_config)
-        print(str(input_config))
+        # print(input_config)
+        # print(str(input_config))
         scale = not hasattr(input_config, "scale") or input_config.scale
         action_name = "Encoding" if scale else "Reading"
         logger.info(f"{action_name} '{input_config.name}'")
         filepath = raw_data_path / f"{input_config.name}.tsv"
         names, values, data = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0)
+
+        print(f"input_config.name: {input_config.name}")
+        print(f"names: {names}")
+        print(f"values: {values}")
+        
         # print("continuous input")
         # print(f"names: {names}")
         # print(f"values: {values}")
