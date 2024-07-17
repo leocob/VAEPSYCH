@@ -30,7 +30,8 @@ def encode_data(config: DataConfig):
 
     # I need to create the split mask
     split_path = interim_data_path / "split_mask.npy"
-    train_test_path = raw_data_path / "train_test_splits_22000.tsv"
+    train_test_splits_file_name = Path(config.train_test_splits_file_name)
+    train_test_path = raw_data_path / train_test_splits_file_name
 
     if not train_test_path.exists():
         warnings.warn(f"Train test split file not found: {train_test_path}. Are you sure you don't want to use a train test split?")

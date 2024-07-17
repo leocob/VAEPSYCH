@@ -36,6 +36,7 @@ class ContinuousInputConfig(InputConfig):
 @dataclass
 class DataConfig:
     raw_data_path: str = MISSING
+    train_test_splits_file_name: str = MISSING
     interim_data_path: str = MISSING
     results_path: str = MISSING
     sample_names: str = MISSING
