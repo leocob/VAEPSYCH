@@ -95,7 +95,13 @@ def plot_latent_space_with_con(
     """
     if latent_space.ndim < 2:
         raise ValueError("Expected at least two dimensions in latent space.")
+
+    print(feature_name)
+    print(feature_values)
+    print(min(feature_values))
+    print(max(feature_values))
     norm = TwoSlopeNorm(0.0, min(feature_values), max(feature_values))
+    # I get the ValueError: vmin, vcenter, and vmax must be in ascending order
     with style_settings(style):
         fig, ax = plt.subplots()
         dims = latent_space[:, 0], latent_space[:, 1]
