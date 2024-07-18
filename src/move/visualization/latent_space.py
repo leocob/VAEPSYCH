@@ -100,6 +100,9 @@ def plot_latent_space_with_con(
     print(feature_values)
     print(min(feature_values))
     print(max(feature_values))
+    print(np.mean(feature_values))
+    print(np.std(feature_values))
+
     norm = TwoSlopeNorm(0.0, min(feature_values), max(feature_values))
     # I get the ValueError: vmin, vcenter, and vmax must be in ascending order
     with style_settings(style):
