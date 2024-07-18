@@ -103,7 +103,14 @@ def plot_latent_space_with_con(
     print(np.mean(feature_values))
     print(np.std(feature_values))
 
-    norm = TwoSlopeNorm(0.0, min(feature_values), max(feature_values))
+    # norm = TwoSlopeNorm(0.0, min(feature_values), max(feature_values))
+
+    vmin = min(feature_values)
+    vmax = max(feature_values)
+    vcenter = (vmin + vmax) / 2
+
+    # Ensure the norm parameters are in ascending order
+    norm = TwoSlopeNorm(vmin=vmin, vcenter=vcenter, vmax=vmax)
     # I get the ValueError: vmin, vcenter, and vmax must be in ascending order
     with style_settings(style):
         fig, ax = plt.subplots()
