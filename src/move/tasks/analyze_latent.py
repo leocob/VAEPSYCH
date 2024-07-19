@@ -83,7 +83,7 @@ def analyze_latent(config: MOVEConfig) -> None:
 
     logger.debug("Reading data")
     sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
-    print(f"sample_names")
+    print(f"sample_names: {sample_names}")
     cat_list, cat_names, con_list, con_names = io.load_preprocessed_data(
         interim_path,
         config.data.categorical_names,
@@ -98,7 +98,7 @@ def analyze_latent(config: MOVEConfig) -> None:
     test_dataset = cast(MOVEDataset, test_dataloader.dataset)
     df_index = pd.Index(sample_names, name="sample")
 
-    print(f"df_index: {df_index}")
+    # print(f"df_index: {df_index}") # 6000 samples15
 
     assert task_config.model is not None
     device = torch.device("cuda" if task_config.model.cuda == True else "cpu")
@@ -273,8 +273,9 @@ def analyze_latent(config: MOVEConfig) -> None:
         dataloaders = perturb_categorical_data(
             test_dataloader, config.data.categorical_names, dataset_name, na_value
         )
+
         num_features = len(dataloaders)
-        print(f"num_features: {num_features}")
+        print(f"num_features of categorical dataset {dataset_name}: {num_features}")
         z = model.project(test_dataloader)
         diffs = np.empty((num_samples, num_features))
         for j, dataloader in enumerate(dataloaders):
@@ -298,6 +299,9 @@ def analyze_latent(config: MOVEConfig) -> None:
             test_dataloader, config.data.continuous_names, dataset_name, 0.0
         )
         num_features = len(dataloaders)
+        print(f"num_features of continuous dataset {dataset_name}: {num_features}")
+        print(f"i: {i}")
+        print(f"type(i): {type(i)}")
         z = model.project(test_dataloader)
         diffs = np.empty((num_samples, num_features))
         for j, dataloader in enumerate(dataloaders):
