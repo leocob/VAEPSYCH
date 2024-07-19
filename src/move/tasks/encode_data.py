@@ -87,6 +87,7 @@ def encode_data(config: DataConfig):
                 # print(f"values[4797]: {values[4797,:]}")
                 # values, mask_1d = preprocessing.scale(values)
                 names = names[mask_1d]
+                print(f"Columns with zero variance: {np.sum(~mask_1d)}")
                 logger.debug(f"Columns with zero variance: {np.sum(~mask_1d)}")
                 
             io.dump_names(interim_data_path / f"{input_config.name}.txt", names)
