@@ -118,6 +118,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     x_test = x.iloc[~split_mask]
 
     mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
+    print(f"x.shape: {x.shape}")
+    print(f"mask_1d.shape: {mask_1d.shape}")
 
     # keep only the columns with std !=0
 
