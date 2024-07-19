@@ -87,7 +87,7 @@ def encode_data(config: DataConfig):
                 # print(f"values[4797]: {values[4797,:]}")
                 # values, mask_1d = preprocessing.scale(values)
 
-                cols_zero_variance = data.loc[:,mask_1d].columns
+                cols_zero_variance = data.loc[:,~mask_1d].columns
                 print(f"Columns with zero variance: {cols_zero_variance}")
                 names = names[mask_1d]
                 print(f"Sum of Columns with zero variance: {np.sum(~mask_1d)}")
