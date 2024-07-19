@@ -96,12 +96,12 @@ def plot_latent_space_with_con(
     if latent_space.ndim < 2:
         raise ValueError("Expected at least two dimensions in latent space.")
 
-    print(feature_name)
-    print(feature_values)
-    print(min(feature_values))
-    print(max(feature_values))
-    print(np.mean(feature_values))
-    print(np.std(feature_values))
+    print(f"feature_name: {feature_name}")
+    print(f"feature_values: {feature_values}")
+    print(f"min(feature_values): {min(feature_values)}")
+    print(f"max(feature_values): {max(feature_values)}")
+    print(f"mean(feature_values): {np.mean(feature_values)}")
+    print(f"std(feature_values): {np.std(feature_values)}")
 
     # norm = TwoSlopeNorm(0.0, min(feature_values), max(feature_values))
 
