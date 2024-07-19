@@ -93,7 +93,7 @@ def analyze_latent(config: MOVEConfig) -> None:
     #19/07/2024 - 17:50 what makes this to be the test dataloader?
     print(f"cat_list.shape: {len(cat_list)}")
     print(f"con_list.shape: {len(con_list)}")
-    print(f"cat_list: {cat_list[0].shape}")
+    print(f"cat_list: {cat_list[0].shape}") # (6000, X) # so this is not the test dataset, but the entire dataset
     print(f"con_list: {con_list[0].shape}")
     test_dataloader = make_dataloader(
         cat_list,
@@ -101,7 +101,10 @@ def analyze_latent(config: MOVEConfig) -> None:
         shuffle=False,
         batch_size=task_config.batch_size,
     )
+    print(f"len(test_dataloader): {len(test_dataloader)}") 
     test_dataset = cast(MOVEDataset, test_dataloader.dataset)
+    # print shape of test_dataset
+    print(f"test_dataset.cat_all.shape: {test_dataset.cat_all.shape}")
     df_index = pd.Index(sample_names, name="sample")
 
     # print(f"df_index: {df_index}") # 6000 samples15
@@ -125,6 +128,8 @@ def analyze_latent(config: MOVEConfig) -> None:
         logger.debug("Training model")
 
         model.to(device)
+
+        # Here it's not the train_dataloader I think, it's the entire dataset?
         train_dataloader = make_dataloader(
             cat_list,
             con_list,
@@ -132,6 +137,8 @@ def analyze_latent(config: MOVEConfig) -> None:
             batch_size=task_config.batch_size,
             drop_last=True,
         )
+        # print number of samples in train_dataloader
+        print(f"len(train_dataloader): {len(train_dataloader)}")
         output: TrainingLoopOutput = hydra.utils.call(
             task_config.training_loop,
             model=model,
