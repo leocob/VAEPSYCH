@@ -149,7 +149,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaled_x_test[np.isnan(scaled_x_test)] = 0
 
     # Create a DataFrame with the same index as the original x
-    scaled_x_df = pd.DataFrame()
+    scaled_x_df = pd.DataFrame(index=x_copy.index)
 
 
     print(f"scaled_x_train: {scaled_x_train}")
@@ -163,6 +163,9 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
     # keep only the columns with std !=0
     scaled_x_df = scaled_x_df.loc[:, mask_1d]
+
+    print(f"scaled_x_df.shape: {scaled_x_df.shape}")
+    print(f"scaled_x_df: {scaled_x_df}")
 
     # Add back any columns that weren't scaled (where mask_1d is False)
     # for col in x_copy.columns[~mask_1d]:
