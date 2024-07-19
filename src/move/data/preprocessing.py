@@ -113,6 +113,11 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     # Create a copy of x to preserve the original order
     x_copy = x.copy()
 
+    # get order of x_copy index
+    orig_index_order = x_copy.index
+    print(f"len(orig_index_order):{len(orig_index_order)}")
+    print(f"orig_index_order: {orig_index_order}")
+
     # Split the data
     x_train = x.iloc[split_mask]
     x_test = x.iloc[~split_mask]
@@ -144,8 +149,13 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaled_x_test[np.isnan(scaled_x_test)] = 0
 
     # Create a DataFrame with the same index as the original x
-    scaled_x_df = pd.DataFrame(index=x_copy.index)
+    scaled_x_df = pd.DataFrame()
 
+
+    print(f"scaled_x_train: {scaled_x_train}")
+    print(f"scaled_x_test: {scaled_x_test}")
+
+    # 
     # Fill in the scaled values
     scaled_x_df.loc[scaled_x_train.index, scaled_x_train.columns] = scaled_x_train
     scaled_x_df.loc[scaled_x_test.index, scaled_x_test.columns] = scaled_x_test
