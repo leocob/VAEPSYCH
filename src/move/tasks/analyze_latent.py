@@ -299,9 +299,9 @@ def analyze_latent(config: MOVEConfig) -> None:
             test_dataloader, config.data.continuous_names, dataset_name, 0.0
         )
         num_features = len(dataloaders)
-        print(f"num_features of continuous dataset {dataset_name}: {num_features}")
-        print(f"i: {i}")
-        print(f"type(i): {type(i)}")
+        # print(f"num_features of continuous dataset {dataset_name}: {num_features}")
+        # print(f"i: {i}")
+        # print(f"type(i): {type(i)}")
         z = model.project(test_dataloader)
         diffs = np.empty((num_samples, num_features))
         for j, dataloader in enumerate(dataloaders):
