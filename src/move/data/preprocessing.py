@@ -123,8 +123,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     x_test = x.iloc[~split_mask]
 
     mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
-    print(f"x.shape: {x.shape}")
-    print(f"mask_1d.shape: {mask_1d.shape}")
+    # print(f"x.shape: {x.shape}")
+    # print(f"mask_1d.shape: {mask_1d.shape}")
 
     # keep only the columns with std !=0
 
@@ -152,8 +152,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaled_x_df = pd.DataFrame(index=x_copy.index)
 
 
-    print(f"scaled_x_train: {scaled_x_train}")
-    print(f"scaled_x_test: {scaled_x_test}")
+    # print(f"scaled_x_train: {scaled_x_train}")
+    # print(f"scaled_x_test: {scaled_x_test}")
 
     # 
     # Fill in the scaled values
@@ -164,8 +164,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     # keep only the columns with std !=0
     # scaled_x_df = scaled_x_df.loc[:, mask_1d]
 
-    print(f"scaled_x_df.shape: {scaled_x_df.shape}")
-    print(f"scaled_x_df: {scaled_x_df}")
+    # print(f"scaled_x_df.shape: {scaled_x_df.shape}")
+    # print(f"scaled_x_df: {scaled_x_df}")
 
     # Add back any columns that weren't scaled (where mask_1d is False)
     # for col in x_copy.columns[~mask_1d]:
