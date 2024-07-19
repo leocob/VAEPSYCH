@@ -89,6 +89,12 @@ def analyze_latent(config: MOVEConfig) -> None:
         config.data.categorical_names,
         config.data.continuous_names,
     )
+
+    #19/07/2024 - 17:50 what makes this to be the test dataloader?
+    print(f"cat_list.shape: {len(cat_list)}")
+    print(f"con_list.shape: {len(con_list)}")
+    print(f"cat_list: {cat_list}")
+    print(f"con_list: {con_list}")
     test_dataloader = make_dataloader(
         cat_list,
         con_list,
@@ -245,8 +251,10 @@ def analyze_latent(config: MOVEConfig) -> None:
 
     logger.info("Reconstructing")
     cat_recons, con_recons = model.reconstruct(test_dataloader)
+
+
     con_recons = np.split(con_recons, np.cumsum(model.continuous_shapes[:-1]), axis=1)
-    logger.info("Computing reconstruction metrics")
+    logger.info("Computing reconstruction metrics on test set")
     scores = []
     labels = config.data.categorical_names + config.data.continuous_names
     for cat, cat_recon in zip(cat_list, cat_recons):
