@@ -119,6 +119,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
     mask_1d = ~np.isclose(np.nanstd(x_train, axis=0), 0.0)
 
+    # keep only the columns with std !=0
 
     # Scale the training data
     scaler.fit(x_train.loc[:, mask_1d])
@@ -147,12 +148,16 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaled_x_df.loc[scaled_x_train.index, scaled_x_train.columns] = scaled_x_train
     scaled_x_df.loc[scaled_x_test.index, scaled_x_test.columns] = scaled_x_test
 
-    # Add back any columns that weren't scaled (where mask_1d is False)
-    for col in x_copy.columns[~mask_1d]:
-        scaled_x_df[col] = x[col]
 
-    # Ensure the column order matches the original x
-    scaled_x_df = scaled_x_df[x_copy.columns]
+    # keep only the columns with std !=0
+    scaled_x_df = scaled_x_df.loc[:, mask_1d]
+
+    # Add back any columns that weren't scaled (where mask_1d is False)
+    # for col in x_copy.columns[~mask_1d]:
+    #     scaled_x_df[col] = x[col]
+
+    # # Ensure the column order matches the original x
+    # scaled_x_df = scaled_x_df[x_copy.columns]
 
     # convert to numpy array
     scaled_x = scaled_x_df.to_numpy()
