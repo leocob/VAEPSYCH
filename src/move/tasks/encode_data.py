@@ -89,7 +89,7 @@ def encode_data(config: DataConfig):
 
                 cols_zero_variance = data.loc[:,~mask_1d].columns
                 if len(cols_zero_variance) > 0:
-                    print(f"Columns with zero variance: {cols_zero_variance}")
+                    print(f"Columns with zero variance: {cols_zero_variance.tolist()}")
                     # convert pandas index to list
                     names_cols_zero_variance = cols_zero_variance.tolist()
                 else:
