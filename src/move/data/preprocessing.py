@@ -114,9 +114,9 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     x_copy = x.copy()
 
     # get order of x_copy index
-    orig_index_order = x_copy.index
-    print(f"len(orig_index_order):{len(orig_index_order)}")
-    print(f"orig_index_order: {orig_index_order}")
+    # orig_index_order = x_copy.index
+    # print(f"len(orig_index_order):{len(orig_index_order)}")
+    # print(f"orig_index_order: {orig_index_order}")
 
     # Split the data
     x_train = x.iloc[split_mask]
@@ -162,7 +162,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
 
 
     # keep only the columns with std !=0
-    scaled_x_df = scaled_x_df.loc[:, mask_1d]
+    # scaled_x_df = scaled_x_df.loc[:, mask_1d]
 
     print(f"scaled_x_df.shape: {scaled_x_df.shape}")
     print(f"scaled_x_df: {scaled_x_df}")
