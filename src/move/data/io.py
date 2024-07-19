@@ -104,6 +104,12 @@ def load_preprocessed_data(
         continuous_data.append(data)
         var_names = read_names(path / f"{dataset_name}.txt")
         var_names = [name for i, name in enumerate(var_names) if keep[i]]
+
+        print(f"dataset_name: {dataset_name}")
+        print(f"data.shape: {data.shape}")
+        print(f"data: {data}")
+        print(f"keep: {keep}")
+        print(f"var_names: {var_names}")
         continuous_var_names.append(var_names)
 
     return (
