@@ -101,10 +101,10 @@ def analyze_latent(config: MOVEConfig) -> None:
         shuffle=False,
         batch_size=task_config.batch_size,
     )
-    print(f"len(test_dataloader): {len(test_dataloader)}") 
+    print(f"len(test_dataloader): {len(test_dataloader)}") # 188
     test_dataset = cast(MOVEDataset, test_dataloader.dataset)
     # print shape of test_dataset
-    print(f"test_dataset.cat_all.shape: {test_dataset.cat_all.shape}")
+    print(f"test_dataset.cat_all.shape: {test_dataset.cat_all.shape}") # (6000, 328)
     df_index = pd.Index(sample_names, name="sample")
 
     # print(f"df_index: {df_index}") # 6000 samples15
@@ -137,6 +137,8 @@ def analyze_latent(config: MOVEConfig) -> None:
             batch_size=task_config.batch_size,
             drop_last=True,
         )
+        train_dataset = cast(MOVEDataset, train_dataloader.dataset)
+        print(f"train_dataset.cat_all.shape: {train_dataset.cat_all.shape}")
         # print number of samples in train_dataloader
         print(f"len(train_dataloader): {len(train_dataloader)}")
         output: TrainingLoopOutput = hydra.utils.call(
