@@ -93,8 +93,8 @@ def analyze_latent(config: MOVEConfig) -> None:
     #19/07/2024 - 17:50 what makes this to be the test dataloader?
     print(f"cat_list.shape: {len(cat_list)}")
     print(f"con_list.shape: {len(con_list)}")
-    print(f"cat_list: {cat_list}")
-    print(f"con_list: {con_list}")
+    # print(f"cat_list: {cat_list}")
+    # print(f"con_list: {con_list}")
     test_dataloader = make_dataloader(
         cat_list,
         con_list,
