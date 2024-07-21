@@ -94,6 +94,7 @@ def encode_data(config: DataConfig):
                     names_cols_zero_variance = cols_zero_variance.tolist()
                 else:
                     print("No columns with zero variance")
+                    names_cols_zero_variance = []
                 names = names[mask_1d]
                 # print(f"Sum of Columns with zero variance: {np.sum(~mask_1d)}")
                 logger.debug(f"Columns with zero variance: {np.sum(~mask_1d)}")
