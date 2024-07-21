@@ -350,10 +350,15 @@ def tune_model(config: MOVEConfig) -> float:
                 records.append(record)
 
         raw_data_path = Path(config.data.raw_data_path)
-        sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
+        # sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
+        train_test_splits_file_name = Path(config.train_test_splits_file_name)
+        train_test_path = raw_data_path / train_test_splits_file_name
+        print(train_test_path)
 
-        # get sample_names from dataloader
-        sample_names = dataloader.dataset.cat_all
+        train_test_splits = pd.read_csv(train_test_path, sep = "\t")
+        sample_names_df = train_test_splits["Split"] == split_name
+        sample_names = sample_names_df["ID"].tolist()
+
         print(f"len sample_names: {len(sample_names)}")
         print(f"sample_names = {sample_names}")
 
