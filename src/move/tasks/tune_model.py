@@ -193,7 +193,7 @@ def tune_model(config: MOVEConfig) -> float:
             drop_last=True,
         )
 
-        print(f"Number of samples in train dataset: {len(train_dataloader.dataset)}")
+        print(f"Number of samples in train dataset in tune_reconstruction: {len(train_dataloader.dataset)}")
         # 4800
         # print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
 
@@ -307,11 +307,11 @@ def tune_model(config: MOVEConfig) -> float:
                 cat_list, cat_recons, config.data.categorical_names
             ):
 
-                print(f"cat: {cat}")
+                # print(f"cat: {cat}")
                 print(f"cat.shape: {cat.shape}")
-                print(f"cat[mask]: {cat[mask]}")
+                # print(f"cat[mask]: {cat[mask]}")
                 print(f"cat[mask].shape: {cat[mask].shape}")
-                print(f"cat_recon: {cat_recon}")
+                # print(f"cat_recon: {cat_recon}")
                 print(f"cat_recon.shape: {cat_recon.shape}")
                 logger.debug(f"Computing accuracy: '{dataset_name}'")
                 accuracy = calculate_accuracy(cat[mask], cat_recon)
@@ -329,11 +329,11 @@ def tune_model(config: MOVEConfig) -> float:
                 con_list, con_recons, config.data.continuous_names
             ):
                 logger.debug(f"Computing cosine similarity: '{dataset_name}'")
-                print(f"con: {con}")
+                # print(f"con: {con}")
                 print(f"con.shape: {con.shape}")
-                print(f"con[mask]: {con[mask]}")
+                # print(f"con[mask]: {con[mask]}")
                 print(f"con[mask].shape: {con[mask].shape}")
-                print(f"con_recon: {con_recon}")
+                # print(f"con_recon: {con_recon}")
                 print(f"con_recon.shape: {con_recon.shape}")
 
                 cosine_sim = calculate_cosine_similarity(con[mask], con_recon)
@@ -349,7 +349,10 @@ def tune_model(config: MOVEConfig) -> float:
                 )
                 records.append(record)
 
-
+        raw_data_path = Path(config.data.raw_data_path)
+        sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
+        print(f"sample_names: {sample_names}")
+        df_index = pd.Index(sample_names, name="sample")
         fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
         fig_df.to_csv(output_path / f"{job_num}_reconstruction_scores.tsv", sep="\t")
         logger.info("Writing results")
