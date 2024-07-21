@@ -409,6 +409,8 @@ class VAE(nn.Module):
             # # set missing data to 0 to remove any loss these would provide
             # con_out[con_in == 0] = 0
 
+            loss = custom_mse_loss
+
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
                 print(f"self.continuous_weights is not None: {self.continuous_weights}")
