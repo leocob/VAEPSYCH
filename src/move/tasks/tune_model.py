@@ -340,6 +340,9 @@ def tune_model(config: MOVEConfig) -> float:
                 cosine_sim = calculate_cosine_similarity(con[mask], con_recon)
                 scores.append(cosine_sim)
 
+                print(f"cosine_sim.shape: {cosine_sim.shape}")
+                print(f"cosine_sim: {cosine_sim}")
+
                 record = _get_record(
                     cosine_sim,
                     job_num=job_num,
