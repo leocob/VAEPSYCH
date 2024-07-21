@@ -87,6 +87,8 @@ def tune_model(config: MOVEConfig) -> float:
         config.data.categorical_names,
         config.data.continuous_names,
     )
+    print(f"Total number of samples in the cat_list: {len(cat_list[0])} \nTotal number of samples in the con_list: {len(con_list[0])}")
+
 
     assert task_config.model is not None
     device = torch.device("cuda" if task_config.model.cuda == True else "cpu")
@@ -202,27 +204,29 @@ def tune_model(config: MOVEConfig) -> float:
         )
 
         print(f"PRINTING TUNE_RECONSTRUCTION")
-        print(f"train_dataloader: {train_dataloader}")
-        print(f"train_dataloader.dataset: {train_dataloader.dataset}")
-        # extract the data from the dataset
-        print(f"train_dataloader.dataset.cat_all[0].shape: {train_dataloader.dataset.cat_all[0].shape}")
-        print(f"train_dataloader.dataset.con_all[0].shape: {train_dataloader.dataset.con_all[0].shape}")
-        print(f"train_dataloader.dataset.cat_shapes: {train_dataloader.dataset.cat_shapes}")
-        print(f"train_dataloader.dataset.con_shapes: {train_dataloader.dataset.con_shapes}")
-        # extract total number of samples in train_dataloader
-        print(f"train_dataloader.dataset.cat_all[0].shape[0]: {train_dataloader.dataset.cat_all[0].shape[0]}")
-        print(f"train_dataloader.dataset.con_all[0].shape[0]: {train_dataloader.dataset.con_all[0].shape[0]}")
-        print(f"test_dataloader: {test_dataloader}")
-        print(f"test_dataloader.dataset: {test_dataloader.dataset}")
-        # extract the data from the dataset
-        print(f"test_dataloader.dataset.cat_all[0].shape: {test_dataloader.dataset.cat_all[0].shape}")
-        print(f"test_dataloader.dataset.con_all[0].shape: {test_dataloader.dataset.con_all[0].shape}")
-        print(f"test_dataloader.dataset.cat_shapes: {test_dataloader.dataset.cat_shapes}")
-        print(f"test_dataloader.dataset.con_shapes: {test_dataloader.dataset.con_shapes}")
-        # extract total number of samples in test_dataloader
-        print(f"test_dataloader.dataset.cat_all[0].shape[0]: {test_dataloader.dataset.cat_all[0].shape[0]}")
-        print(f"test_dataloader.dataset.con_all[0].shape[0]: {test_dataloader.dataset.con_all[0].shape[0]}")
-        
+        print(f"Number of samples in train dataset: {len(train_dataloader.dataset)}")
+        print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
+        # print(f"train_dataloader: {train_dataloader}")
+        # print(f"train_dataloader.dataset: {train_dataloader.dataset}")
+        # # extract the data from the dataset
+        # print(f"train_dataloader.dataset.cat_all[0].shape: {train_dataloader.dataset.cat_all[0].shape}")
+        # print(f"train_dataloader.dataset.con_all[0].shape: {train_dataloader.dataset.con_all[0].shape}")
+        # print(f"train_dataloader.dataset.cat_shapes: {train_dataloader.dataset.cat_shapes}")
+        # print(f"train_dataloader.dataset.con_shapes: {train_dataloader.dataset.con_shapes}")
+        # # extract total number of samples in train_dataloader
+        # print(f"train_dataloader.dataset.cat_all[0].shape[0]: {train_dataloader.dataset.cat_all[0].shape[0]}")
+        # print(f"train_dataloader.dataset.con_all[0].shape[0]: {train_dataloader.dataset.con_all[0].shape[0]}")
+        # print(f"test_dataloader: {test_dataloader}")
+        # print(f"test_dataloader.dataset: {test_dataloader.dataset}")
+        # # extract the data from the dataset
+        # print(f"test_dataloader.dataset.cat_all[0].shape: {test_dataloader.dataset.cat_all[0].shape}")
+        # print(f"test_dataloader.dataset.con_all[0].shape: {test_dataloader.dataset.con_all[0].shape}")
+        # print(f"test_dataloader.dataset.cat_shapes: {test_dataloader.dataset.cat_shapes}")
+        # print(f"test_dataloader.dataset.con_shapes: {test_dataloader.dataset.con_shapes}")
+        # # extract total number of samples in test_dataloader
+        # print(f"test_dataloader.dataset.cat_all[0].shape[0]: {test_dataloader.dataset.cat_all[0].shape[0]}")
+        # print(f"test_dataloader.dataset.con_all[0].shape[0]: {test_dataloader.dataset.con_all[0].shape[0]}")
+
 
         train_dataset = cast(MOVEDataset, train_dataloader.dataset)
 
