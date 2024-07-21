@@ -11,7 +11,7 @@ __all__ = [
 import json
 from pathlib import Path
 from typing import Optional
-
+from os.path import basename
 import hydra
 import numpy as np
 import pandas as pd
@@ -152,6 +152,7 @@ def read_tsv(
     
     logger = get_logger(__name__)
     data = pd.read_csv(path, index_col=0, sep="\t")
+    # get the name of the dataset
     dataset_name = basename(path)
     # remove extension
     dataset_name = dataset_name.split(".")[0]
