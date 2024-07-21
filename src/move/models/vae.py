@@ -11,6 +11,19 @@ from move.core.typing import FloatArray, IntArray
 
 logger = logging.getLogger("vae.py")
 
+def custom_mse_loss(input, target):
+    """
+    Custom MSE loss that ignores NaN values.
+    """
+    # Create a mask for non-NaN values
+    mask = ~torch.isnan(input) & ~torch.isnan(target)
+    
+    # Calculate squared difference only for non-NaN values
+    squared_diff = torch.pow(input[mask] - target[mask], 2)
+    
+    # Return mean of squared differences
+    return squared_diff
+    # return torch.mean(squared_diff) if torch.sum(mask) > 0 else torch.tensor(0.0).to(input.device)
 
 class VAE(nn.Module):
     """Variational autoencoder.
@@ -390,18 +403,23 @@ class VAE(nn.Module):
         # calculate loss for continuous data if in the input
         if con_out is not None:
             batch_size = con_in.shape[0]
-            # Mean square error loss for continauous
-            loss = nn.MSELoss(reduction="sum")
-            # set missing data to 0 to remove any loss these would provide
-            con_out[con_in == 0] = 0
+
+            # # Mean square error loss for continauous
+            # loss = nn.MSELoss(reduction="sum")
+            # # set missing data to 0 to remove any loss these would provide
+            # con_out[con_in == 0] = 0
 
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
+                print(f"self.continuous_weights is not None: {self.continuous_weights}")
                 MSE = self.calculate_con_error(con_in, con_out, loss)
                 # MSE, con_errors = self.calculate_con_error(con_in, con_out, loss)
             else:
-                MSE = loss(con_out, con_in) / (batch_size * self.num_continuous)
+                MSE = custom_mse_loss(con_out, con_in) / (batch_size * self.num_continuous)
                 # con_errors = []
+
+
+
 
         # see Appendix B from VAE paper:
         # Kingma and Welling. Auto-Encoding Variational Bayes. ICLR, 2014
