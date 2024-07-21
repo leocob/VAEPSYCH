@@ -51,8 +51,7 @@ def encode_data(config: DataConfig):
         logger.info(f"Encoding '{dataset_name}'")
         filepath = raw_data_path / f"{dataset_name}.tsv"
         # TODO: implement change p from command line
-        names, values, data = io.read_tsv(filepath, sample_names, input_type = "categorical", p = 0.01, interim_data_path)
-
+        names, values, data = io.read_tsv(filepath, sample_names, input_type = "categorical", p = 0.01, interim_data_path = interim_data_path)
         values, mapping = preprocessing.one_hot_encode(values)
         mappings[dataset_name] = mapping
         io.dump_names(interim_data_path / f"{dataset_name}.txt", names)
@@ -68,7 +67,7 @@ def encode_data(config: DataConfig):
         action_name = "Encoding" if scale else "Reading"
         logger.info(f"{action_name} '{input_config.name}'")
         filepath = raw_data_path / f"{input_config.name}.tsv"
-        names, values, data = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0.01, interim_data_path)
+        names, values, data = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0.01, interim_data_path = interim_data_path)
         # print("continuous input")
         # print(f"names: {names}")
         # print(f"values: {values}")
