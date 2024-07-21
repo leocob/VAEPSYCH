@@ -207,7 +207,7 @@ def read_tsv(
 
         if columns_to_keep.empty:
             logger.warning(f"No columns with more than {p} non-NAs in dataset {path}")
-            return None, None
+            return None, None, None
 
         else:
             data = data[columns_to_keep]
