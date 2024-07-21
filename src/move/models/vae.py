@@ -346,7 +346,7 @@ class VAE(nn.Module):
         for s in self.continuous_shapes:
             c_in = con_in[:, total_shape : (s + total_shape - 1)]
             c_re = con_out[:, total_shape : (s + total_shape - 1)]
-            error = custom_mse_loss(c_re, c_in) / batch_size
+            error = loss(c_re, c_in) / batch_size
             con_errors_list.append(error)
             total_shape += s
 
@@ -409,12 +409,12 @@ class VAE(nn.Module):
             # # set missing data to 0 to remove any loss these would provide
             # con_out[con_in == 0] = 0
 
-            # loss = custom_mse_loss
+            loss = custom_mse_loss
 
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
                 print(f"self.continuous_weights is not None: {self.continuous_weights}")
-                MSE = self.calculate_con_error(con_in, con_out, custom_mse_loss)
+                MSE = self.calculate_con_error(con_in, con_out, loss)
                 # MSE, con_errors = self.calculate_con_error(con_in, con_out, loss)
             else:
                 MSE = custom_mse_loss(con_out, con_in) / (batch_size * self.num_continuous)
