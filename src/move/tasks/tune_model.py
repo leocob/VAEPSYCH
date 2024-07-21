@@ -341,14 +341,14 @@ def tune_model(config: MOVEConfig) -> float:
                 scores.append(cosine_sim)
 
                 print(f"cosine_sim.shape: {cosine_sim.shape}")
-                print(f"cosine_sim: {cosine_sim}")
+                # print(f"cosine_sim: {cosine_sim}")
 
                 # cosine_sim is a list. Remove the values that are 0
                 cosine_sim = [i for i in cosine_sim if i != 0]
 
                 # cosine_sim = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in cosine_sim]
                 print(f"len(cosine_sim): {len(cosine_sim)}")
-                print(f"cosine_sim: {cosine_sim}")
+                # print(f"cosine_sim: {cosine_sim}")
 
                 record = _get_record(
                     cosine_sim,
