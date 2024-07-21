@@ -101,6 +101,7 @@ def analyze_latent(config: MOVEConfig) -> None:
         shuffle=False,
         batch_size=task_config.batch_size,
     )
+    print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
     print(f"len(test_dataloader): {len(test_dataloader)}") # 188
     test_dataset = cast(MOVEDataset, test_dataloader.dataset)
     # print shape of test_dataset
@@ -273,6 +274,7 @@ def analyze_latent(config: MOVEConfig) -> None:
 
     logger.debug("Generating plot: reconstruction metrics")
 
+    # Remove the 0s from the scores
     plot_scores = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in scores]
     fig = viz.plot_metrics_boxplot(plot_scores, labels)
     fig_path = str(output_path / "reconstruction_metrics.png")

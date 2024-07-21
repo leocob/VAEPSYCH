@@ -193,39 +193,10 @@ def tune_model(config: MOVEConfig) -> float:
             drop_last=True,
         )
 
-
-        # Here there's no split_mask. Am I sure it's selecting only the test samples?
-        test_dataloader = make_dataloader(
-            cat_list,
-            con_list,
-            shuffle=False,
-            batch_size=task_config.batch_size,
-            drop_last=False,
-        )
-
-        print(f"PRINTING TUNE_RECONSTRUCTION")
         print(f"Number of samples in train dataset: {len(train_dataloader.dataset)}")
-        print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
-        # print(f"train_dataloader: {train_dataloader}")
-        # print(f"train_dataloader.dataset: {train_dataloader.dataset}")
-        # # extract the data from the dataset
-        # print(f"train_dataloader.dataset.cat_all[0].shape: {train_dataloader.dataset.cat_all[0].shape}")
-        # print(f"train_dataloader.dataset.con_all[0].shape: {train_dataloader.dataset.con_all[0].shape}")
-        # print(f"train_dataloader.dataset.cat_shapes: {train_dataloader.dataset.cat_shapes}")
-        # print(f"train_dataloader.dataset.con_shapes: {train_dataloader.dataset.con_shapes}")
-        # # extract total number of samples in train_dataloader
-        # print(f"train_dataloader.dataset.cat_all[0].shape[0]: {train_dataloader.dataset.cat_all[0].shape[0]}")
-        # print(f"train_dataloader.dataset.con_all[0].shape[0]: {train_dataloader.dataset.con_all[0].shape[0]}")
-        # print(f"test_dataloader: {test_dataloader}")
-        # print(f"test_dataloader.dataset: {test_dataloader.dataset}")
-        # # extract the data from the dataset
-        # print(f"test_dataloader.dataset.cat_all[0].shape: {test_dataloader.dataset.cat_all[0].shape}")
-        # print(f"test_dataloader.dataset.con_all[0].shape: {test_dataloader.dataset.con_all[0].shape}")
-        # print(f"test_dataloader.dataset.cat_shapes: {test_dataloader.dataset.cat_shapes}")
-        # print(f"test_dataloader.dataset.con_shapes: {test_dataloader.dataset.con_shapes}")
-        # # extract total number of samples in test_dataloader
-        # print(f"test_dataloader.dataset.cat_all[0].shape[0]: {test_dataloader.dataset.cat_all[0].shape[0]}")
-        # print(f"test_dataloader.dataset.con_all[0].shape[0]: {test_dataloader.dataset.con_all[0].shape[0]}")
+        # 4800
+        # print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
+
 
 
         train_dataset = cast(MOVEDataset, train_dataloader.dataset)
@@ -320,26 +291,31 @@ def tune_model(config: MOVEConfig) -> float:
                 test_likelihood = test_likelihood.item()
 
                 label_dict = {key: value for key, value in label}
-                # df_test_tmp = pd.DataFrame({"job_num": job_num, **dict(label_dict), "test_likelihood": test_likelihood})
+
                 df_test_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "test_likelihood": test_likelihood}])
 
                 df_test_likelihood = pd.concat([df_test_likelihood, df_test_tmp])
-            #     record_test_likelihood = _get_record(
-            #     test_likelihood,
-            #     job_num=job_num,
-            #     **dict(label),
-            #     metric="test_likelihood"
-            # )
-                # records_test_likelihood.append(record_test_likelihood)
 
 
             
             con_recons = np.split(con_recons, np.cumsum(model.continuous_shapes[:-1]), axis=1)
+
+
+            scores = []
+            labels = config.data.categorical_names + config.data.continuous_names
             for cat, cat_recon, dataset_name in zip(
                 cat_list, cat_recons, config.data.categorical_names
             ):
+
+                print(f"cat: {cat}")
+                print(f"cat.shape: {cat.shape}")
+                print(f"cat[mask]: {cat[mask]}")
+                print(f"cat[mask].shape: {cat[mask].shape}")
+                print(f"cat_recon: {cat_recon}")
+                print(f"cat_recon.shape: {cat_recon.shape}")
                 logger.debug(f"Computing accuracy: '{dataset_name}'")
                 accuracy = calculate_accuracy(cat[mask], cat_recon)
+                scores.append(accuracy)
                 record = _get_record(
                     accuracy,
                     job_num=job_num,
@@ -353,7 +329,16 @@ def tune_model(config: MOVEConfig) -> float:
                 con_list, con_recons, config.data.continuous_names
             ):
                 logger.debug(f"Computing cosine similarity: '{dataset_name}'")
+                print(f"con: {con}")
+                print(f"con.shape: {con.shape}")
+                print(f"con[mask]: {con[mask]}")
+                print(f"con[mask].shape: {con[mask].shape}")
+                print(f"con_recon: {con_recon}")
+                print(f"con_recon.shape: {con_recon.shape}")
+
                 cosine_sim = calculate_cosine_similarity(con[mask], con_recon)
+                scores.append(cosine_sim)
+
                 record = _get_record(
                     cosine_sim,
                     job_num=job_num,
@@ -365,6 +350,8 @@ def tune_model(config: MOVEConfig) -> float:
                 records.append(record)
 
 
+        fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
+        fig_df.to_csv(output_path / f"{job_num}_reconstruction_scores.tsv", sep="\t")
         logger.info("Writing results")
         df_path = output_path / "reconstruction_stats.tsv"
         header = not df_path.exists()
