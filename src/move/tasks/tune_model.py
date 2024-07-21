@@ -205,16 +205,16 @@ def tune_model(config: MOVEConfig) -> float:
         print(f"train_dataloader: {train_dataloader}")
         print(f"train_dataloader.dataset: {train_dataloader.dataset}")
         # extract the data from the dataset
-        print(f"train_dataloader.dataset.cat_all: {train_dataloader.dataset.cat_all}")
-        print(f"train_dataloader.dataset.con_all: {train_dataloader.dataset.con_all}")
+        print(f"train_dataloader.dataset.cat_all[0].shape: {train_dataloader.dataset.cat_all[0].shape}")
+        print(f"train_dataloader.dataset.con_all[0].shape: {train_dataloader.dataset.con_all[0].shape}")
         print(f"train_dataloader.dataset.cat_shapes: {train_dataloader.dataset.cat_shapes}")
         print(f"train_dataloader.dataset.con_shapes: {train_dataloader.dataset.con_shapes}")
 
         print(f"test_dataloader: {test_dataloader}")
         print(f"test_dataloader.dataset: {test_dataloader.dataset}")
         # extract the data from the dataset
-        print(f"test_dataloader.dataset.cat_all: {test_dataloader.dataset.cat_all}")
-        print(f"test_dataloader.dataset.con_all: {test_dataloader.dataset.con_all}")
+        print(f"test_dataloader.dataset.cat_all[0].shape: {test_dataloader.dataset.cat_all[0].shape}")
+        print(f"test_dataloader.dataset.con_all[0].shape: {test_dataloader.dataset.con_all[0].shape}")
         print(f"test_dataloader.dataset.cat_shapes: {test_dataloader.dataset.cat_shapes}")
         print(f"test_dataloader.dataset.con_shapes: {test_dataloader.dataset.con_shapes}")
 
