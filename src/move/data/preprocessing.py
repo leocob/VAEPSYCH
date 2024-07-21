@@ -144,9 +144,19 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
         index=x_test.index
     )
 
+    print(f"Printing number of zeros per column BEFORE NA -> 0 for {input_config_name}")
+    # print their sum, so how many values are 0
+    print(f"Sum of zeros in scaled_x_train: {np.sum(scaled_x_train == 0, axis=0)}")
+    print(f"Sum of zeros in scaled_x_test: {np.sum(scaled_x_test == 0, axis=0)}")
+
     # Replace NaN values with 0
     scaled_x_train[np.isnan(scaled_x_train)] = 0
     scaled_x_test[np.isnan(scaled_x_test)] = 0
+
+    print(f"Printing number of zeros per column AFTER NA -> 0 for {input_config_name}")
+    # print their sum, so how many values are 0
+    print(f"Sum of zeros in scaled_x_train: {np.sum(scaled_x_train == 0, axis=0)}")
+    print(f"Sum of zeros in scaled_x_test: {np.sum(scaled_x_test == 0, axis=0)}")
 
     # Create a DataFrame with the same index as the original x
     scaled_x_df = pd.DataFrame(index=x_copy.index)
