@@ -24,7 +24,7 @@ class MOVEDataset(TensorDataset):
         con_shapes:
             list of tuples corresponding to number of features
             (N_variables) of each continuous class.
-
+    
     Raises:
         ValueError:
             Number of samples between categorical and continuous datasets must

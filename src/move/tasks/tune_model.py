@@ -174,10 +174,11 @@ def tune_model(config: MOVEConfig) -> float:
         if split_path.exists():
             split_mask: BoolArray = np.load(split_path)
         else:
-
-            num_samples = cat_list[0].shape[0] if cat_list else con_list[0].shape[0]
-            split_mask = split_samples(num_samples, 0.9)
-            np.save(split_path, split_mask)
+            # raise error
+            raise ValueError("Split mask not found")
+            # num_samples = cat_list[0].shape[0] if cat_list else con_list[0].shape[0]
+            # split_mask = split_samples(num_samples, 0.9)
+            # np.save(split_path, split_mask)
 
         # print(f"cat_list[0].shape[0]: {cat_list}")
         # print(f"con_list[0].shape[0]: {con_list}")
@@ -190,6 +191,8 @@ def tune_model(config: MOVEConfig) -> float:
             drop_last=True,
         )
 
+
+        # Here there's no split_mask. Am I sure it's selecting only the test samples?
         test_dataloader = make_dataloader(
             cat_list,
             con_list,
@@ -197,6 +200,15 @@ def tune_model(config: MOVEConfig) -> float:
             batch_size=task_config.batch_size,
             drop_last=False,
         )
+
+        print(f"PRINTING TUNE_RECONSTRUCTION")
+        print(f"train_dataloader: {train_dataloader}")
+        print(f"train_dataloader.dataset.shape: {train_dataloader.dataset.shape}")
+        print(f"train_dataloader.dataset: {train_dataloader.dataset}")
+
+        print(f"test_dataloader: {test_dataloader}")
+        print(f"test_dataloader.dataset.shape: {test_dataloader.dataset.shape}")
+        print(f"test_dataloader.dataset: {test_dataloader.dataset}")
 
         train_dataset = cast(MOVEDataset, train_dataloader.dataset)
 

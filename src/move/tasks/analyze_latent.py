@@ -130,6 +130,7 @@ def analyze_latent(config: MOVEConfig) -> None:
         model.to(device)
 
         # Here it's not the train_dataloader I think, it's the entire dataset?
+        # the same function in tune_model.py used the option "split_mask" for the train_dataloader
         train_dataloader = make_dataloader(
             cat_list,
             con_list,
@@ -137,20 +138,16 @@ def analyze_latent(config: MOVEConfig) -> None:
             batch_size=task_config.batch_size,
             drop_last=True,
         )
-        train_dataset = cast(MOVEDataset, train_dataloader.dataset)
-        print(f"train_dataset.cat_all.shape: {train_dataset.cat_all.shape}")
-        # print number of samples in train_dataloader
-        print(f"len(train_dataloader): {len(train_dataloader)}")
+        # train_dataset = cast(MOVEDataset, train_dataloader.dataset)
+        # print(f"train_dataset.cat_all.shape: {train_dataset.cat_all.shape}") # (6000, 328)
+        # This is the entire dataset, not the train dataset, but maybe they wanted it like this?
         output: TrainingLoopOutput = hydra.utils.call(
             task_config.training_loop,
             model=model,
             train_dataloader=train_dataloader,
             beta=task_config.model.beta,
         )
-        # TODO: changed this 14/07/2024 - 11:09
-        # But it's weird because it looks like it's not selecting epock_kldloss but then it is plotted...?
         losses = output[:-1]
-        # losses = output[:-3]
         torch.save(model.state_dict(), model_path)
         logger.info("Generating visualizations")
         logger.debug("Generating plot: loss curves")
@@ -263,10 +260,11 @@ def analyze_latent(config: MOVEConfig) -> None:
 
 
     con_recons = np.split(con_recons, np.cumsum(model.continuous_shapes[:-1]), axis=1)
-    logger.info("Computing reconstruction metrics on test set")
+    logger.info("Computing reconstruction metrics")
     scores = []
     labels = config.data.categorical_names + config.data.continuous_names
     for cat, cat_recon in zip(cat_list, cat_recons):
+        # in tune_model.py it's cat[mask]
         accuracy = calculate_accuracy(cat, cat_recon)
         scores.append(accuracy)
     for con, con_recon in zip(con_list, con_recons):
