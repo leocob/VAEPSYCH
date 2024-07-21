@@ -363,7 +363,7 @@ def tune_model(config: MOVEConfig) -> float:
 
         df_index = pd.Index(sample_names, name="sample")
         fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
-        fig_df.to_csv(output_path / f"{job_num}_reconstruction_scores.tsv", sep="\t")
+        fig_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
         logger.info("Writing results")
         df_path = output_path / "reconstruction_stats.tsv"
         header = not df_path.exists()
