@@ -203,11 +203,9 @@ def tune_model(config: MOVEConfig) -> float:
 
         print(f"PRINTING TUNE_RECONSTRUCTION")
         print(f"train_dataloader: {train_dataloader}")
-        print(f"train_dataloader.dataset.shape: {train_dataloader.dataset.shape}")
         print(f"train_dataloader.dataset: {train_dataloader.dataset}")
 
         print(f"test_dataloader: {test_dataloader}")
-        print(f"test_dataloader.dataset.shape: {test_dataloader.dataset.shape}")
         print(f"test_dataloader.dataset: {test_dataloader.dataset}")
 
         train_dataset = cast(MOVEDataset, train_dataloader.dataset)
