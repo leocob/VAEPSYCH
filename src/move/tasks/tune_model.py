@@ -349,21 +349,21 @@ def tune_model(config: MOVEConfig) -> float:
                 )
                 records.append(record)
 
-        raw_data_path = Path(config.data.raw_data_path)
-        # sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
-        train_test_splits_file_name = Path(config.data.train_test_splits_file_name)
-        train_test_path = raw_data_path / train_test_splits_file_name
-        # print(train_test_path)
+            raw_data_path = Path(config.data.raw_data_path)
+            # sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
+            train_test_splits_file_name = Path(config.data.train_test_splits_file_name)
+            train_test_path = raw_data_path / train_test_splits_file_name
+            # print(train_test_path)
 
-        train_test_splits = pd.read_csv(train_test_path, sep = "\t")
-        # sample_names_df = train_test_splits["Split"] == split_name
-        sample_names_df = train_test_splits.query("Split == @split_name")
-        sample_names = sample_names_df["ID"].tolist()
-        print(f"{split_name} len(sample_names): {len(sample_names)}")
+            train_test_splits = pd.read_csv(train_test_path, sep = "\t")
+            # sample_names_df = train_test_splits["Split"] == split_name
+            sample_names_df = train_test_splits.query("Split == @split_name")
+            sample_names = sample_names_df["ID"].tolist()
+            print(f"{split_name} len(sample_names): {len(sample_names)}")
 
-        df_index = pd.Index(sample_names, name="sample")
-        fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
-        fig_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
+            df_index = pd.Index(sample_names, name="sample")
+            fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
+            fig_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
         logger.info("Writing results")
         df_path = output_path / "reconstruction_stats.tsv"
         header = not df_path.exists()
