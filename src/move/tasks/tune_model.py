@@ -340,14 +340,14 @@ def tune_model(config: MOVEConfig) -> float:
                 cosine_sim = calculate_cosine_similarity(con[mask], con_recon)
                 scores.append(cosine_sim)
 
-                print(f"cosine_sim.shape: {cosine_sim.shape}")
+                print(f"{dataset_name} size cosine_sim BEFORE removing the 0: {cosine_sim.shape}")
                 # print(f"cosine_sim: {cosine_sim}")
 
                 # cosine_sim is a list. Remove the values that are 0
                 cosine_sim = [i for i in cosine_sim if i != 0]
 
                 # cosine_sim = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in cosine_sim]
-                print(f"len(cosine_sim): {len(cosine_sim)}")
+                print(f"{dataset_name} size cosine_sim AFTER removing the 0: {len(cosine_sim)}")
                 # print(f"cosine_sim: {cosine_sim}")
 
                 record = _get_record(
