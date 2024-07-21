@@ -367,7 +367,7 @@ def tune_model(config: MOVEConfig) -> float:
             fig_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
 
             # Maybe the bad performance of age at diagnosis in tune_reconstruction and not in analyze_latent is due to the fact that the scores get put to 0 in the analyze_latent function?
-            fig = viz.plot_metrics_boxplot(plot_scores, labels)
+            fig = viz.plot_metrics_boxplot(scores, labels)
             fig_path = str(output_path / f"{job_num}_{split_name}_nozeroscore_reconstruction_metrics.png")
             fig.savefig(fig_path, bbox_inches="tight")
 
