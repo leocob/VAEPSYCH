@@ -152,6 +152,10 @@ def read_tsv(
     
     logger = get_logger(__name__)
     data = pd.read_csv(path, index_col=0, sep="\t")
+    dataset_name = basename(path)
+    # remove extension
+    dataset_name = dataset_name.split(".")[0]
+    interim_path = Path(config.data.interim_data_path)
     # print("Before filtering in read_tsv function")
     # print(data)
     # print(f"data.query(index == 610): {data.query('index == 610')}")
@@ -178,13 +182,13 @@ def read_tsv(
         # transform index to list
         columns_to_keep = columns_to_keep.tolist()
         # write list to file
-        with open(f"{path}_features_kept_more_than_{p}.txt", "w") as file:
+        with open(interim_path / f"{dataset_name}_features_kept_more_than_{p}.txt", "w") as file:
             for column in columns_to_keep:
                 file.write(f"{column}\n")
 
 
         columns_to_remove = columns_removed.tolist()
-        with open(f"{path}_features_removed_less_than_{p}.txt", "w") as file:
+        with open(interim_path / f"{dataset_name}_features_removed_less_than_{p}.txt", "w") as file:
             for column in columns_to_remove:
                 file.write(f"{column}\n")
 
@@ -201,12 +205,12 @@ def read_tsv(
 
         columns_removed = columns_removed.tolist()
 
-        with open(f"{path}_features_removed_less_than_{p}.txt", "w") as file:
+        with open(interim_path / f"{dataset_name}_features_removed_less_than_{p}.txt", "w") as file:
             for column in columns_removed:
                 file.write(f"{column}\n")
 
         if columns_to_keep.empty:
-            logger.warning(f"No columns with more than {p} non-NAs in dataset {path}")
+            logger.warning(f"No columns with more than {p} non-NAs in dataset {dataset_name}")
             return None, None, None
 
         else:
