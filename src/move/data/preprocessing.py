@@ -145,12 +145,8 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     )
 
     # Replace NaN values with 0
-    # scaled_x_train[np.isnan(scaled_x_train)] = 0
-    # scaled_x_test[np.isnan(scaled_x_test)] = 0
-
-    # TODO: trial 21/07/2024 - 15:40 to differentiate between NAs and 0s
-    scaled_x_train[np.isnan(scaled_x_train)] = float('nan')
-    scaled_x_test[np.isnan(scaled_x_test)] = float('nan')
+    scaled_x_train[np.isnan(scaled_x_train)] = 0
+    scaled_x_test[np.isnan(scaled_x_test)] = 0
 
     # Create a DataFrame with the same index as the original x
     scaled_x_df = pd.DataFrame(index=x_copy.index)
