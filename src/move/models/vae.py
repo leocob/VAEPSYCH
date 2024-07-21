@@ -641,12 +641,8 @@ class VAE(nn.Module):
         cat_recons = [[] for _ in range(len(self.categorical_shapes))]
         con_recons = []
         for batch in dataloader:
-            print(f"batch: {batch}")
             batch = self._validate_batch(batch)
-            print(f"batch: {batch}")
             cat_recon, con_recon, *_ = self(batch)
-            print(f"cat_recon: {cat_recon}")
-            print(f"con_recon: {con_recon}")
             if cat_recon is not None:
                 for i, cat in enumerate(cat_recon):
                     cat_recons[i].append(torch.argmax(cat, dim=1))

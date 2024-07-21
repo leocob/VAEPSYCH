@@ -351,7 +351,7 @@ def tune_model(config: MOVEConfig) -> float:
 
         raw_data_path = Path(config.data.raw_data_path)
         # sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
-        train_test_splits_file_name = Path(config.train_test_splits_file_name)
+        train_test_splits_file_name = Path(config.data.train_test_splits_file_name)
         train_test_path = raw_data_path / train_test_splits_file_name
         print(train_test_path)
 
