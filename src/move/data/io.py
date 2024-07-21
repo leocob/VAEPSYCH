@@ -157,7 +157,8 @@ def read_tsv(
     dataset_name = basename(path)
     # remove extension
     dataset_name = dataset_name.split(".")[0]
-    interim_path = Path(MOVEConfig.data.interim_data_path)
+    config: MOVEConfig
+    interim_path = Path(config.data.interim_data_path)
     # print("Before filtering in read_tsv function")
     # print(data)
     # print(f"data.query(index == 610): {data.query('index == 610')}")
