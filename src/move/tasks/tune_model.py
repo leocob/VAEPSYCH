@@ -364,6 +364,19 @@ def tune_model(config: MOVEConfig) -> float:
             df_index = pd.Index(sample_names, name="sample")
             fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
             fig_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
+
+            # Maybe the bad performance of age at diagnosis in tune_reconstruction and not in analyze_latent is due to the fact that the scores get put to 0 in the analyze_latent function?
+            fig = viz.plot_metrics_boxplot(plot_scores, labels)
+            fig_path = str(output_path / f"{job_num}_{split_name}_nozeroscore_reconstruction_metrics.png")
+            fig.savefig(fig_path, bbox_inches="tight")
+
+            plot_scores = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in scores]
+            fig = viz.plot_metrics_boxplot(plot_scores, labels)
+            fig_path = str(output_path / f"{job_num}_{split_name}_zeroscore_reconstruction_metrics.png")
+            fig.savefig(fig_path, bbox_inches="tight")
+
+
+
         logger.info("Writing results")
         df_path = output_path / "reconstruction_stats.tsv"
         header = not df_path.exists()
