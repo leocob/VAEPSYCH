@@ -137,7 +137,7 @@ def read_names(path: PathLike) -> list[str]:
 
 
 def read_tsv(
-    path: PathLike, sample_names: Optional[list[str]] = None, input_type: str = "categorical", p: float = 0
+    path: PathLike, sample_names: Optional[list[str]] = None, input_type: str = "categorical", p: float = 0, config: DataConfig = None
 ) -> tuple[ObjectArray, np.ndarray]:
     """Read a dataset from a TSV file. The TSV is expected to have an index
     column (0th index).
@@ -157,7 +157,7 @@ def read_tsv(
     dataset_name = basename(path)
     # remove extension
     dataset_name = dataset_name.split(".")[0]
-    config: MOVEConfig
+
     interim_path = Path(config.data.interim_data_path)
     # print("Before filtering in read_tsv function")
     # print(data)
