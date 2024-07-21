@@ -160,10 +160,10 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     scaled_x_train[np.isnan(scaled_x_train)] = 0
     scaled_x_test[np.isnan(scaled_x_test)] = 0
 
-    print(f"Printing number of zeros per column AFTER NA -> 0 for {input_config_name}")
-    # print their sum, so how many values are 0
-    print(f"Sum of zeros in scaled_x_train: {np.sum(scaled_x_train.values == 0, axis=0)}")
-    print(f"Sum of zeros in scaled_x_test: {np.sum(scaled_x_test.values == 0, axis=0)}")
+    # print(f"Printing number of zeros per column AFTER NA -> 0 for {input_config_name}")
+    # # print their sum, so how many values are 0
+    # print(f"Sum of zeros in scaled_x_train: {np.sum(scaled_x_train.values == 0, axis=0)}")
+    # print(f"Sum of zeros in scaled_x_test: {np.sum(scaled_x_test.values == 0, axis=0)}")
 
     n_0_train = np.sum(scaled_x_train == 0)
     n_0_test = np.sum(scaled_x_test == 0)
