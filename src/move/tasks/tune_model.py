@@ -351,7 +351,12 @@ def tune_model(config: MOVEConfig) -> float:
 
         raw_data_path = Path(config.data.raw_data_path)
         sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
-        print(f"sample_names: {sample_names}")
+
+        # get sample_names from dataloader
+        sample_names = dataloader.dataset.cat_all
+        print(f"len sample_names: {len(sample_names)}")
+        print(f"sample_names = {sample_names}")
+
         df_index = pd.Index(sample_names, name="sample")
         fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
         fig_df.to_csv(output_path / f"{job_num}_reconstruction_scores.tsv", sep="\t")

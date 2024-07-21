@@ -83,7 +83,7 @@ def analyze_latent(config: MOVEConfig) -> None:
 
     logger.debug("Reading data")
     sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
-    print(f"sample_names: {sample_names}")
+    print(f"sample_names length: {len(sample_names)}")
     cat_list, cat_names, con_list, con_names = io.load_preprocessed_data(
         interim_path,
         config.data.categorical_names,
