@@ -14,6 +14,7 @@ from hydra.types import RunMode
 from matplotlib.cbook import boxplot_stats
 from numpy.typing import ArrayLike
 from omegaconf import OmegaConf
+import move.visualization as viz
 from sklearn.metrics.pairwise import cosine_similarity
 
 from move.analysis.metrics import (
