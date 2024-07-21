@@ -357,6 +357,7 @@ def tune_model(config: MOVEConfig) -> float:
 
         train_test_splits = pd.read_csv(train_test_path, sep = "\t")
         sample_names_df = train_test_splits["Split"] == split_name
+        print(f"sample_names_df: {sample_names_df}")
         sample_names = sample_names_df["ID"].tolist()
 
         print(f"len sample_names: {len(sample_names)}")
