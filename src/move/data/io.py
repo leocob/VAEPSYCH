@@ -106,11 +106,11 @@ def load_preprocessed_data(
         var_names_not_kept = [name for i, name in enumerate(var_names) if not keep[i]]
         var_names = [name for i, name in enumerate(var_names) if keep[i]]
 
-        print(f"dataset_name: {dataset_name}")
-        print(f"data.shape: {data.shape}")
-        # print(f"data: {data}")
-        print(f"var_names: {var_names}")
-        print(f"var_names_not_kept: {var_names_not_kept}")
+        # print(f"dataset_name: {dataset_name}")
+        # print(f"data.shape: {data.shape}")
+        # # print(f"data: {data}")
+        # print(f"var_names: {var_names}")
+        # print(f"var_names_not_kept: {var_names_not_kept}")
         continuous_var_names.append(var_names)
 
     return (

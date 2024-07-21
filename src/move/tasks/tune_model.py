@@ -309,11 +309,11 @@ def tune_model(config: MOVEConfig) -> float:
             ):
 
                 # print(f"cat: {cat}")
-                print(f"cat.shape: {cat.shape}")
+                # print(f"cat.shape: {cat.shape}")
                 # print(f"cat[mask]: {cat[mask]}")
-                print(f"cat[mask].shape: {cat[mask].shape}")
+                # print(f"cat[mask].shape: {cat[mask].shape}")
                 # print(f"cat_recon: {cat_recon}")
-                print(f"cat_recon.shape: {cat_recon.shape}")
+                # print(f"cat_recon.shape: {cat_recon.shape}")
                 logger.debug(f"Computing accuracy: '{dataset_name}'")
                 accuracy = calculate_accuracy(cat[mask], cat_recon)
                 scores.append(accuracy)
@@ -342,6 +342,9 @@ def tune_model(config: MOVEConfig) -> float:
 
                 print(f"cosine_sim.shape: {cosine_sim.shape}")
                 print(f"cosine_sim: {cosine_sim}")
+                cosine_sim = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in cosine_sim]
+                print(f"cosine_sim.shape: {cosine_sim.shape}")
+                print(f"cosine_sim: {cosine_sim}")
 
                 record = _get_record(
                     cosine_sim,
@@ -363,7 +366,7 @@ def tune_model(config: MOVEConfig) -> float:
             # sample_names_df = train_test_splits["Split"] == split_name
             sample_names_df = train_test_splits.query("Split == @split_name")
             sample_names = sample_names_df["ID"].tolist()
-            print(f"{split_name} len(sample_names): {len(sample_names)}")
+            # print(f"{split_name} len(sample_names): {len(sample_names)}")
 
             df_index = pd.Index(sample_names, name="sample")
             fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
