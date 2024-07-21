@@ -18,6 +18,7 @@ import pandas as pd
 from omegaconf import DictConfig
 
 from move import HYDRA_VERSION_BASE, conf
+from move.conf.schema import AnalyzeLatentConfig, MOVEConfig
 from move.core.typing import BoolArray, FloatArray, ObjectArray, PathLike
 from move.core.logging import get_logger
 
