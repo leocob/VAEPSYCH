@@ -330,12 +330,21 @@ class VAE(nn.Module):
         batch_size = con_in.shape[0]
         total_shape = 0
         con_errors_list: list[torch.Tensor] = []
+
+        print(f"self.continuous_shapes: {self.continuous_shapes}")
         for s in self.continuous_shapes:
+            print(f"s: {s}")
+
             c_in = con_in[:, total_shape : (s + total_shape - 1)]
             c_re = con_out[:, total_shape : (s + total_shape - 1)]
+            # error is the MSE loss
             error = loss(c_re, c_in) / batch_size
             con_errors_list.append(error)
             total_shape += s
+
+        # con_errors_list is a list of MSE for each continuous dataset? But I want to have 
+        print(f"len(con_errors_list): {len(con_errors_list)}")
+        print(f"con_errors_list: {con_errors_list}")
 
         con_errors = torch.stack(con_errors_list)
         con_errors = con_errors / torch.Tensor(self.continuous_shapes).to(self.device)
@@ -343,6 +352,7 @@ class VAE(nn.Module):
             con_errors * torch.Tensor(self.continuous_weights).to(self.device)
         )
         return MSE
+
 
     # Reconstruction + KL divergence losses summed over all elements and batch
     def loss_function(
@@ -447,7 +457,9 @@ class VAE(nn.Module):
         epoch_sseloss = 0
         epoch_bceloss = 0
 
+        print(f"enumerate(train_loader): {enumerate(train_loader)}")
         for _, (cat, con) in enumerate(train_loader):
+
             # Move input to GPU if requested
             cat = cat.to(self.device)
             con = con.to(self.device)
@@ -471,6 +483,7 @@ class VAE(nn.Module):
             loss, bce, sse, kld = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_w
             )
+
             loss.backward()
 
             epoch_loss += loss.data.item()
