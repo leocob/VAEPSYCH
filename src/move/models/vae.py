@@ -348,10 +348,13 @@ class VAE(nn.Module):
 
         # con_errors_list is a list of MSE for each continuous dataset? But I want to have 
         # print(f"len(con_errors_list): {len(con_errors_list)}") # 9
-        print(f"con_errors_list: {con_errors_list}") # it's a tensor of 9 elements. 1 MSE for each continuous dataset?
+        # print(f"con_errors_list: {con_errors_list}") # it's a tensor of 9 elements. 1 MSE for each continuous dataset?
         # is it calculated across samples?
 
+        # Stack the 9 elements in a tensor
         con_errors = torch.stack(con_errors_list)
+        print(f"con_errors: {con_errors}")
+        # Divide each element of con_errors by the number of features in the dataset
         con_errors = con_errors / torch.Tensor(self.continuous_shapes).to(self.device)
         MSE = torch.sum(
             con_errors * torch.Tensor(self.continuous_weights).to(self.device)
