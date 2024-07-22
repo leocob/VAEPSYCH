@@ -388,7 +388,7 @@ def tune_model(config: MOVEConfig) -> float:
             # 4991 is the age_mental_behav size cosine_sim after removing the 0s
             scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
 
-            mse_scores_df = pd.DataFrame(dict(zip(labels, mse_scores)), index=df_index)
+            mse_scores_df = pd.DataFrame(dict(zip(config.data.continuous_names, mse_scores)), index=df_index)
             mse_scores_df = mse_scores_df.replace(np.nan, "NA")
             mse_scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_mse_scores.tsv", sep="\t")
 
