@@ -368,6 +368,28 @@ def tune_model(config: MOVEConfig) -> float:
                 )
                 records.append(record)
 
+                record_mse = _get_record(
+                    mse,
+                    job_num=job_num,
+                    **dict(label),
+                    metric="mse",
+                    dataset=dataset_name,
+                    split=split_name,
+                )
+
+                records.append(record_mse)
+
+                record_rmse = _get_record(
+                    rmse,
+                    job_num=job_num,
+                    **dict(label),
+                    metric="rmse",
+                    dataset=dataset_name,
+                    split=split_name,
+                )
+
+                records.append(record_rmse)
+
             raw_data_path = Path(config.data.raw_data_path)
             # sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
             train_test_splits_file_name = Path(config.data.train_test_splits_file_name)

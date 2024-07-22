@@ -100,7 +100,7 @@ def calculate_mse_rmse(
     # Equivalent to `np.diag(sklearn.metrics.pairwise.cosine_similarity(x, y))`
     # But can handle masked arrays
     mse_scores = np.mean((x - y)**2, axis=1)
-    rmse_scores = np.sqrt(mse_scores)
+    rmse_scores = np.sqrt(np.mean((x - y)**2, axis=1))
     # calculates a number per sample
     return np.ma.filled(mse_scores, np.nan), np.ma.filled(rmse_scores, np.nan)
 
