@@ -71,7 +71,7 @@ def calculate_cosine_similarity(
     return np.ma.filled(scores, np.nan)
 
 
-def calculate_mse_masked(
+def calculate_mse_rmse(
     original_input: FloatArray, reconstruction: FloatArray
 ) -> FloatArray:
     """Compute cosine similarity per sample.
@@ -100,8 +100,9 @@ def calculate_mse_masked(
     # Equivalent to `np.diag(sklearn.metrics.pairwise.cosine_similarity(x, y))`
     # But can handle masked arrays
     mse_scores = np.mean((x - y)**2, axis=1)
+    rmse_scores = np.sqrt(mse_scores)
     # calculates a number per sample
-    return np.ma.filled(mse_scores, np.nan)
+    return np.ma.filled(mse_scores, np.nan), np.ma.filled(rmse_scores, np.nan)
 
 
 def norm(x: np.ma.MaskedArray, axis: int = 1) -> np.ma.MaskedArray:

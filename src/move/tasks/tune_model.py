@@ -305,6 +305,7 @@ def tune_model(config: MOVEConfig) -> float:
 
             scores = []
             mse_scores = []
+            rmse_scores = []
             labels = config.data.categorical_names + config.data.continuous_names
             for cat, cat_recon, dataset_name in zip(
                 cat_list, cat_recons, config.data.categorical_names
@@ -340,7 +341,7 @@ def tune_model(config: MOVEConfig) -> float:
                 # print(f"con_recon.shape: {con_recon.shape}")
 
                 cosine_sim = calculate_cosine_similarity(con[mask], con_recon)
-                mse = calculate_mse_masked(con[mask], con_recon)
+                mse, rmse = calculate_mse_rmse(con[mask], con_recon)
 
 
                 print(f"{dataset_name} size cosine_sim BEFORE removing the 0: {cosine_sim.shape}")
@@ -352,6 +353,7 @@ def tune_model(config: MOVEConfig) -> float:
 
                 scores.append(cosine_sim)
                 mse_scores.append(mse)
+                rmse_scores.append(rmse)
                 # cosine_sim = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in cosine_sim]
                 print(f"{dataset_name} size cosine_sim AFTER removing the 0: {len(cosine_sim)}")
                 # print(f"cosine_sim: {cosine_sim}")
@@ -392,6 +394,9 @@ def tune_model(config: MOVEConfig) -> float:
             mse_scores_df = mse_scores_df.replace(np.nan, "NA")
             mse_scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_mse_scores.tsv", sep="\t")
 
+            rmse_scores_df = pd.DataFrame(dict(zip(config.data.continuous_names, rmse_scores)), index=df_index)
+            rmse_scores_df = rmse_scores_df.replace(np.nan, "NA")
+            rmse_scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_rmse_scores.tsv", sep="\t")
 
             # Maybe the bad performance of age at diagnosis in tune_reconstruction and not in analyze_latent is due to the fact that the scores get put to 0 in the analyze_latent function?
             # fig = viz.plot_metrics_boxplot(scores, labels)
