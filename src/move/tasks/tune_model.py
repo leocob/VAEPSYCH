@@ -176,7 +176,9 @@ def tune_model(config: MOVEConfig) -> float:
     ):
         split_path = interim_path / "split_mask.npy"
         scores_folder = output_path / "rec_scores"
+        #create the directory
         scores_folder.mkdir(exist_ok=True, parents=True)
+
         if split_path.exists():
             split_mask: BoolArray = np.load(split_path)
         else:
@@ -418,15 +420,15 @@ def tune_model(config: MOVEConfig) -> float:
             # length of values (4991) doesn't match length of index (8799)
             # 8799 is the training set
             # 4991 is the age_mental_behav size cosine_sim after removing the 0s
-            scores_df.to_csv(output_path / scores_folder / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
+            scores_df.to_csv(scores_folder / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
 
             mse_scores_df = pd.DataFrame(dict(zip(config.data.continuous_names, mse_scores)), index=df_index)
             mse_scores_df = mse_scores_df.replace(np.nan, "NA")
-            mse_scores_df.to_csv(output_path / scores_folder / f"{job_num}_{split_name}_reconstruction_mse_scores.tsv", sep="\t")
+            mse_scores_df.to_csv(scores_folder / f"{job_num}_{split_name}_reconstruction_mse_scores.tsv", sep="\t")
 
             rmse_scores_df = pd.DataFrame(dict(zip(config.data.continuous_names, rmse_scores)), index=df_index)
             rmse_scores_df = rmse_scores_df.replace(np.nan, "NA")
-            rmse_scores_df.to_csv(output_path / scores_folder / f"{job_num}_{split_name}_reconstruction_rmse_scores.tsv", sep="\t")
+            rmse_scores_df.to_csv(scores_folder / f"{job_num}_{split_name}_reconstruction_rmse_scores.tsv", sep="\t")
 
             # Maybe the bad performance of age at diagnosis in tune_reconstruction and not in analyze_latent is due to the fact that the scores get put to 0 in the analyze_latent function?
             # fig = viz.plot_metrics_boxplot(scores, labels)
