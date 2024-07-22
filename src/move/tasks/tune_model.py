@@ -352,7 +352,7 @@ def tune_model(config: MOVEConfig) -> float:
                 # mse = [i for i in mse if i != -9]
 
 
-                cosine_sim_for_record = [i for i in cosine_sim if i != np.nan]
+                cosine_sim_for_record = [i for i in cosine_sim if not np.isnan(i)]
 
                 scores.append(cosine_sim)
                 mse_scores.append(mse)
