@@ -175,6 +175,8 @@ def tune_model(config: MOVEConfig) -> float:
         task_config: TuneModelReconstructionConfig,
     ):
         split_path = interim_path / "split_mask.npy"
+        scores_folder = output_path / "rec_scores"
+        scores_folder.mkdir(exist_ok=True, parents=True)
         if split_path.exists():
             split_mask: BoolArray = np.load(split_path)
         else:
