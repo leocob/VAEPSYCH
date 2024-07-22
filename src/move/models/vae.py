@@ -465,8 +465,10 @@ class VAE(nn.Module):
         epoch_sseloss = 0
         epoch_bceloss = 0
 
-        print(f"enumerate(train_loader): {enumerate(train_loader)}")
-        for _, (cat, con) in enumerate(train_loader):
+        # show all the elements of train_loader
+        for index, (cat, con) in enumerate(train_loader):
+               # Use the index value if needed
+            print(f"Index: {index}, Category: {cat}, Content: {con}")
 
             # Move input to GPU if requested
             cat = cat.to(self.device)
