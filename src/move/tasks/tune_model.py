@@ -351,6 +351,9 @@ def tune_model(config: MOVEConfig) -> float:
                 # cosine_sim = [i for i in cosine_sim if i != -9]
                 # mse = [i for i in mse if i != -9]
 
+
+                cosine_sim_for_record = [i for i in cosine_sim if i != np.nan]
+
                 scores.append(cosine_sim)
                 mse_scores.append(mse)
                 rmse_scores.append(rmse)
@@ -359,7 +362,7 @@ def tune_model(config: MOVEConfig) -> float:
                 # print(f"cosine_sim: {cosine_sim}")
 
                 record = _get_record(
-                    cosine_sim,
+                    cosine_sim_for_record,
                     job_num=job_num,
                     **dict(label),
                     metric="cosine_similarity",
