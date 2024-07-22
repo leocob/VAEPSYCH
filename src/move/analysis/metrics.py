@@ -68,7 +68,7 @@ def calculate_cosine_similarity(
     # But can handle masked arrays
     scores = np.sum(x * y, axis=1) / (norm(x) * norm(y))
     # calculates a number per sample
-    return np.ma.filled(scores, 0)
+    return np.ma.filled(scores, np.nan)
 
 
 def calculate_mse_masked(
@@ -101,7 +101,7 @@ def calculate_mse_masked(
     # But can handle masked arrays
     mse_scores = np.mean((x - y)**2, axis=1)
     # calculates a number per sample
-    return np.ma.filled(mse_scores, -9)
+    return np.ma.filled(mse_scores, np.nan)
 
 
 def norm(x: np.ma.MaskedArray, axis: int = 1) -> np.ma.MaskedArray:

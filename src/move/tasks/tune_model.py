@@ -347,8 +347,8 @@ def tune_model(config: MOVEConfig) -> float:
                 # print(f"cosine_sim: {cosine_sim}")
 
                 # cosine_sim is a list. Remove the values that are 0
-                cosine_sim = [i for i in cosine_sim if i != 0]
-                mse = [i for i in mse if i != -9]
+                # cosine_sim = [i for i in cosine_sim if i != -9]
+                # mse = [i for i in mse if i != -9]
 
                 scores.append(cosine_sim)
                 mse_scores.append(mse)
@@ -380,10 +380,14 @@ def tune_model(config: MOVEConfig) -> float:
 
             df_index = pd.Index(sample_names, name="sample")
             scores_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
+
+            # length of values (4991) doesn't match length of index (8799)
+            # 8799 is the training set
+            # 4991 is the age_mental_behav size cosine_sim after removing the 0s
             scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
 
-            mse_scores_df = pd.DataFrame(dict(zip(labels, mse_scores)), index=df_index)
-            mse_scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_mse_scores.tsv", sep="\t")
+            # mse_scores_df = pd.DataFrame(dict(zip(labels, mse_scores)), index=df_index)
+            # mse_scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_mse_scores.tsv", sep="\t")
 
             # Maybe the bad performance of age at diagnosis in tune_reconstruction and not in analyze_latent is due to the fact that the scores get put to 0 in the analyze_latent function?
             # fig = viz.plot_metrics_boxplot(scores, labels)
