@@ -175,7 +175,7 @@ def tune_model(config: MOVEConfig) -> float:
         task_config: TuneModelReconstructionConfig,
     ):
         split_path = interim_path / "split_mask.npy"
-        scores_folder = output_path / "rec_scores"
+        scores_folder = output_path / "reconstruction_scores"
         #create the directory
         scores_folder.mkdir(exist_ok=True, parents=True)
 
