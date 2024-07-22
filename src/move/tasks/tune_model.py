@@ -20,7 +20,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from move.analysis.metrics import (
     calculate_accuracy,
     calculate_cosine_similarity,
-    calculate_mse_masked,
+    calculate_mse_rmse,
 )
 from move.conf.schema import (
     MOVEConfig,
