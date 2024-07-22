@@ -418,8 +418,6 @@ def tune_model(config: MOVEConfig) -> float:
             # length of values (4991) doesn't match length of index (8799)
             # 8799 is the training set
             # 4991 is the age_mental_behav size cosine_sim after removing the 0s
-            scores_folder = output_path / "rec_scores"
-            scores_folder.mkdir(exist_ok=True, parents=True)
             scores_df.to_csv(output_path / scores_folder / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
 
             mse_scores_df = pd.DataFrame(dict(zip(config.data.continuous_names, mse_scores)), index=df_index)
