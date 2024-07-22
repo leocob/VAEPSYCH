@@ -353,7 +353,10 @@ def tune_model(config: MOVEConfig) -> float:
 
 
                 cosine_sim_for_record = [i for i in cosine_sim if not np.isnan(i)]
+                mse_for_record = [i for i in mse if not np.isnan(i)]
+                rmse_for_record = [i for i in rmse if not np.isnan(i)]
 
+                # I cannot append these to the scores and then create the dataframe because it expects all the samples
                 scores.append(cosine_sim)
                 mse_scores.append(mse)
                 rmse_scores.append(rmse)
@@ -372,7 +375,7 @@ def tune_model(config: MOVEConfig) -> float:
                 records.append(record)
 
                 record_mse = _get_record(
-                    mse,
+                    mse_for_record,
                     job_num=job_num,
                     **dict(label),
                     metric="mse",
@@ -383,7 +386,7 @@ def tune_model(config: MOVEConfig) -> float:
                 records.append(record_mse)
 
                 record_rmse = _get_record(
-                    rmse,
+                    rmse_for_record,
                     job_num=job_num,
                     **dict(label),
                     metric="rmse",
