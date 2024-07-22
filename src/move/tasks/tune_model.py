@@ -20,6 +20,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from move.analysis.metrics import (
     calculate_accuracy,
     calculate_cosine_similarity,
+    calculate_mse_masked,
 )
 from move.conf.schema import (
     MOVEConfig,
@@ -303,6 +304,7 @@ def tune_model(config: MOVEConfig) -> float:
 
 
             scores = []
+            mse_scores = []
             labels = config.data.categorical_names + config.data.continuous_names
             for cat, cat_recon, dataset_name in zip(
                 cat_list, cat_recons, config.data.categorical_names
@@ -338,6 +340,7 @@ def tune_model(config: MOVEConfig) -> float:
                 # print(f"con_recon.shape: {con_recon.shape}")
 
                 cosine_sim = calculate_cosine_similarity(con[mask], con_recon)
+                mse = calculate_mse_masked(con[mask], con_recon)
 
 
                 print(f"{dataset_name} size cosine_sim BEFORE removing the 0: {cosine_sim.shape}")
@@ -345,8 +348,10 @@ def tune_model(config: MOVEConfig) -> float:
 
                 # cosine_sim is a list. Remove the values that are 0
                 cosine_sim = [i for i in cosine_sim if i != 0]
+                mse = [i for i in mse if i != -9]
 
                 scores.append(cosine_sim)
+                mse_scores.append(mse)
                 # cosine_sim = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in cosine_sim]
                 print(f"{dataset_name} size cosine_sim AFTER removing the 0: {len(cosine_sim)}")
                 # print(f"cosine_sim: {cosine_sim}")
@@ -374,18 +379,21 @@ def tune_model(config: MOVEConfig) -> float:
             # print(f"{split_name} len(sample_names): {len(sample_names)}")
 
             df_index = pd.Index(sample_names, name="sample")
-            fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
-            fig_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
+            scores_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
+            scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_scores.tsv", sep="\t")
+
+            mse_scores_df = pd.DataFrame(dict(zip(labels, mse_scores)), index=df_index)
+            mse_scores_df.to_csv(output_path / f"{job_num}_{split_name}_reconstruction_mse_scores.tsv", sep="\t")
 
             # Maybe the bad performance of age at diagnosis in tune_reconstruction and not in analyze_latent is due to the fact that the scores get put to 0 in the analyze_latent function?
-            fig = viz.plot_metrics_boxplot(scores, labels)
-            fig_path = str(output_path / f"{job_num}_{split_name}_nozeroscore_reconstruction_metrics.png")
-            fig.savefig(fig_path, bbox_inches="tight")
+            # fig = viz.plot_metrics_boxplot(scores, labels)
+            # fig_path = str(output_path / f"{job_num}_{split_name}_nozeroscore_reconstruction_metrics.png")
+            # fig.savefig(fig_path, bbox_inches="tight")
 
-            plot_scores = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in scores]
-            fig = viz.plot_metrics_boxplot(plot_scores, labels)
-            fig_path = str(output_path / f"{job_num}_{split_name}_zeroscore_reconstruction_metrics.png")
-            fig.savefig(fig_path, bbox_inches="tight")
+            # plot_scores = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in scores]
+            # fig = viz.plot_metrics_boxplot(plot_scores, labels)
+            # fig_path = str(output_path / f"{job_num}_{split_name}_zeroscore_reconstruction_metrics.png")
+            # fig.savefig(fig_path, bbox_inches="tight")
 
 
 

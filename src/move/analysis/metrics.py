@@ -71,6 +71,39 @@ def calculate_cosine_similarity(
     return np.ma.filled(scores, 0)
 
 
+def calculate_mse_masked(
+    original_input: FloatArray, reconstruction: FloatArray
+) -> FloatArray:
+    """Compute cosine similarity per sample.
+
+    Args:
+        original_input: Original values (2D array).
+        reconstruction: Reconstructed values (2D array).
+
+    Returns:
+        Array of similarities.
+    """
+    if any((original_input.ndim != 2, reconstruction.ndim != 2)):
+        raise ValueError("Expected both inputs to have two dimensions.")
+    if original_input.shape != reconstruction.shape:
+        raise ValueError(
+            f"Original input {original_input.shape} and reconstruction "
+            f"{reconstruction.shape} shapes do not match."
+        )
+
+    is_nan = original_input == 0
+    x = np.ma.masked_array(original_input, mask=is_nan)
+    y = np.ma.masked_array(reconstruction, mask=is_nan)
+
+    # Here I'm using a mask for the NAs, then I put them as 0, then the cosine similarity will be replaced by 0 and we do not use them for the plotting 
+
+    # Equivalent to `np.diag(sklearn.metrics.pairwise.cosine_similarity(x, y))`
+    # But can handle masked arrays
+    mse_scores = np.mean((x - y)**2, axis=1)
+    # calculates a number per sample
+    return np.ma.filled(mse_scores, -9)
+
+
 def norm(x: np.ma.MaskedArray, axis: int = 1) -> np.ma.MaskedArray:
     """Return Euclidean norm. This function is equivalent to `np.linalg.norm`,
     but it can handle masked arrays.

@@ -466,11 +466,12 @@ class VAE(nn.Module):
         epoch_bceloss = 0
 
         # show all the elements of train_loader
-        print(f"len(train_loader): {len(train_loader)}")
+        # print(f"len(train_loader): {len(train_loader)}") # 274
         for index, (cat, con) in enumerate(train_loader):
-               # Use the index value if needed
-            print(f"Index: {index}, Category: {cat.shape}, con.shape: {con.shape}")
-
+            # Use the index value if needed
+            # print(f"Index: {index}, Category: {cat.shape}, con.shape: {con.shape}")
+            # Where 32 is the batch size
+            # 1. Index: 0, Category: torch.Size([32, 328]), con.shape: torch.Size([32, 121])
             # Move input to GPU if requested
             cat = cat.to(self.device)
             con = con.to(self.device)
