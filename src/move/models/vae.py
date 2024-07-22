@@ -353,7 +353,7 @@ class VAE(nn.Module):
 
         # Stack the 9 elements in a tensor
         con_errors = torch.stack(con_errors_list)
-        print(f"con_errors: {con_errors}")
+        # print(f"con_errors: {con_errors}")
         # Divide each element of con_errors by the number of features in the dataset
         con_errors = con_errors / torch.Tensor(self.continuous_shapes).to(self.device)
         MSE = torch.sum(
