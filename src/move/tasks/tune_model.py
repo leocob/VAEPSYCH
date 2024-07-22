@@ -380,6 +380,8 @@ def tune_model(config: MOVEConfig) -> float:
 
             df_index = pd.Index(sample_names, name="sample")
             scores_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
+            # replace np.nan with NA
+            scores_df = scores_df.replace(np.nan, "NA")
 
             # length of values (4991) doesn't match length of index (8799)
             # 8799 is the training set
