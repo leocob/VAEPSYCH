@@ -331,9 +331,13 @@ class VAE(nn.Module):
         total_shape = 0
         con_errors_list: list[torch.Tensor] = []
 
-        print(f"self.continuous_shapes: {self.continuous_shapes}")
+        # print(f"self.continuous_shapes: {self.continuous_shapes}")
+        # self.continuous_shapes: [51, 10, 1, 1, 11, 9, 9, 21, 8]
+        # it's the number of features for each continuous dataset
         for s in self.continuous_shapes:
-            print(f"s: {s}")
+            # print(f"s: {s}")
+            # 51
+            # 10 etc
 
             c_in = con_in[:, total_shape : (s + total_shape - 1)]
             c_re = con_out[:, total_shape : (s + total_shape - 1)]
@@ -343,8 +347,9 @@ class VAE(nn.Module):
             total_shape += s
 
         # con_errors_list is a list of MSE for each continuous dataset? But I want to have 
-        print(f"len(con_errors_list): {len(con_errors_list)}")
-        print(f"con_errors_list: {con_errors_list}")
+        # print(f"len(con_errors_list): {len(con_errors_list)}") # 9
+        print(f"con_errors_list: {con_errors_list}") # it's a tensor of 9 elements. 1 MSE for each continuous dataset?
+        # is it calculated across samples?
 
         con_errors = torch.stack(con_errors_list)
         con_errors = con_errors / torch.Tensor(self.continuous_shapes).to(self.device)
