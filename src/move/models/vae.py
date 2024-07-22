@@ -466,7 +466,7 @@ class VAE(nn.Module):
         epoch_bceloss = 0
 
         # show all the elements of train_loader
-        print(f"train_loader.shape: {train_loader.shape}")
+        print(f"train_loader.size: {train_loader.size}")
         for index, (cat, con) in enumerate(train_loader):
                # Use the index value if needed
             print(f"Index: {index}, cat.shape: {cat.shape}, con.shape: {con.shape}")
