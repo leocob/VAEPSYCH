@@ -398,7 +398,6 @@ class VAE(nn.Module):
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
                 MSE = self.calculate_con_error(con_in, con_out, loss)
-                # MSE, con_errors = self.calculate_con_error(con_in, con_out, loss)
             else:
                 MSE = loss(con_out, con_in) / (batch_size * self.num_continuous)
                 # con_errors = []

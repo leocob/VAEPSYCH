@@ -62,10 +62,12 @@ def calculate_cosine_similarity(
     x = np.ma.masked_array(original_input, mask=is_nan)
     y = np.ma.masked_array(reconstruction, mask=is_nan)
 
+    # Here I'm using a mask for the NAs, then I put them as 0, then the cosine similarity will be replaced by 0 and we do not use them for the plotting 
+
     # Equivalent to `np.diag(sklearn.metrics.pairwise.cosine_similarity(x, y))`
     # But can handle masked arrays
     scores = np.sum(x * y, axis=1) / (norm(x) * norm(y))
-
+    # calculates a number per sample
     return np.ma.filled(scores, 0)
 
 

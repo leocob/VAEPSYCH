@@ -50,7 +50,7 @@ def encode_data(config: DataConfig):
     for dataset_name in config.categorical_names:
         logger.info(f"Encoding '{dataset_name}'")
         filepath = raw_data_path / f"{dataset_name}.tsv"
-        # TODO: implement change p from command line
+        # TODO: implement change p from command line and fix the handling of the NAs because it's wrong. It's removing a lot of features
         names, values, data = io.read_tsv(filepath, sample_names, input_type = "categorical", p = 0, interim_data_path = interim_data_path)
         values, mapping = preprocessing.one_hot_encode(values)
         mappings[dataset_name] = mapping
