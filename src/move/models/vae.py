@@ -415,6 +415,8 @@ class VAE(nn.Module):
 
             # 24/07/2024 - 15:07 Try to mask the missing data in the loss calculation
             mask_na = (con_in != 0)
+            print(f"mask_na.shape: {mask_na.shape}")
+            print(f"mask_na: {mask_na}")
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
                 # MSE = self.calculate_con_error(con_in, con_out, loss)
