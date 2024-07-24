@@ -360,7 +360,59 @@ class VAE(nn.Module):
             con_errors * torch.Tensor(self.continuous_weights).to(self.device)
         )
         return MSE
+       
+    def calculate_con_error_masked(
+        self, con_in: torch.Tensor, con_out: torch.Tensor, loss: Callable[[torch.Tensor, torch.Tensor], torch.Tensor], mask: numpy.ndarray,
+    ) -> torch.Tensor:
+        """
+        Calculates errors (MSE) for continuous data reconstructions
 
+        Args:
+            con_in: input continuous data
+            con_out: reconstructions of continuous data
+            loss: loss function
+            mask: boolean mask for non-missing data
+
+        Returns:
+            MSE loss
+        """
+        batch_size = con_in.shape[0]
+        total_shape = 0
+        con_errors_list: list[torch.Tensor] = []
+
+        # print(f"self.continuous_shapes: {self.continuous_shapes}")
+        # self.continuous_shapes: [51, 10, 1, 1, 11, 9, 9, 21, 8]
+        # it's the number of features for each continuous dataset
+        for s in self.continuous_shapes:
+            # print(f"s: {s}")
+            # 51
+            # 10 etc
+
+            c_in = con_in[:, total_shape : (s + total_shape - 1)]
+            c_re = con_out[:, total_shape : (s + total_shape - 1)]
+            c_mask = mask[:, total_shape : (total_shape + s)]
+            # error is the MSE loss
+            valid_elements = c_mask.sum()
+            if valid_elements > 0:
+                error = loss(c_re[c_mask], c_in[c_mask]) / valid_elements
+            else:
+                error = torch.tensor(0.0, device=self.device)
+            con_errors_list.append(error)
+            total_shape += s
+
+        # con_errors_list is a list of MSE for each continuous dataset? But I want to have 
+        # print(f"len(con_errors_list): {len(con_errors_list)}") # 9
+        # print(f"con_errors_list: {con_errors_list}") # it's a tensor of 9 elements. 1 MSE for each continuous dataset?
+        # is it calculated across samples?
+
+        # Stack the 9 elements in a tensor
+        con_errors = torch.stack(con_errors_list)
+        # print(f"con_errors: {con_errors}")
+        # Divide each element of con_errors by the number of features in the dataset
+        con_errors = con_errors / torch.Tensor(self.continuous_shapes).to(self.device)
+        MSE = torch.sum(con_errors * torch.Tensor(self.continuous_weights).to(self.device))
+        
+        return MSE
 
     # Reconstruction + KL divergence losses summed over all elements and batch
     def loss_function(
@@ -412,12 +464,16 @@ class VAE(nn.Module):
             loss = nn.MSELoss(reduction="sum")
             # set missing data to 0 to remove any loss these would provide
             con_out[con_in == 0] = 0
-            
+
+            # 24/07/2024 - 15:59
+            mask_na = (con_in != 0)
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
-                MSE = self.calculate_con_error(con_in, con_out, loss)
+                MSE = self.calculate_con_error_masked(con_in, con_out, loss, mask_na)
             else:
-                MSE = loss(con_out, con_in) / (batch_size * self.num_continuous)
+                raise ValueError("Continuous weights must be provided")
+                # MSE = self.calculate_con_error(con_in, con_out, loss)
+                # MSE = loss(con_out, con_in) / (batch_size * self.num_continuous)
                 # con_errors = []
 
         # see Appendix B from VAE paper:
