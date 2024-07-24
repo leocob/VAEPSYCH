@@ -135,8 +135,7 @@ def tune_model(config: MOVEConfig) -> float:
             task_config.training_loop,
             model=model,
             train_dataloader=train_dataloader,
-            beta=task_config.model.beta,
-            num_hidden=task_config.model.num_hidden
+            beta=task_config.model.beta
             )
 
             model.eval()
