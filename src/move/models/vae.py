@@ -6,6 +6,7 @@ from typing import Optional, Callable
 import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
+import numpy
 
 from move.core.typing import FloatArray, IntArray
 
