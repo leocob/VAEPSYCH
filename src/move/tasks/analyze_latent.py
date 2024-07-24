@@ -280,6 +280,7 @@ def analyze_latent(config: MOVEConfig) -> None:
     fig_path = str(output_path / "reconstruction_metrics.png")
     fig.savefig(fig_path, bbox_inches="tight")
     fig_df = pd.DataFrame(dict(zip(labels, scores)), index=df_index)
+    fig_df = fig_df.replace(np.nan, "NA")
     fig_df.to_csv(output_path / "reconstruction_metrics.tsv", sep="\t")
 
     logger.info("Computing feature importance")
