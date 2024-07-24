@@ -291,14 +291,13 @@ def tune_model(config: MOVEConfig) -> float:
 
             # if mask is test, I can get the test_likelihood
             if split_name == "test":
-                latent, latent_var, cat_recon, cat_class, con_recon, test_loss, test_likelihood = model.latent(dataloader, kld_weight=1)
+                latent, *_, test_likelihood = model.latent(dataloader, kld_weight=1)
                 # convert test_likelihood to number
-                test_loss = test_loss.item()
                 test_likelihood = test_likelihood.item()
 
                 label_dict = {key: value for key, value in label}
 
-                df_test_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "test_likelihood": test_likelihood, "test_loss": test_loss}])
+                df_test_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "test_likelihood": test_likelihood}])
 
                 df_test_likelihood = pd.concat([df_test_likelihood, df_test_tmp])
 
