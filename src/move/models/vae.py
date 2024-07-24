@@ -391,7 +391,8 @@ class VAE(nn.Module):
 
             c_in = con_in[:, total_shape : (s + total_shape - 1)]
             c_re = con_out[:, total_shape : (s + total_shape - 1)]
-            c_mask = mask[:, total_shape : (total_shape + s)]
+            # c_mask = mask[:, total_shape : (total_shape + s)]
+            c_mask = mask[:, total_shape : (s + total_shape - 1)]
             # error is the MSE loss
             valid_elements = c_mask.sum()
             if valid_elements > 0:
