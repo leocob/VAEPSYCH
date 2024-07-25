@@ -408,7 +408,6 @@ class VAE(nn.Module):
 
 
             if valid_elements > 0:
-                print(f"batch_size: {batch_size}")
                 error = loss(c_re[c_mask], c_in[c_mask]) / batch_size + e
                 # error = loss(c_re[c_mask], c_in[c_mask]) / valid_elements
             else:
