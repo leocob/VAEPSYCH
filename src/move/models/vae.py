@@ -407,7 +407,8 @@ class VAE(nn.Module):
                 error = torch.tensor(0.0, device=self.device)
             con_errors_list.append(error)
             total_shape += s
-            break
+            # exit the program
+            exit()
 
         # con_errors_list is a list of MSE for each continuous dataset? But I want to have 
         # print(f"len(con_errors_list): {len(con_errors_list)}") # 9
