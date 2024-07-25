@@ -381,15 +381,18 @@ class VAE(nn.Module):
         total_shape = 0
         con_errors_list: list[torch.Tensor] = []
 
-        # print(f"self.continuous_shapes: {self.continuous_shapes}")
-        # self.continuous_shapes: [51, 10, 1, 1, 11, 9, 9, 21, 8]
-        # it's the number of features for each continuous dataset
-        for s in self.continuous_shapes:
-            # print(f"s: {s}")
-            # 51
-            # 10 etc
+        print(f"con_in.shape: {con_in.shape}")
+        print(f"con_out.shape: {con_out.shape}")
+        print(f"con_in: {con_in}")
+        print(f"con_out: {con_out}")
 
+        # self.continuous_shapes: [51, 10, 1, 1, 11, 9, 9, 21, 8], it's the number of features for each continuous dataset
+        for s in self.continuous_shapes:
+            # For each continuous dataset, e.g. 51, 10, 1, 1, 11, 9, 9, 21, 8
+
+            print(f"con_in.shape: {con_in.shape}")
             c_in = con_in[:, total_shape : (s + total_shape - 1)]
+            print(f"c_in.shape: {c_in.shape}")
             c_re = con_out[:, total_shape : (s + total_shape - 1)]
             # c_mask = mask[:, total_shape : (total_shape + s)]
             c_mask = mask[:, total_shape : (s + total_shape - 1)]
