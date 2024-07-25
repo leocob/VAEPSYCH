@@ -378,6 +378,7 @@ class VAE(nn.Module):
         Returns:
             MSE loss
         """
+        e = 1e-8
         batch_size = con_in.shape[0]
         total_shape = 0
         con_errors_list: list[torch.Tensor] = []
@@ -407,7 +408,8 @@ class VAE(nn.Module):
 
 
             if valid_elements > 0:
-                error = loss(c_re[c_mask], c_in[c_mask]) / batch_size
+                print(f"batch_size: {batch_size}")
+                error = loss(c_re[c_mask], c_in[c_mask]) / batch_size + e
                 # error = loss(c_re[c_mask], c_in[c_mask]) / valid_elements
             else:
                 error = torch.tensor(0.0, device=self.device)

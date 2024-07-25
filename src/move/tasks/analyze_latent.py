@@ -91,21 +91,21 @@ def analyze_latent(config: MOVEConfig) -> None:
     )
 
     #19/07/2024 - 17:50 what makes this to be the test dataloader?
-    print(f"cat_list.shape: {len(cat_list)}")
-    print(f"con_list.shape: {len(con_list)}")
-    print(f"cat_list: {cat_list[0].shape}") # (6000, X) # so this is not the test dataset, but the entire dataset
-    print(f"con_list: {con_list[0].shape}")
+    # print(f"cat_list.shape: {len(cat_list)}") # 5
+    # print(f"con_list.shape: {len(con_list)}") # 9
+    # print(f"cat_list: {cat_list[0].shape}") # (11000,102, 2) # so this is not the test dataset, but the entire dataset
+    # print(f"con_list: {con_list[0].shape}") # (11000, 51) # so this is not the test dataset, but the entire dataset
     test_dataloader = make_dataloader(
         cat_list,
         con_list,
         shuffle=False,
         batch_size=task_config.batch_size,
     )
-    print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
-    print(f"len(test_dataloader): {len(test_dataloader)}") # 188
+    # print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}") # 11000
+    # print(f"len(test_dataloader): {len(test_dataloader)}") # 86
     test_dataset = cast(MOVEDataset, test_dataloader.dataset)
     # print shape of test_dataset
-    print(f"test_dataset.cat_all.shape: {test_dataset.cat_all.shape}") # (6000, 328)
+    # print(f"test_dataset.cat_all.shape: {test_dataset.cat_all.shape}") # (11000, 328)
     df_index = pd.Index(sample_names, name="sample")
 
     # print(f"df_index: {df_index}") # 6000 samples15
