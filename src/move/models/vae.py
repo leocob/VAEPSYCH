@@ -329,6 +329,10 @@ class VAE(nn.Module):
         """
         e = 1e-8
         batch_size = con_in.shape[0]
+        if batch_size == 0:
+            print("Batch size is 0")
+            logger.warning("Batch size is zero")
+            exit()
         total_shape = 0
         con_errors_list: list[torch.Tensor] = []
 
