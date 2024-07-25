@@ -327,6 +327,7 @@ class VAE(nn.Module):
         Returns:
             MSE loss
         """
+        e = 1e-8
         batch_size = con_in.shape[0]
         total_shape = 0
         con_errors_list: list[torch.Tensor] = []
@@ -342,7 +343,7 @@ class VAE(nn.Module):
             c_in = con_in[:, total_shape : (s + total_shape - 1)]
             c_re = con_out[:, total_shape : (s + total_shape - 1)]
             # error is the MSE loss
-            error = loss(c_re, c_in) / batch_size
+            error = loss(c_re, c_in) / batch_size + e
             con_errors_list.append(error)
             total_shape += s
 
