@@ -416,7 +416,8 @@ class VAE(nn.Module):
 
 
             if valid_elements > 0:
-                error = loss(c_re[c_mask], c_in[c_mask]) / batch_size + e
+                error = loss(c_re[c_mask], c_in[c_mask]) / batch_size
+                # the 4.338e+22 was the last with batch_size + e
                 # error = loss(c_re[c_mask], c_in[c_mask]) / valid_elements
             else:
                 error = torch.tensor(0.0, device=self.device)
