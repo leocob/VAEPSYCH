@@ -378,6 +378,7 @@ class VAE(nn.Module):
         Returns:
             MSE loss
         """
+        print(f"batch_size: {con_in.shape[0]}")
         e = 1e-8
         batch_size = con_in.shape[0]
         total_shape = 0
