@@ -386,7 +386,9 @@ class VAE(nn.Module):
         print(f"con_in: {con_in}")
         print(f"con_out: {con_out}")
 
+        print(f"mask.shape: {mask.shape}")
         # self.continuous_shapes: [51, 10, 1, 1, 11, 9, 9, 21, 8], it's the number of features for each continuous dataset
+        # This part is to subset each dataset from the continuous data and calculate the MSE for each dataset
         for s in self.continuous_shapes:
             # For each continuous dataset, e.g. 51, 10, 1, 1, 11, 9, 9, 21, 8
 
@@ -396,6 +398,7 @@ class VAE(nn.Module):
             c_re = con_out[:, total_shape : (s + total_shape - 1)]
             # c_mask = mask[:, total_shape : (total_shape + s)]
             c_mask = mask[:, total_shape : (s + total_shape - 1)]
+            print(f"c_mask.shape: {c_mask.shape}")
             # error is the MSE loss
             valid_elements = c_mask.sum()
             if valid_elements > 0:
@@ -404,6 +407,7 @@ class VAE(nn.Module):
                 error = torch.tensor(0.0, device=self.device)
             con_errors_list.append(error)
             total_shape += s
+            break
 
         # con_errors_list is a list of MSE for each continuous dataset? But I want to have 
         # print(f"len(con_errors_list): {len(con_errors_list)}") # 9
