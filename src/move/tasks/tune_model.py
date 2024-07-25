@@ -89,7 +89,7 @@ def tune_model(config: MOVEConfig) -> float:
         config.data.categorical_names,
         config.data.continuous_names,
     )
-    print(f"Total number of samples in the cat_list: {len(cat_list[0])} \nTotal number of samples in the con_list: {len(con_list[0])}")
+    # print(f"Total number of samples in the cat_list: {len(cat_list[0])} \nTotal number of samples in the con_list: {len(con_list[0])}")
 
 
     assert task_config.model is not None
@@ -198,7 +198,7 @@ def tune_model(config: MOVEConfig) -> float:
             drop_last=True,
         )
 
-        print(f"Number of samples in train dataset in tune_reconstruction: {len(train_dataloader.dataset)}")
+        # print(f"Number of samples in train dataset in tune_reconstruction: {len(train_dataloader.dataset)}")
         # 4800
         # print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
 
