@@ -7,6 +7,7 @@ import matplotlib.figure
 import matplotlib.pyplot as plt
 
 from move.core.typing import FloatArray
+import math
 from move.visualization.style import (
     DEFAULT_PLOT_STYLE,
     DEFAULT_QUALITATIVE_PALETTE,
@@ -39,6 +40,55 @@ def plot_metrics_boxplot(
         comps = ax.boxplot(
             scores[::-1],
             labels=labels[::-1],
+            patch_artist=True,
+            vert=False,
+            capprops=dict(color=labelcolor),
+            flierprops=dict(
+                marker="d",
+                markersize=5,
+                markerfacecolor=labelcolor,
+                markeredgecolor=labelcolor,
+            ),
+            medianprops=dict(color=labelcolor),
+            whiskerprops=dict(color=labelcolor),
+        )
+        prop_cycle = matplotlib.rcParams["axes.prop_cycle"]
+        for box, prop in zip(comps["boxes"], prop_cycle()):
+            box.update(dict(facecolor=prop["color"], edgecolor=labelcolor))
+        ax.set(xlim=(-0.05, 1.05), xlabel="Score", ylabel="Dataset")
+    return fig
+
+def plot_metrics_boxplot_skipNA(
+    scores: Sequence[FloatArray],
+    labels: Sequence[str],
+    style: str = DEFAULT_PLOT_STYLE,
+    colormap: str = DEFAULT_QUALITATIVE_PALETTE,
+) -> matplotlib.figure.Figure:
+    """Plot a box plot, showing the distribution of metrics per dataset. Each
+    score corresponds (for example) to a sample.
+
+    Args:
+        scores: List of dataset metrics
+        labels: List of dataset names
+        style: Name of style to apply to the plot
+        colormap: Name of colormap to use for the boxes
+
+    Returns:
+        Figure
+    """
+    scores_no_na = []
+    labels_no_na = []
+    for score, label in zip(scores, labels):
+        if not any(math.isnan(s) or s == "NA" for s in score):
+            scores_no_na.append(score)
+            labels_no_na.append(label)
+    
+    with style_settings(style), color_cycle(colormap):
+        labelcolor = matplotlib.rcParams["axes.labelcolor"]
+        fig, ax = plt.subplots()
+        comps = ax.boxplot(
+            scores_no_na[::-1],
+            labels=labels_no_na[::-1],
             patch_artist=True,
             vert=False,
             capprops=dict(color=labelcolor),
