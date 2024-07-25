@@ -347,7 +347,7 @@ def tune_model(config: MOVEConfig) -> float:
                 mse, rmse = calculate_mse_rmse(con[mask], con_recon)
 
 
-                print(f"{dataset_name} size cosine_sim BEFORE removing the 0: {cosine_sim.shape}")
+                # print(f"{dataset_name} size cosine_sim BEFORE removing the 0: {cosine_sim.shape}")
                 # print(f"cosine_sim: {cosine_sim}")
 
                 # cosine_sim is a list. Remove the values that are 0
@@ -364,7 +364,7 @@ def tune_model(config: MOVEConfig) -> float:
                 mse_scores.append(mse)
                 rmse_scores.append(rmse)
                 # cosine_sim = [np.ma.compressed(np.ma.masked_equal(each, 0)) for each in cosine_sim]
-                print(f"{dataset_name} size cosine_sim AFTER removing the 0: {len(cosine_sim_for_record)}")
+                # print(f"{dataset_name} size cosine_sim AFTER removing the 0: {len(cosine_sim_for_record)}")
                 # print(f"cosine_sim: {cosine_sim}")
 
                 record = _get_record(
