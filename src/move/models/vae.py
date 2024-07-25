@@ -403,9 +403,9 @@ class VAE(nn.Module):
 
             print(os.getcwd())
             # save c_in numpy array to numpy file
-            np.save("c_in.npy", c_in.cpu().numpy())
-            np.save("c_re.npy", c_re.cpu().numpy())
-            np.save("c_mask.npy", c_mask.cpu().numpy())
+            np.save("c_in.npy", c_in.detach().cpu().numpy())
+            np.save("c_re.npy", c_re.detach().cpu().numpy())
+            np.save("c_mask.npy", c_mask.detach().cpu().numpy())
             # error is the MSE loss
             valid_elements = c_mask.sum()
 
