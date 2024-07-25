@@ -330,6 +330,9 @@ class VAE(nn.Module):
             MSE loss
         """
         batch_size = con_in.shape[0]
+        if batch_size == 0:
+            logger.warning("Batch size is zero")
+            exit()
         total_shape = 0
         con_errors_list: list[torch.Tensor] = []
 
