@@ -378,9 +378,10 @@ class VAE(nn.Module):
         Returns:
             MSE loss
         """
-        print(f"batch_size: {con_in.shape[0]}")
+        
         e = 1e-8
         batch_size = con_in.shape[0]
+        print(f"batch_size: {batch_size}")
         total_shape = 0
         con_errors_list: list[torch.Tensor] = []
 
