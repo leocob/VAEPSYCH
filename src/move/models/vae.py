@@ -364,7 +364,7 @@ class VAE(nn.Module):
         return MSE
        
     def calculate_con_error_masked(
-        self, con_in: torch.Tensor, con_out: torch.Tensor, loss: Callable[[torch.Tensor, torch.Tensor], torch.Tensor], mask: numpy.ndarray,
+        self, con_in: torch.Tensor, con_out: torch.Tensor, loss: Callable[[torch.Tensor, torch.Tensor], torch.Tensor], mask: np.ndarray,
     ) -> torch.Tensor:
         """
         Calculates errors (MSE) for continuous data reconstructions
