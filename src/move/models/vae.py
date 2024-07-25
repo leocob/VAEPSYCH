@@ -4,9 +4,10 @@ import logging
 from typing import Optional, Callable
 
 import torch
+import os
 from torch import nn, optim
 from torch.utils.data import DataLoader
-import numpy
+import numpy as np
 
 from move.core.typing import FloatArray, IntArray
 
@@ -399,8 +400,16 @@ class VAE(nn.Module):
             # c_mask = mask[:, total_shape : (total_shape + s)]
             c_mask = mask[:, total_shape : (s + total_shape - 1)]
             print(f"c_mask.shape: {c_mask.shape}")
+
+            print(os.getcwd())
+            # save c_in numpy array to numpy file
+            np.save("c_in.npy", c_in.cpu().numpy())
+            np.save("c_re.npy", c_re.cpu().numpy())
+            np.save("c_mask.npy", c_mask.cpu().numpy())
             # error is the MSE loss
             valid_elements = c_mask.sum()
+
+
             if valid_elements > 0:
                 error = loss(c_re[c_mask], c_in[c_mask]) / valid_elements
             else:
