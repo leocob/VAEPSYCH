@@ -83,7 +83,7 @@ def analyze_latent(config: MOVEConfig) -> None:
 
     logger.debug("Reading data")
     sample_names = io.read_names(raw_data_path / f"{config.data.sample_names}.txt")
-    print(f"sample_names length: {len(sample_names)}")
+    # print(f"sample_names length: {len(sample_names)}")
     cat_list, cat_names, con_list, con_names = io.load_preprocessed_data(
         interim_path,
         config.data.categorical_names,
@@ -91,21 +91,21 @@ def analyze_latent(config: MOVEConfig) -> None:
     )
 
     #19/07/2024 - 17:50 what makes this to be the test dataloader?
-    print(f"cat_list.shape: {len(cat_list)}")
-    print(f"con_list.shape: {len(con_list)}")
-    print(f"cat_list: {cat_list[0].shape}") # (6000, X) # so this is not the test dataset, but the entire dataset
-    print(f"con_list: {con_list[0].shape}")
+    # print(f"cat_list.shape: {len(cat_list)}")
+    # print(f"con_list.shape: {len(con_list)}")
+    # print(f"cat_list: {cat_list[0].shape}") # (6000, X) # so this is not the test dataset, but the entire dataset
+    # print(f"con_list: {con_list[0].shape}")
     test_dataloader = make_dataloader(
         cat_list,
         con_list,
         shuffle=False,
         batch_size=task_config.batch_size,
     )
-    print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
-    print(f"len(test_dataloader): {len(test_dataloader)}") # 188
+    # print(f"Number of samples in test dataset: {len(test_dataloader.dataset)}")
+    # print(f"len(test_dataloader): {len(test_dataloader)}") # 188
     test_dataset = cast(MOVEDataset, test_dataloader.dataset)
     # print shape of test_dataset
-    print(f"test_dataset.cat_all.shape: {test_dataset.cat_all.shape}") # (6000, 328)
+    # print(f"test_dataset.cat_all.shape: {test_dataset.cat_all.shape}") # (6000, 328)
     df_index = pd.Index(sample_names, name="sample")
 
     # print(f"df_index: {df_index}") # 6000 samples15

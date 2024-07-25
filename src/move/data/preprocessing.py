@@ -153,7 +153,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     n_0_test = np.sum(scaled_x_test.values == 0)
 
     n_0_train_test = n_0_train + n_0_test
-    print(f"BEFORE NA -> 0 Sum of zeros in scaled_x_train + scaled_x_test: {n_0_train_test}")
+    # print(f"BEFORE NA -> 0 Sum of zeros in scaled_x_train + scaled_x_test: {n_0_train_test}")
     if n_0_train_test > 0:
         raise ValueError("There are zeros in the scaled data before setting NA to 0. This should not happen.")
     # Replace NaN values with 0
@@ -169,7 +169,7 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     n_0_test = np.sum(scaled_x_test.values == 0)
 
     n_0_train_test = n_0_train + n_0_test
-    print(f"AFTER NA -> 0 Sum of zeros in scaled_x_train + scaled_x_test: {n_0_train_test}")
+    # print(f"AFTER NA -> 0 Sum of zeros in scaled_x_train + scaled_x_test: {n_0_train_test}")
 
 
 
