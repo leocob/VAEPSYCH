@@ -277,7 +277,8 @@ def analyze_latent(config: MOVEConfig) -> None:
     # Remove the 0s from the scores
     print(f"len(scores): {len(scores)}")
     print(f"scores: {scores}")
-    logger.debug("Scores are:", scores)
+    # save scores numpy to a numpy array file
+    np.save(output_path / "scores.npy", scores)
     plot_scores = [np.ma.compressed(np.ma.masked_equal(each, np.nan)) for each in scores]
     print(f"len(plot_scores): {len(plot_scores)}")
     print(f"plot_scores: {plot_scores}")
