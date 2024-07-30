@@ -187,7 +187,6 @@ def read_tsv(
 
         columns_removed = ones_stats[ones_stats["Percentage"] < p].index
 
-        columns_to_keep = columns_to_keep.tolist()
         columns_removed = columns_removed.tolist()
 
 
@@ -210,7 +209,7 @@ def read_tsv(
         else:
             columns_to_keep = columns_to_keep.tolist()
             data = data[columns_to_keep]
-            
+
     elif input_type == "continuous":
 
         nonas_stats = pd.DataFrame({
