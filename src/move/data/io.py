@@ -165,8 +165,6 @@ def read_tsv(
     # print(f"data.query(ID==1219925): {data.query('ID==1219925')}")
 
     if sample_names is not None:
-        print(f"sample_names is not None")
-        print(f"type(sample_names): {type(sample_names)}")
         # print(f"length Sample names: {len(sample_names)}") # 6000
         data.index = data.index.astype(str, False) # 22092
         data = data.loc[sample_names]
@@ -179,42 +177,51 @@ def read_tsv(
 
         
     if input_type == "categorical":
-        percentage_of_ones = (data == 1).mean()
-        columns_to_keep = percentage_of_ones[percentage_of_ones >= p].index
-        data = data[columns_to_keep]
-        columns_removed = percentage_of_ones[percentage_of_ones < p].index
 
-        # transform index to list
+        ones_stats = pd.DataFrame({
+            "Percentage": (data == 1).mean(),
+            "Count": (data == 1).sum()
+        })
+
+        columns_to_keep = ones_stats[ones_stats["Percentage"] >= p].index
+
+        columns_removed = ones_stats[ones_stats["Percentage"] < p].index
+
         columns_to_keep = columns_to_keep.tolist()
-        # write list to file
+        columns_removed = columns_removed.tolist()
+
+        data = data[columns_to_keep]
+
         with open(interim_data_path / f"{dataset_name}_features_kept_more_than_{p}.txt", "w") as file:
             for column in columns_to_keep:
                 file.write(f"{column}\n")
 
 
-        columns_to_remove = columns_removed.tolist()
         with open(interim_data_path / f"{dataset_name}_features_removed_less_than_{p}.txt", "w") as file:
-            for column in columns_to_remove:
+            for column in columns_removed:
                 file.write(f"{column}\n")
+
+        ones_stats.to_csv(interim_data_path / f"{dataset_name}_ones_stats.tsv", sep="\t", index=True)
 
     elif input_type == "continuous":
 
-        percentage_of_nonas = data.notna().mean()
+        nonas_stats = pd.DataFrame({
+            "Percentage": data.notna().mean(),
+            "Count": data.notna().sum()
+        })
 
-        # logger.warning(f"Percentage of non-NAs: {percentage_of_nonas}")
-        columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
+        columns_to_keep = nonas_stats[nonas_stats["Percentage"] >= p].index
+        columns_removed = nonas_stats[nonas_stats["Percentage"] < p].index
 
-        with open(interim_data_path / f"{dataset_name}_features_kept_more_than_{p}.txt", "w") as file:
-            for column in columns_to_keep:
-                file.write(f"{column}\n")
 
-        columns_removed = percentage_of_nonas[percentage_of_nonas < p].index
-
+        columns_to_keep = columns_to_keep.tolist()
         columns_removed = columns_removed.tolist()
 
         with open(interim_data_path / f"{dataset_name}_features_removed_less_than_{p}.txt", "w") as file:
             for column in columns_removed:
                 file.write(f"{column}\n")
+
+        nonas_stats.to_csv(interim_data_path / f"{dataset_name}_nonas_stats.tsv", sep="\t", index=True)
 
         if columns_to_keep.empty:
             logger.warning(f"No columns with more than {p} non-NAs in dataset {dataset_name}")
@@ -222,7 +229,7 @@ def read_tsv(
 
         else:
             data = data[columns_to_keep]
-            
+                
         
     # TODO: add sweetviz report
 
