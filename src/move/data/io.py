@@ -204,7 +204,9 @@ def read_tsv(
         # logger.warning(f"Percentage of non-NAs: {percentage_of_nonas}")
         columns_to_keep = percentage_of_nonas[percentage_of_nonas >= p].index
 
-
+        with open(interim_data_path / f"{dataset_name}_features_kept_more_than_{p}.txt", "w") as file:
+            for column in columns_to_keep:
+                file.write(f"{column}\n")
 
         columns_removed = percentage_of_nonas[percentage_of_nonas < p].index
 
