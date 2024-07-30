@@ -180,7 +180,8 @@ def read_tsv(
 
         ones_stats = pd.DataFrame({
             "Percentage": (data == 1).mean(),
-            "Count": (data == 1).sum()
+            "Count": (data == 1).sum(),
+            "Threshold": p
         })
 
         columns_to_keep = ones_stats[ones_stats["Percentage"] >= p].index
@@ -214,7 +215,8 @@ def read_tsv(
 
         nonas_stats = pd.DataFrame({
             "Percentage": data.notna().mean(),
-            "Count": data.notna().sum()
+            "Count": data.notna().sum(),
+            "Threshold": p
         })
 
         columns_to_keep = nonas_stats[nonas_stats["Percentage"] >= p].index
