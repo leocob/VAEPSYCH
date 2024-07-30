@@ -10,7 +10,7 @@ from move.core.logging import get_logger
 from move.data import io, preprocessing
 import warnings
 
-def encode_data(config: DataConfig, p = 0.01):
+def encode_data(config: DataConfig):
     """Encodes categorical and continuous datasets specified in configuration.
     Categorical data is one-hot encoded, whereas continuous data is z-score
     normalized.
@@ -21,6 +21,7 @@ def encode_data(config: DataConfig, p = 0.01):
     logger = get_logger(__name__)
     logger.info("Beginning task: encode data")
 
+    p = config.percentage_threshold
     raw_data_path = Path(config.raw_data_path)
     raw_data_path.mkdir(exist_ok=True)
     interim_data_path = Path(config.interim_data_path)

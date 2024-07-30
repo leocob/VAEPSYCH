@@ -46,6 +46,7 @@ class DataConfig:
     continuous_names: list[str] = MISSING
     categorical_weights: list[int] = MISSING
     continuous_weights: list[int] = MISSING
+    percentage_threshold: int = MISSING
 
 
 @dataclass

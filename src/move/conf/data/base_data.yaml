@@ -8,6 +8,8 @@ results_path: processed_data/
 
 sample_names: baseline_ids
 
+percentage_threshold: 0
+
 categorical_inputs:
   - name: diabetes_genotypes
     weight: 1
