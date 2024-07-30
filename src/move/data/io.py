@@ -190,7 +190,7 @@ def read_tsv(
         columns_to_keep = columns_to_keep.tolist()
         columns_removed = columns_removed.tolist()
 
-        data = data[columns_to_keep]
+
 
         with open(interim_data_path / f"{dataset_name}_features_kept_more_than_{p}.txt", "w") as file:
             for column in columns_to_keep:
@@ -203,6 +203,14 @@ def read_tsv(
 
         ones_stats.to_csv(interim_data_path / f"{dataset_name}_ones_stats.tsv", sep="\t", index=True)
 
+        if columns_to_keep.empty:
+            logger.warning(f"No columns with more than {p} non-NAs in dataset {dataset_name}")
+            return None, None, None
+
+        else:
+            columns_to_keep = columns_to_keep.tolist()
+            data = data[columns_to_keep]
+            
     elif input_type == "continuous":
 
         nonas_stats = pd.DataFrame({
@@ -214,7 +222,7 @@ def read_tsv(
         columns_removed = nonas_stats[nonas_stats["Percentage"] < p].index
 
 
-        columns_to_keep = columns_to_keep.tolist()
+        
         columns_removed = columns_removed.tolist()
 
         with open(interim_data_path / f"{dataset_name}_features_removed_less_than_{p}.txt", "w") as file:
@@ -228,6 +236,7 @@ def read_tsv(
             return None, None, None
 
         else:
+            columns_to_keep = columns_to_keep.tolist()
             data = data[columns_to_keep]
                 
         
