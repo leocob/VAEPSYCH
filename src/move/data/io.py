@@ -235,6 +235,10 @@ def read_tsv(
             for column in columns_removed:
                 file.write(f"{column}\n")
 
+        with open(interim_data_path / f"{dataset_name}_features_kept_more_than_{p}.txt", "w") as file:
+            for column in columns_to_keep:
+                file.write(f"{column}\n")
+
         nonas_stats.to_csv(interim_data_path / f"{dataset_name}_stats.tsv", sep="\t", index=True)
 
         if columns_to_keep.empty:
