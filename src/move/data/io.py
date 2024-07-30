@@ -166,7 +166,7 @@ def read_tsv(
     # print(f"data.query(index == 610): {data.query('index == 610')}")
     # print(f"data.query(ID==1219925): {data.query('ID==1219925')}")
 
-    if sample_names and cases_name is not None:
+    if sample_names and cases_names is not None:
         # print(f"length Sample names: {len(sample_names)}") # 6000
         data.index = data.index.astype(str, False) # 22092
         data = data.loc[sample_names]
