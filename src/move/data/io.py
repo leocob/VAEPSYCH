@@ -154,7 +154,7 @@ def read_tsv(
     logger = get_logger(__name__)
     data = pd.read_csv(path, index_col=0, sep="\t")
 
-    data_cases = copy(data)
+    data_cases = data.copy()
     # get the name of the dataset
     dataset_name = basename(path)
     # remove extension
