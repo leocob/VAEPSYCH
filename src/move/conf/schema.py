@@ -40,6 +40,7 @@ class DataConfig:
     interim_data_path: str = MISSING
     results_path: str = MISSING
     sample_names: str = MISSING
+    cases_names: str = MISSING
     categorical_inputs: list[InputConfig] = MISSING
     continuous_inputs: list[ContinuousInputConfig] = MISSING
     categorical_names: list[str] = MISSING
@@ -47,6 +48,7 @@ class DataConfig:
     categorical_weights: list[int] = MISSING
     continuous_weights: list[int] = MISSING
     percentage_threshold: int = MISSING
+
 
 
 @dataclass

@@ -137,7 +137,7 @@ def read_names(path: PathLike) -> list[str]:
 
 
 def read_tsv(
-    path: PathLike, sample_names: Optional[list[str]] = None, input_type: str = "categorical", p: float = 0, interim_data_path: Path = None
+    path: PathLike, sample_names: Optional[list[str]] = None, cases_names: Optional[list[str]] = None, input_type: str = "categorical", p: float = 0, interim_data_path: Path = None
 ) -> tuple[ObjectArray, np.ndarray]:
     """Read a dataset from a TSV file. The TSV is expected to have an index
     column (0th index).
@@ -153,6 +153,8 @@ def read_tsv(
     
     logger = get_logger(__name__)
     data = pd.read_csv(path, index_col=0, sep="\t")
+
+    data_cases = deepcopy(data)
     # get the name of the dataset
     dataset_name = basename(path)
     # remove extension
@@ -164,10 +166,13 @@ def read_tsv(
     # print(f"data.query(index == 610): {data.query('index == 610')}")
     # print(f"data.query(ID==1219925): {data.query('ID==1219925')}")
 
-    if sample_names is not None:
+    if sample_names and cases_name is not None:
         # print(f"length Sample names: {len(sample_names)}") # 6000
         data.index = data.index.astype(str, False) # 22092
         data = data.loc[sample_names]
+
+        data_cases = data_cases.loc[cases_names]
+
         # print(f"data after filtering for sample name:\n{data}") # 6000 with IDS
         # # print("After selecting for my samples")
         # print(data)
@@ -179,8 +184,8 @@ def read_tsv(
     if input_type == "categorical":
 
         ones_stats = pd.DataFrame({
-            "Percentage": (data == 1).mean(),
-            "Count": (data == 1).sum(),
+            "Percentage": (data_cases == 1).mean(),
+            "Count": (data_cases == 1).sum(),
             "Threshold": p
         })
 
@@ -214,8 +219,8 @@ def read_tsv(
     elif input_type == "continuous":
 
         nonas_stats = pd.DataFrame({
-            "Percentage": data.notna().mean(),
-            "Count": data.notna().sum(),
+            "Percentage": data_cases.notna().mean(),
+            "Count": data_cases.notna().sum(),
             "Threshold": p
         })
 
