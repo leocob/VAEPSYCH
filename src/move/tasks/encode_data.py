@@ -10,7 +10,7 @@ from move.core.logging import get_logger
 from move.data import io, preprocessing
 import warnings
 
-def encode_data(config: DataConfig):
+def encode_data(config: DataConfig, p = 0.01):
     """Encodes categorical and continuous datasets specified in configuration.
     Categorical data is one-hot encoded, whereas continuous data is z-score
     normalized.
@@ -51,7 +51,7 @@ def encode_data(config: DataConfig):
         logger.info(f"Encoding '{dataset_name}'")
         filepath = raw_data_path / f"{dataset_name}.tsv"
         # TODO: implement change p from command line and fix the handling of the NAs because it's wrong. It's removing a lot of features
-        names, values, data = io.read_tsv(filepath, sample_names, input_type = "categorical", p = 0, interim_data_path = interim_data_path)
+        names, values, data = io.read_tsv(filepath, sample_names, input_type = "categorical", p = p, interim_data_path = interim_data_path)
         values, mapping = preprocessing.one_hot_encode(values)
         mappings[dataset_name] = mapping
         io.dump_names(interim_data_path / f"{dataset_name}.txt", names)
@@ -67,7 +67,7 @@ def encode_data(config: DataConfig):
         action_name = "Encoding" if scale else "Reading"
         logger.info(f"{action_name} '{input_config.name}'")
         filepath = raw_data_path / f"{input_config.name}.tsv"
-        names, values, data = io.read_tsv(filepath, sample_names, input_type = "continuous", p = 0, interim_data_path = interim_data_path)
+        names, values, data = io.read_tsv(filepath, sample_names, input_type = "continuous", p = p, interim_data_path = interim_data_path)
         # print("continuous input")
         # print(f"names: {names}")
         # print(f"values: {values}")
