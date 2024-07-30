@@ -200,7 +200,7 @@ def read_tsv(
             for column in columns_removed:
                 file.write(f"{column}\n")
 
-        ones_stats.to_csv(interim_data_path / f"{dataset_name}_ones_stats.tsv", sep="\t", index=True)
+        ones_stats.to_csv(interim_data_path / f"{dataset_name}_stats.tsv", sep="\t", index=True)
 
         if columns_to_keep.empty:
             logger.warning(f"No columns with more than {p} non-NAs in dataset {dataset_name}")
@@ -228,7 +228,7 @@ def read_tsv(
             for column in columns_removed:
                 file.write(f"{column}\n")
 
-        nonas_stats.to_csv(interim_data_path / f"{dataset_name}_nonas_stats.tsv", sep="\t", index=True)
+        nonas_stats.to_csv(interim_data_path / f"{dataset_name}_stats.tsv", sep="\t", index=True)
 
         if columns_to_keep.empty:
             logger.warning(f"No columns with more than {p} non-NAs in dataset {dataset_name}")
