@@ -70,6 +70,7 @@ def _validate_task_config(task_config: AnalyzeLatentConfig) -> None:
 
 def analyze_latent(config: MOVEConfig) -> None:
     """Train one model to inspect its latent space projections."""
+    # This takes the entire dataset and trains on all of it and test on all of it
 
     logger = get_logger(__name__)
     logger.info("Beginning task: analyze latent space")
@@ -248,7 +249,8 @@ def analyze_latent(config: MOVEConfig) -> None:
 
         # Remove non-alpha characters
         safe_feature_name = re.sub(r"[^\w\s]", "", feature_name)
-        fig_path = str(output_path / f"latent_space_{safe_feature_name}.png")
+        fig_
+        path = str(output_path / f"latent_space_{safe_feature_name}.png")
         fig.savefig(fig_path, bbox_inches="tight")
 
 

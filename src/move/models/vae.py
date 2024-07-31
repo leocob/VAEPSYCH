@@ -52,6 +52,12 @@ class VAE(nn.Module):
         num_layers: int = 1,
     ):
 
+        # 31/07/2024 - 15:30
+        categorical_weights = None
+        continuous_weights = None
+        self.categorical_weights = None
+        self.continuous_weights = None
+
         if num_latent < 1:
             raise ValueError(f"Minimum 1 latent unit. Input was {num_latent}.")
 
