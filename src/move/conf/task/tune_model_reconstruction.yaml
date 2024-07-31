@@ -25,6 +25,7 @@ training_loop:
     - 15
     - 20
     - 25
+    - 50
   early_stopping: false
   patience: 0
 
