@@ -63,6 +63,8 @@ def encode_data(config: DataConfig):
         mappings[dataset_name] = mapping
         io.dump_names(interim_data_path / f"{dataset_name}.txt", names)
         np.save(interim_data_path / f"{dataset_name}.npy", values)
+
+        data.to_csv(interim_data_path / f"{dataset_name}.tsv", sep="\t", index=True)
     if mappings:
         io.dump_mappings(interim_data_path / "mappings.json", mappings)
 
