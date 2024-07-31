@@ -404,7 +404,7 @@ class VAE(nn.Module):
         if cat_out is not None:
             cat_errors = self.calculate_cat_error(cat_in, cat_out)
             if self.categorical_weights is not None:
-                print(f"self.categorical_weights: {self.categorical_weights}")
+                # print(f"self.categorical_weights: {self.categorical_weights}")
                 CE = torch.sum(
                     cat_errors * torch.Tensor(self.categorical_weights).to(self.device)
                 )
@@ -421,7 +421,7 @@ class VAE(nn.Module):
             
             # include different weights for each omics dataset
             if self.continuous_weights is not None:
-                print(f"self.continuous_weights: {self.continuous_weights}")
+                # print(f"self.continuous_weights: {self.continuous_weights}")
                 MSE = self.calculate_con_error(con_in, con_out, loss)
             else:
                 MSE = loss(con_out, con_in) / (batch_size * self.num_continuous)
