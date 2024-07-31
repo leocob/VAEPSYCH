@@ -249,8 +249,7 @@ def analyze_latent(config: MOVEConfig) -> None:
 
         # Remove non-alpha characters
         safe_feature_name = re.sub(r"[^\w\s]", "", feature_name)
-        fig_
-        path = str(output_path / f"latent_space_{safe_feature_name}.png")
+        fig_path = str(output_path / f"latent_space_{safe_feature_name}.png")
         fig.savefig(fig_path, bbox_inches="tight")
 
 
