@@ -65,7 +65,9 @@ def encode_data(config: DataConfig):
         np.save(interim_data_path / f"{dataset_name}.npy", values)
 
         # create a pandas dataframe with the one hot encoded values
-        data = pd.DataFrame(values, columns=names)
+        # data = pd.DataFrame(values.reshape(value.shape[0],-1), columns=names)
+        # print(data)
+        # print(values)
         data.to_csv(interim_data_path / f"{dataset_name}.tsv", sep="\t", index=True)
     if mappings:
         io.dump_mappings(interim_data_path / "mappings.json", mappings)
