@@ -87,13 +87,18 @@ def scale(x: np.array, data, train_test_splits, split_mask, names, interim_data_
     # print every input
 
 
-    if input_config_name == "n_suicide_attempts":
+    if input_config_name == "hosp_contacts":
         data = np.log(data+1)
+
+    if input_config_name == "birth_related_cont_features":
+        # log transform column "n_prev_completed_pregnancies"
+        data["n_prev_completed_pregnancies"] = np.log(data["n_prev_completed_pregnancies"]+1)
 
 
     imputer = SimpleImputer(strategy='mean')
     scaler = StandardScaler()
     x = data
+
 
 
 
