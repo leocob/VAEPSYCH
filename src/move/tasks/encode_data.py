@@ -66,7 +66,6 @@ def encode_data(config: DataConfig):
 
         # create a pandas dataframe with the one hot encoded values
         # data = pd.DataFrame(values.reshape(value.shape[0],-1), columns=names)
-        data.to_csv(interim_data_path / f"{dataset_name}.tsv", sep="\t", index=True)
         # print(data)
         # print(values)
         data.to_csv(interim_data_path / f"{dataset_name}.tsv", sep="\t", index=True)
