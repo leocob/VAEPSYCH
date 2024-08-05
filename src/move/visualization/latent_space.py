@@ -61,9 +61,9 @@ def plot_latent_space_with_cat(
             category = feature_mapping[str(code)]
             is_category = (feature_values == code) & ~is_nan
             dims = np.take(latent_space.compress(is_category, axis=0), [0, 1], axis=1).T
-            ax.scatter(*dims, label=category)
+            ax.scatter(*dims, label=category, s=10)
         dims = np.take(latent_space.compress(is_nan, axis=0), [0, 1], axis=1).T
-        ax.scatter(*dims, label="NaN")
+        ax.scatter(*dims, label="NaN", s=10)
         ax.set(xlabel="dim 0", ylabel="dim 1")
         legend = ax.legend()
         legend.set_title(feature_name)
@@ -115,7 +115,7 @@ def plot_latent_space_with_con(
     with style_settings(style):
         fig, ax = plt.subplots()
         dims = latent_space[:, 0], latent_space[:, 1]
-        pts = ax.scatter(*dims, c=feature_values, cmap=colormap, norm=norm)
+        pts = ax.scatter(*dims, c=feature_values, cmap=colormap, norm=norm, s=10)  # reduce the size of the dots
         cbar = fig.colorbar(pts, ax=ax)
         cbar.ax.set(ylabel=feature_name)
         ax.set(xlabel="dim 0", ylabel="dim 1")
