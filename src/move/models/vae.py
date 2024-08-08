@@ -9,7 +9,9 @@ from torch.utils.data import DataLoader
 
 from move.core.typing import FloatArray, IntArray
 
-logger = logging.getLogger("vae.py")
+# from move.core.logging import get_logger
+logger = logging.get_logger("vae.py")
+
 
 
 class VAE(nn.Module):
@@ -335,7 +337,7 @@ class VAE(nn.Module):
         Returns:
             MSE loss
         """
-        e = 1e-8
+        # e = 1e-8
         batch_size = con_in.shape[0]
         if batch_size == 0:
             print("Batch size is 0")
@@ -355,7 +357,7 @@ class VAE(nn.Module):
             c_in = con_in[:, total_shape : (s + total_shape - 1)]
             c_re = con_out[:, total_shape : (s + total_shape - 1)]
             # error is the MSE loss
-            error = loss(c_re, c_in) / batch_size + e
+            error = loss(c_re, c_in) / batch_size
             con_errors_list.append(error)
             total_shape += s
 
@@ -526,7 +528,7 @@ class VAE(nn.Module):
                 # cat_errors = cat_errors + np.array([float(j) for j in cat_err])
 
             optimizer.step()
-
+        print(f"Epoch: {epoch}\tLoss: {epoch_loss / len(train_loader)}\tCE: {epoch_bceloss / len(train_loader)}\tSSE: {epoch_sseloss / len(train_loader)}\tKLD: {epoch_kldloss / len(train_loader)}\tBatchsize: {train_loader.batch_size}\tKld_w: {kld_w}")
         logger.info(
             "\tEpoch: {}\tLoss: {:.6f}\tCE: {:.7f}\tSSE: {:.6f}\t"
             "KLD: {:.4f}\tBatchsize: {}".format(
