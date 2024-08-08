@@ -9,8 +9,9 @@ from torch.utils.data import DataLoader
 
 from move.core.typing import FloatArray, IntArray
 
-from move.core.logging import get_logger
+
 # logger = logging.getLogger("vae.py")
+from move.core.logging import get_logger
 logger = get_logger("vae.py")
 
 
@@ -531,7 +532,7 @@ class VAE(nn.Module):
             optimizer.step()
         # print(f"Epoch: {epoch}\tLoss: {epoch_loss / len(train_loader)}\tCE: {epoch_bceloss / len(train_loader)}\tSSE: {epoch_sseloss / len(train_loader)}\tKLD: {epoch_kldloss / len(train_loader)}\tBatchsize: {train_loader.batch_size}\tKld_w: {kld_w}")
         logger.info(
-            "\tEpoch: {}\tLoss: {:.6f}\tCE: {:.7f}\tSSE: {:.6f}\t"
+            "\tEpoch: {}\tLoss: {:.6f}\tBCE: {:.7f}\MSE: {:.6f}\t"
             "KLD: {:.4f}\tBatchsize: {}\tKld_w: {}".format(
                 epoch,
                 epoch_loss / len(train_loader),
