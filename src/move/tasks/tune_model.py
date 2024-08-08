@@ -281,6 +281,9 @@ def tune_model(config: MOVEConfig) -> float:
         # records_test_likelihood = []
         df_test_metrics = pd.DataFrame()
         splits = zip(["train", "test"], [split_mask, ~split_mask])
+
+        logger.info("for split_name, mask in splits:")
+
         for split_name, mask in splits:
             dataloader = make_dataloader(
                 cat_list,
@@ -302,6 +305,7 @@ def tune_model(config: MOVEConfig) -> float:
             # )
             # records.append(record)
             # if mask is test, I can get the test_likelihood
+            logger.info(f"split_name: {split_name}")
             if split_name == "test":
                 latent, *_, test_likelihood, test_kld = model.latent(dataloader, kld_weight=model.beta)
                 # convert test_likelihood to number
