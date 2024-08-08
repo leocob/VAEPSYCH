@@ -140,11 +140,11 @@ def tune_model(config: MOVEConfig) -> float:
 
             model.eval()
             
-            latent, *_ = model.latent(test_dataloader, kld_weight=1) 
+            latent, *_ = model.latent(test_dataloader, kld_weight=model.beta) 
             # Here it doesn't matter what KLD you use. We don't care about the loss function, I don't need that for calculating the latent spaces
 
             # Leo version
-            # latent, *_, test_likelihood = model.latent(test_dataloader, kld_weight=1)
+            # latent, *_, test_likelihood = model.latent(test_dataloader, kld_weight=model.beta)
             # But I want the test_likelihood in the reconstruction, while doing hyperparameter tuning! 
 
             if cosine_sim0 is None:
@@ -214,8 +214,7 @@ def tune_model(config: MOVEConfig) -> float:
         )
         model.to(device)
         # beta = task_config.model.beta
-        print(f"model.beta: {model.beta}")
-        print(f"task_config.model.beta: {task_config.model.beta}")
+
         logger.debug(f"Model: {model}")
 
         logger.debug("Training model")
@@ -294,7 +293,7 @@ def tune_model(config: MOVEConfig) -> float:
 
             # if mask is test, I can get the test_likelihood
             if split_name == "test":
-                latent, *_, test_likelihood = model.latent(dataloader, kld_weight=1)
+                latent, *_, test_likelihood = model.latent(dataloader, kld_weight=model.beta)
                 # convert test_likelihood to number
                 test_likelihood = test_likelihood.item()
 
