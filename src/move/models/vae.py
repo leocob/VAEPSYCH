@@ -534,15 +534,15 @@ class VAE(nn.Module):
         # print(f"Epoch: {epoch}\tLoss: {epoch_loss / len(train_loader)}\tCE: {epoch_bceloss / len(train_loader)}\tSSE: {epoch_sseloss / len(train_loader)}\tKLD: {epoch_kldloss / len(train_loader)}\tBatchsize: {train_loader.batch_size}\tKld_w: {kld_w}")
         logger.info(
             "\tEpoch: {}\tLoss: {:.6f}\tBCE: {:.7f}\tMSE: {:.6f}\t"
-            "KLD: {:.4f}\tBatchsize: {}\tKld_w: {}\tTarget KLD weight: {}".format(
+            "KLD: {:.4f}\tCurrent KLD_w: {}\tTarget KLD_w: {}\tBatchsize: {}".format(
                 epoch,
                 epoch_loss / len(train_loader),
                 epoch_bceloss / len(train_loader),
                 epoch_sseloss / len(train_loader),
                 epoch_kldloss / len(train_loader),
-                train_loader.batch_size,
                 kld_w,
                 target_KLD_weight,
+                train_loader.batch_size,
             )
         )
         return (
