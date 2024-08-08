@@ -53,8 +53,8 @@ class VAE(nn.Module):
     ):
 
         # 31/07/2024 - 15:30
-        print(f"continuous_weights: {continuous_weights}")
-        print(f"categorical_weights: {categorical_weights}")
+        # print(f"continuous_weights: {continuous_weights}")
+        # print(f"categorical_weights: {categorical_weights}")
         # categorical_weights = None
         # continuous_weights = None
         # self.categorical_weights = None
