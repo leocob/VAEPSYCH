@@ -279,7 +279,7 @@ def tune_model(config: MOVEConfig) -> float:
         #     print(f"key: {key}, value: {value}")
         records = []
         # records_test_likelihood = []
-        df_test_metrics = pd.DataFrame()
+        df_metrics = pd.DataFrame()
         splits = zip(["train", "test"], [split_mask, ~split_mask])
 
         # logger.info("for split_name, mask in splits:")
@@ -317,10 +317,10 @@ def tune_model(config: MOVEConfig) -> float:
             label_dict = {key: value for key, value in label}
             
             df_metrics_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "split": split_name, "likelihood": likelihood, "kld": kld}])
-            logger.info(f"df_metrics_tmp: {df_metrics_tmp}")
 
             df_metrics = pd.concat([df_metrics, df_metrics_tmp])
 
+            logger.info(f"df_metrics_tmp: {df_metrics_tmp}")
 
             
             con_recons = np.split(con_recons, np.cumsum(model.continuous_shapes[:-1]), axis=1)
