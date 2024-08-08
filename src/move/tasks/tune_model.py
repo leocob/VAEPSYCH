@@ -213,7 +213,9 @@ def tune_model(config: MOVEConfig) -> float:
             num_hidden=task_config.model.num_hidden,
         )
         model.to(device)
+        # beta = task_config.model.beta
         print(f"model.beta: {model.beta}")
+        print(f"task_config.model.beta: {task_config.model.beta}")
         logger.debug(f"Model: {model}")
 
         logger.debug("Training model")
