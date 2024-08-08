@@ -279,7 +279,7 @@ def tune_model(config: MOVEConfig) -> float:
         #     print(f"key: {key}, value: {value}")
         records = []
         # records_test_likelihood = []
-        df_test_likelihood = pd.DataFrame()
+        df_test_metrics = pd.DataFrame()
         splits = zip(["train", "test"], [split_mask, ~split_mask])
         for split_name, mask in splits:
             dataloader = make_dataloader(
@@ -291,17 +291,28 @@ def tune_model(config: MOVEConfig) -> float:
             )
             cat_recons, con_recons = model.reconstruct(dataloader)
 
+
+            # record = _get_record(
+            #     accuracy,
+            #     job_num=job_num,
+            #     **dict(label),
+            #     metric="accuracy",
+            #     dataset=dataset_name,
+            #     split=split_name,
+            # )
+            # records.append(record)
             # if mask is test, I can get the test_likelihood
             if split_name == "test":
-                latent, *_, test_likelihood = model.latent(dataloader, kld_weight=model.beta)
+                latent, *_, test_likelihood, test_kld = model.latent(dataloader, kld_weight=model.beta)
                 # convert test_likelihood to number
                 test_likelihood = test_likelihood.item()
+                test_kld = test_kld.item()
 
                 label_dict = {key: value for key, value in label}
+                
+                df_test_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "test_likelihood": test_likelihood, "test_kld": test_kld}])
 
-                df_test_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "test_likelihood": test_likelihood}])
-
-                df_test_likelihood = pd.concat([df_test_likelihood, df_test_tmp])
+                df_test_metrics = pd.concat([df_test_metrics, df_test_tmp])
 
 
             
@@ -456,8 +467,8 @@ def tune_model(config: MOVEConfig) -> float:
             f.write(str(model))
 
 
-        # df_test_likelihood = pd.DataFrame.from_records(records_test_likelihood)
-        df_test_likelihood.to_csv(output_path / "test_likelihood.tsv", sep="\t", mode="a", header=header, index=False)
+        # df_test_metrics = pd.DataFrame.from_records(records_test_likelihood)
+        df_test_metrics.to_csv(output_path / "test_likelihood.tsv", sep="\t", mode="a", header=header, index=False)
 
 
     if task_type == "reconstruction":

@@ -724,8 +724,9 @@ class VAE(nn.Module):
         """
 
         self.eval()
-        test_loss = 0
-        test_likelihood = 0
+        test_loss = 0 # total loss
+        test_likelihood = 0 # BCE + MSE loss
+        test_kld = 0 # KLD loss
 
         num_samples = dataloader.dataset.num_samples
 
@@ -768,11 +769,12 @@ class VAE(nn.Module):
             logvar = logvar.to(self.device)
             batch = len(mu)
 
-            loss, bce, sse, _ = self.loss_function(
+            loss, bce, sse, kld = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_weight
             )
             test_likelihood += bce + sse
             test_loss += loss.data.item()
+            test_kld += kld.data.item()
 
             if self.num_categorical > 0:
                 cat_out_class, cat_target = self.get_cat_recon(
@@ -806,6 +808,7 @@ class VAE(nn.Module):
             con_recon,
             test_loss,
             test_likelihood,
+            test_kld
         )
 
     # def __repr__(self) -> str:
