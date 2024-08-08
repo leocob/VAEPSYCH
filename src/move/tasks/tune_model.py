@@ -135,7 +135,7 @@ def tune_model(config: MOVEConfig) -> float:
             task_config.training_loop,
             model=model,
             train_dataloader=train_dataloader,
-            beta=task_config.model.beta
+            # beta=task_config.model.beta
             )
 
             model.eval()
@@ -220,7 +220,7 @@ def tune_model(config: MOVEConfig) -> float:
             task_config.training_loop,
             model=model,
             train_dataloader=train_dataloader,
-            beta=task_config.model.beta,
+            # beta=task_config.model.beta,
         )
 
         # output: TrainingLoopOutput = hydra.utils.call(

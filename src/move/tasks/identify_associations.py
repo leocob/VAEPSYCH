@@ -153,7 +153,7 @@ def identify_associations(config: MOVEConfig):
                 task_config.training_loop,
                 model=model,
                 train_dataloader=train_dataloader,
-                beta=task_config.model.beta,
+                # beta=task_config.model.beta,
                 num_latent=task_config.model.num_latent)
                 if task_config.save_refits:
                     torch.save(model.state_dict(), model_path)
@@ -235,7 +235,7 @@ def identify_associations(config: MOVEConfig):
                     task_config.training_loop,
                     model=model,
                     train_dataloader=train_dataloader,
-                    beta=task_config.model.beta,
+                    # beta=task_config.model.beta,
                     num_latent=task_config.model.num_latent
                 )
 

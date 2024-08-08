@@ -147,7 +147,7 @@ def analyze_latent(config: MOVEConfig) -> None:
             task_config.training_loop,
             model=model,
             train_dataloader=train_dataloader,
-            beta=task_config.model.beta,
+            # beta=task_config.model.beta,
         )
         losses = output[:-1]
         torch.save(model.state_dict(), model_path)
