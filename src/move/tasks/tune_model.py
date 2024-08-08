@@ -468,7 +468,7 @@ def tune_model(config: MOVEConfig) -> float:
 
 
         # df_test_metrics = pd.DataFrame.from_records(records_test_likelihood)
-        df_test_metrics.to_csv(output_path / "test_likelihood.tsv", sep="\t", mode="a", header=header, index=False)
+        df_test_metrics.to_csv(output_path / "test_metrics.tsv", sep="\t", mode="a", header=header, index=False)
 
 
     if task_type == "reconstruction":
