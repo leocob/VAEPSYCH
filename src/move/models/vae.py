@@ -50,11 +50,11 @@ class VAE(nn.Module):
         # num_hidden: list[int] = [200, 200],
         num_hidden: list[int] = [200, 200],
         num_latent: int = 20,
-        beta: float = 0.01,
+        beta: float = float('nan'),
         dropout: float = 0.2,
         cuda: bool = False,
         num_layers: int = 1,
-    ):
+        ):
 
         # 31/07/2024 - 15:30
         # print(f"continuous_weights: {continuous_weights}")
