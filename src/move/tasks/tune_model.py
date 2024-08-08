@@ -306,12 +306,18 @@ def tune_model(config: MOVEConfig) -> float:
                 latent, *_, test_likelihood, test_kld = model.latent(dataloader, kld_weight=model.beta)
                 # convert test_likelihood to number
                 test_likelihood = test_likelihood.item()
+
                 test_kld = test_kld.item()
 
                 label_dict = {key: value for key, value in label}
                 
+                print(f"test_likelihood: {test_likelihood}")
+                print(f"test_kld: {test_kld}")
+
+
                 df_test_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "test_likelihood": test_likelihood, "test_kld": test_kld}])
 
+                print(df_test_tmp)
                 df_test_metrics = pd.concat([df_test_metrics, df_test_tmp])
 
 
