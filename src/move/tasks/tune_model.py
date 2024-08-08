@@ -317,6 +317,7 @@ def tune_model(config: MOVEConfig) -> float:
             label_dict = {key: value for key, value in label}
             
             df_metrics_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "split": split_name, "likelihood": likelihood, "kld": kld}])
+            logger.info(f"df_metrics_tmp: {df_metrics_tmp}")
 
             df_metrics = pd.concat([df_metrics, df_metrics_tmp])
 
