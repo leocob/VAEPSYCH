@@ -34,7 +34,7 @@ def training_loop(
     kld_warmup_steps: list[int] = [],
     early_stopping: bool = False,
     patience: int = 0,
-    beta: float = 1,
+    # beta: float = 1,
     # num_hidden: list[int] = [120,120],
 ) -> TrainingLoopOutput:
     """
@@ -64,11 +64,12 @@ def training_loop(
 
     kld_weight = 0
 
+    target_KLD_weight = model.beta
     # Original code
     # target_KLD_weight = beta * (num_latent**-1)
 
     # Removing latent dimension from the KLD weight
-    target_KLD_weight = beta
+    # target_KLD_weight = beta
     increment = target_KLD_weight / len(kld_warmup_steps)
 
 
@@ -78,14 +79,13 @@ def training_loop(
 
             kld_weight += increment  # Increment kld_multiplier
 
-
+            print(f"Epoch {epoch} - Target KLD weight: {target_KLD_weight} - KLD weight: {kld_weight}")
             warmup_log.append({
             "epoch": epoch,
             "kld_weight": kld_weight,
             "target_KLD_weight": target_KLD_weight,
             "increment" : increment,
             # "kld_multiplier": kld_multiplier,
-            "beta": beta,
             # "num_latent": num_latent,
             # "num_hidden": num_hidden,
             

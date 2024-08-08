@@ -141,7 +141,7 @@ def tune_model(config: MOVEConfig) -> float:
             model.eval()
             
             latent, *_ = model.latent(test_dataloader, kld_weight=1) 
-            # It doesn't matter what KLD you use. We don't care about the loss function, I don't need that for calculating the latent spaces
+            # Here it doesn't matter what KLD you use. We don't care about the loss function, I don't need that for calculating the latent spaces
 
             # Leo version
             # latent, *_, test_likelihood = model.latent(test_dataloader, kld_weight=1)
