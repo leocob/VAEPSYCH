@@ -529,16 +529,17 @@ class VAE(nn.Module):
                 # cat_errors = cat_errors + np.array([float(j) for j in cat_err])
 
             optimizer.step()
-        print(f"Epoch: {epoch}\tLoss: {epoch_loss / len(train_loader)}\tCE: {epoch_bceloss / len(train_loader)}\tSSE: {epoch_sseloss / len(train_loader)}\tKLD: {epoch_kldloss / len(train_loader)}\tBatchsize: {train_loader.batch_size}\tKld_w: {kld_w}")
+        # print(f"Epoch: {epoch}\tLoss: {epoch_loss / len(train_loader)}\tCE: {epoch_bceloss / len(train_loader)}\tSSE: {epoch_sseloss / len(train_loader)}\tKLD: {epoch_kldloss / len(train_loader)}\tBatchsize: {train_loader.batch_size}\tKld_w: {kld_w}")
         logger.info(
             "\tEpoch: {}\tLoss: {:.6f}\tCE: {:.7f}\tSSE: {:.6f}\t"
-            "KLD: {:.4f}\tBatchsize: {}".format(
+            "KLD: {:.4f}\tBatchsize: {}\tKld_w: {}".format(
                 epoch,
                 epoch_loss / len(train_loader),
                 epoch_bceloss / len(train_loader),
                 epoch_sseloss / len(train_loader),
                 epoch_kldloss / len(train_loader),
                 train_loader.batch_size,
+                kld_w,
             )
         )
         return (
