@@ -320,8 +320,6 @@ def tune_model(config: MOVEConfig) -> float:
 
             df_metrics = pd.concat([df_metrics, df_metrics_tmp])
 
-            logger.info(f"df_metrics_tmp: {df_metrics_tmp}")
-
             
             con_recons = np.split(con_recons, np.cumsum(model.continuous_shapes[:-1]), axis=1)
 
