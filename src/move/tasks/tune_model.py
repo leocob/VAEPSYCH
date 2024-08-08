@@ -144,8 +144,8 @@ def tune_model(config: MOVEConfig) -> float:
             # Here it doesn't matter what KLD you use. We don't care about the loss function, I don't need that for calculating the latent spaces
 
             # Leo version
-            # latent, *_, test_likelihood = model.latent(test_dataloader, kld_weight=model.beta)
-            # But I want the test_likelihood in the reconstruction, while doing hyperparameter tuning! 
+            # latent, *_, likelihood = model.latent(test_dataloader, kld_weight=model.beta)
+            # But I want the likelihood in the reconstruction, while doing hyperparameter tuning! 
 
             if cosine_sim0 is None:
                 cosine_sim0 = cosine_similarity(latent)
@@ -304,26 +304,21 @@ def tune_model(config: MOVEConfig) -> float:
             #     split=split_name,
             # )
             # records.append(record)
-            # if mask is test, I can get the test_likelihood
+            # if mask is test, I can get the likelihood
             # logger.info(f"split_name: {split_name}")
-            if split_name == "test":
-                latent, *_, test_likelihood, test_kld = model.latent(dataloader, kld_weight=model.beta)
-                # convert test_likelihood to number
-                test_likelihood = test_likelihood.item()
 
-                logger.info("Before test_kld")
-                # test_kld = test_kld.item()
-                logger.info(f"test_kld: {test_kld}")
-                logger.info("After test_kld")
-                
-                label_dict = {key: value for key, value in label}
-                
 
-# 
 
-                df_test_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "test_likelihood": test_likelihood, "test_kld": test_kld}])
+            # if split_name == "test":
+            latent, *_, likelihood, kld = model.latent(dataloader, kld_weight=model.beta)
+            # convert likelihood to number
+            likelihood = likelihood.item()
+            
+            label_dict = {key: value for key, value in label}
+            
+            df_metrics_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "split": split_name, "likelihood": likelihood, "kld": kld}])
 
-                df_test_metrics = pd.concat([df_test_metrics, df_test_tmp])
+            df_metrics = pd.concat([df_metrics, df_metrics_tmp])
 
 
             
@@ -479,7 +474,7 @@ def tune_model(config: MOVEConfig) -> float:
 
 
         # df_test_metrics = pd.DataFrame.from_records(records_test_likelihood)
-        df_test_metrics.to_csv(output_path / "test_metrics.tsv", sep="\t", mode="a", header=header, index=False)
+        df_metrics.to_csv(output_path / "likelihood_kld.tsv", sep="\t", mode="a", header=header, index=False)
 
 
     if task_type == "reconstruction":
