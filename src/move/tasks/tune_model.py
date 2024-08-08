@@ -314,6 +314,8 @@ def tune_model(config: MOVEConfig) -> float:
                 print(f"test_likelihood: {test_likelihood}")
                 print(f"test_kld: {test_kld}")
 
+                logger.info("HALOOOOOO")
+
 
                 df_test_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "test_likelihood": test_likelihood, "test_kld": test_kld}])
 
