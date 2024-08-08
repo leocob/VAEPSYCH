@@ -1,7 +1,7 @@
 defaults:
   - tune_model_reconstruction_schema
 
-batch_size: 32
+batch_size: 128
 
 model:
   categorical_weights: ${weights:${data.categorical_inputs}}
