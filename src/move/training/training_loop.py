@@ -7,7 +7,8 @@ from move.models.vae import VAE
 import pandas as pd
 TrainingLoopOutput = tuple[list[float], list[float], list[float], list[float], float]
 
-
+from move.core.logging import get_logger
+logger = get_logger(__name__)
 def dilate_batch(dataloader: DataLoader) -> DataLoader:
     """
     Increase the batch size of a dataloader.
@@ -23,6 +24,23 @@ def dilate_batch(dataloader: DataLoader) -> DataLoader:
     batch_size = int(dataloader.batch_size * 1.5)
     return DataLoader(dataset, batch_size, shuffle=True, drop_last=True)
 
+def cyclical_annealing(epoch, num_epochs, cycles=4, max_beta=1.0):
+    """
+    Compute the cyclical annealing value for KLD weight.
+
+    Args:
+        epoch (int): Current epoch.
+        num_epochs (int): Total number of epochs.
+        cycles (int): Number of cycles in the annealing schedule.
+        max_beta (float): Maximum value for beta (KLD weight).
+
+    Returns:
+        float: The KLD weight for the current epoch.
+    """
+    period = num_epochs / cycles # 100 / 4 = 25
+    epoch_in_cycle = epoch % period # 1 % 25 = 1
+    beta = min(max_beta, (epoch_in_cycle / period) * max_beta)
+    return beta
 
 def training_loop(
     model: VAE,
@@ -62,6 +80,7 @@ def training_loop(
     min_likelihood = float("inf")
     counter = 0
 
+    cycles = 4
     kld_weight = 0
 
     target_KLD_weight = model.beta
@@ -70,26 +89,38 @@ def training_loop(
 
     # Removing latent dimension from the KLD weight
     # target_KLD_weight = beta
-    increment = target_KLD_weight / len(kld_warmup_steps)
+    # increment = target_KLD_weight / len(kld_warmup_steps)
+
 
 
     warmup_log = []
     for epoch in range(1, num_epochs + 1):
-        if epoch in kld_warmup_steps:
+        # if epoch in kld_warmup_steps:
 
-            kld_weight += increment  # Increment kld_multiplier
+        #     kld_weight += increment  # Increment kld_multiplier
 
-            print(f"Epoch {epoch} - Target KLD weight: {target_KLD_weight} - KLD weight: {kld_weight}")
-            warmup_log.append({
+        #     print(f"Epoch {epoch} - Target KLD weight: {target_KLD_weight} - KLD weight: {kld_weight}")
+        #     warmup_log.append({
+        #     "epoch": epoch,
+        #     "kld_weight": kld_weight,
+        #     "target_KLD_weight": target_KLD_weight,
+        #     "increment" : increment,
+        #     # "kld_multiplier": kld_multiplier,
+        #     # "num_latent": num_latent,
+        #     # "num_hidden": num_hidden,
+            
+        # })           
+    # Calculate the cyclical KLD weight for the current epoch
+        kld_weight = cyclical_annealing(epoch, num_epochs, cycles, target_KLD_weight)
+
+        # print(f"Epoch {epoch} - KLD weight: {kld_weight}")
+
+        warmup_log.append({
             "epoch": epoch,
             "kld_weight": kld_weight,
             "target_KLD_weight": target_KLD_weight,
-            "increment" : increment,
-            # "kld_multiplier": kld_multiplier,
-            # "num_latent": num_latent,
-            # "num_hidden": num_hidden,
-            
-        })            
+            "cycles": cycles,
+        }) 
 
         if epoch in batch_dilation_steps:
             train_dataloader = dilate_batch(train_dataloader)
