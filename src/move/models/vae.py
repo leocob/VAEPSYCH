@@ -9,8 +9,9 @@ from torch.utils.data import DataLoader
 
 from move.core.typing import FloatArray, IntArray
 
-# from move.core.logging import get_logger
-logger = logging.get_logger("vae.py")
+from move.core.logging import get_logger
+# logger = logging.getLogger("vae.py")
+logger = get_logger("vae.py")
 
 
 
