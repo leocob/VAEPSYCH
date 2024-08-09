@@ -95,23 +95,23 @@ def training_loop(
 
     warmup_log = []
     for epoch in range(1, num_epochs + 1):
-        # if epoch in kld_warmup_steps:
+        if epoch in kld_warmup_steps:
 
-        #     kld_weight += increment  # Increment kld_multiplier
+            kld_weight += increment  # Increment kld_multiplier
 
-        #     print(f"Epoch {epoch} - Target KLD weight: {target_KLD_weight} - KLD weight: {kld_weight}")
-        #     warmup_log.append({
-        #     "epoch": epoch,
-        #     "kld_weight": kld_weight,
-        #     "target_KLD_weight": target_KLD_weight,
-        #     "increment" : increment,
-        #     # "kld_multiplier": kld_multiplier,
-        #     # "num_latent": num_latent,
-        #     # "num_hidden": num_hidden,
+            print(f"Epoch {epoch} - Target KLD weight: {target_KLD_weight} - KLD weight: {kld_weight}")
+            warmup_log.append({
+            "epoch": epoch,
+            "kld_weight": kld_weight,
+            "target_KLD_weight": target_KLD_weight,
+            "increment" : increment,
+            # "kld_multiplier": kld_multiplier,
+            # "num_latent": num_latent,
+            # "num_hidden": num_hidden,
             
-        # })           
+        })           
     # Calculate the cyclical KLD weight for the current epoch
-        kld_weight = cyclical_annealing(epoch, num_epochs, cycles, target_KLD_weight)
+        # kld_weight = cyclical_annealing(epoch, num_epochs, cycles, target_KLD_weight)
 
         # print(f"Epoch {epoch} - KLD weight: {kld_weight}")
 
