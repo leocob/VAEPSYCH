@@ -307,7 +307,7 @@ def tune_model(config: MOVEConfig) -> float:
 
             logger.info(f"Split_name is {split_name}")
             # if split_name == "test":
-            latent, *_, likelihood, kld = model.latent(dataloader, kld_weight=1, split_name = split_name)
+            latent, *_, likelihood, kld = model.latent(dataloader, kld_weight=model.beta, split_name = split_name)
 
 
             # convert likelihood to number
