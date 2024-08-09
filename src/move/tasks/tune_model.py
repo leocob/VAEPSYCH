@@ -143,10 +143,6 @@ def tune_model(config: MOVEConfig) -> float:
             latent, *_ = model.latent(test_dataloader, kld_weight=model.beta) 
             # Here it doesn't matter what KLD you use. We don't care about the loss function, I don't need that for calculating the latent spaces
 
-            # Leo version
-            # latent, *_, likelihood = model.latent(test_dataloader, kld_weight=model.beta)
-            # But I want the likelihood in the reconstruction, while doing hyperparameter tuning! 
-
             if cosine_sim0 is None:
                 cosine_sim0 = cosine_similarity(latent)
             else:
@@ -310,7 +306,7 @@ def tune_model(config: MOVEConfig) -> float:
 
 
             # if split_name == "test":
-            latent, *_, likelihood, kld = model.latent(dataloader, kld_weight=model.beta)
+            latent, *_, likelihood, kld = model.latent(dataloader, kld_weight=model.beta, split_name = split_name)
             # convert likelihood to number
             likelihood = likelihood.item()
             

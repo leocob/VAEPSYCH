@@ -702,7 +702,7 @@ class VAE(nn.Module):
 
     @torch.no_grad()
     def latent(
-        self, dataloader: DataLoader, kld_weight: float
+        self, dataloader: DataLoader, kld_weight: float, split_name: str = None
     ) -> tuple[FloatArray, FloatArray, IntArray, IntArray, FloatArray, float, float]:
 
         """
@@ -724,9 +724,9 @@ class VAE(nn.Module):
         """
 
         self.eval()
-        test_loss = 0 # total loss
-        test_likelihood = 0 # BCE + MSE loss
-        test_kld = 0 # KLD loss
+        loss = 0 # total loss
+        likelihood = 0 # BCE + MSE loss
+        kld = 0 # KLD loss
 
         num_samples = dataloader.dataset.num_samples
 
@@ -772,9 +772,9 @@ class VAE(nn.Module):
             loss, bce, sse, kld = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_weight
             )
-            test_likelihood += bce + sse
-            test_loss += loss.data.item()
-            test_kld += kld.data.item()
+            likelihood += bce + sse
+            loss += loss.data.item()
+            kld += kld.data.item()
 
             if self.num_categorical > 0:
                 cat_out_class, cat_target = self.get_cat_recon(
@@ -790,8 +790,17 @@ class VAE(nn.Module):
             latent[row : row + len(mu)] = mu
             row += len(mu)
 
-        test_loss /= len(dataloader)
-        logger.info("====> Test set loss: {:.4f}".format(test_loss))
+        if split_name == "train":
+            train_loss = loss / len(dataloader)
+            train_likelihood = likelihood / len(dataloader)
+            train_kld = kld / len(dataloader)
+
+        if split_name == "test" or split_name is None:
+            test_loss = loss / len(dataloader)
+            test_likelihood = likelihood / len(dataloader)
+            test_kld = kld / len(dataloader)
+
+            logger.info("====> Test set loss: {:.4f}".format(test_loss))
 
         latent = latent.numpy()
         latent_var = latent_var.numpy()
@@ -806,9 +815,9 @@ class VAE(nn.Module):
             cat_recon,
             cat_class,
             con_recon,
-            test_loss,
-            test_likelihood,
-            test_kld
+            loss,
+            likelihood,
+            kld
         )
 
     # def __repr__(self) -> str:
