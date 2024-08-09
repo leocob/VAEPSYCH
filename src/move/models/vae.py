@@ -776,6 +776,12 @@ class VAE(nn.Module):
             loss += loss.data.item()
             kld += kld.data.item()
 
+            logger.info(f"bce: {bce:.4f}")
+            logger.info(f"sse: {sse:.4f}")
+            logger.info(f"likelihood: {likelihood:.4f}")
+            logger.info(f"kld: {kld:.4f}")
+            logger.info(f"loss: {loss:.4f}")
+
 
 
             if self.num_categorical > 0:
