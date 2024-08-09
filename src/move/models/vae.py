@@ -67,8 +67,8 @@ class VAE(nn.Module):
         if num_latent < 1:
             raise ValueError(f"Minimum 1 latent unit. Input was {num_latent}.")
 
-        if beta <= 0:
-            raise ValueError("Beta must be greater than zero.")
+        # if beta <= 0:
+        #     raise ValueError("Beta must be greater than zero.")
 
         if not (0 <= dropout < 1):
             raise ValueError("Dropout must be between zero and one.")
