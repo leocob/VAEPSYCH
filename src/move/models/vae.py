@@ -772,9 +772,11 @@ class VAE(nn.Module):
             loss, bce, sse, kld = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_weight
             )
-            likelihood += bce + sse
+            likelihood += bce.data.item() + sse.data.item()
             loss += loss.data.item()
             kld += kld.data.item()
+
+
 
             if self.num_categorical > 0:
                 cat_out_class, cat_target = self.get_cat_recon(
@@ -790,7 +792,8 @@ class VAE(nn.Module):
             latent[row : row + len(mu)] = mu
             row += len(mu)
 
-
+        # loss = CE + MSE + KLD * KLD_weight
+        # from loss_function: return loss, CE, MSE, KLD * KLD_weight
         logger.info(f"====> {split_name} set bce: {bce:.4f}")
         logger.info(f"====> {split_name} set mse: {sse:.4f}")
         logger.info(f"====> {split_name} set likelihood: {loss:.4f}")
