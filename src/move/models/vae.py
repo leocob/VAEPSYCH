@@ -804,7 +804,7 @@ class VAE(nn.Module):
         loss = loss / len(dataloader)
 
         # logger.info(f"====> {split_name} set bce: {likelihood:.4f}")
-        logger.info(f"====> {split_name} set loss/len(dataloader): {loss:.4f}")
+        logger.info(f"====> {split_name} set loss=loss/len(dataloader): {loss:.4f}")
 
         latent = latent.numpy()
         latent_var = latent_var.numpy()
