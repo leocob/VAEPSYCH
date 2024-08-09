@@ -790,6 +790,9 @@ class VAE(nn.Module):
             latent[row : row + len(mu)] = mu
             row += len(mu)
 
+
+        logger.info(f"====> {split_name} set loss: {loss:.4f}")
+
         loss = loss / len(dataloader)
 
         logger.info(f"====> {split_name} set loss/len(dataloader): {loss:.4f}")
