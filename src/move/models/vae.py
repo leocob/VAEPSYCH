@@ -790,20 +790,7 @@ class VAE(nn.Module):
             latent[row : row + len(mu)] = mu
             row += len(mu)
 
-        # if split_name == "train":
-        #     train_loss = loss / len(dataloader)
-        #     train_likelihood = likelihood / len(dataloader)
-        #     train_tot_likelihood = likelihood
-        #     train_kld = kld / len(dataloader)
-        #     train_tot_kld = kld
-
-        # if split_name == "test" or split_name is None:
-        tot_loss = loss
         loss = loss / len(dataloader)
-        tot_likelihood = likelihood
-        likelihood = likelihood / len(dataloader)
-        tot_kld = kld
-        kld = kld / len(dataloader)
 
         logger.info(f"====> {split_name} set loss: {loss:.4f}")
 
@@ -823,9 +810,6 @@ class VAE(nn.Module):
             loss,
             likelihood,
             kld,
-            tot_loss,
-            tot_likelihood,
-            tot_kld
         )
 
     # def __repr__(self) -> str:
