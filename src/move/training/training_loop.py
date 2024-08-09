@@ -88,8 +88,7 @@ def training_loop(
     # target_KLD_weight = beta * (num_latent**-1)
 
     # Removing latent dimension from the KLD weight
-    # target_KLD_weight = beta
-    # increment = target_KLD_weight / len(kld_warmup_steps)
+    increment = target_KLD_weight / len(kld_warmup_steps)
 
 
 
