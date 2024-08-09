@@ -149,6 +149,7 @@ def analyze_latent(config: MOVEConfig) -> None:
             train_dataloader=train_dataloader,
             # beta=task_config.model.beta,
         )
+        # TODO: 09/08/2024 - 17:41 I'll probably need to fix stuff here since I added the tot_likelihood and tot_kld
         losses = output[:-1]
         torch.save(model.state_dict(), model_path)
         logger.info("Generating visualizations")

@@ -306,13 +306,17 @@ def tune_model(config: MOVEConfig) -> float:
 
 
             # if split_name == "test":
-            latent, *_, likelihood, kld = model.latent(dataloader, kld_weight=model.beta, split_name = split_name)
+            latent, *_, likelihood, kld, tot_loss, tot_likelihood, tot_kld = model.latent(dataloader, kld_weight=model.beta, split_name = split_name)
+
             # convert likelihood to number
             likelihood = likelihood.item()
+            kld = kld.item()
+            tot_likelihood = tot_likelihood.item()
+            tot_kld = tot_kld.item()
             
             label_dict = {key: value for key, value in label}
             
-            df_metrics_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "split": split_name, "likelihood": likelihood, "kld": kld}])
+            df_metrics_tmp = pd.DataFrame([{"job_num": job_num, **label_dict, "split": split_name, "likelihood": likelihood, "tot_likelihood": tot_likelihood, "kld": kld, "tot_kld": tot_kld}])
 
             df_metrics = pd.concat([df_metrics, df_metrics_tmp])
 
