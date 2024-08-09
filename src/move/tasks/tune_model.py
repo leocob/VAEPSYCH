@@ -311,7 +311,7 @@ def tune_model(config: MOVEConfig) -> float:
 
 
             # convert likelihood to number
-            # likelihood = likelihood.item()
+            likelihood = likelihood.item()
             kld = kld.item()
 
             label_dict = {key: value for key, value in label}

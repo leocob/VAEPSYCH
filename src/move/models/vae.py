@@ -798,7 +798,7 @@ class VAE(nn.Module):
         # The BCE and MSe are not updated with +=
         logger.info(f"====> {split_name} set bce: {bce:.4f}")
         logger.info(f"====> {split_name} set mse: {sse:.4f}")
-        logger.info(f"====> {split_name} set likelihood: {loss:.4f}")
+        logger.info(f"====> {split_name} set likelihood: {likelihood:.4f}")
         logger.info(f"====> {split_name} set kld: {kld:.4f}")
         logger.info(f"====> {split_name} set loss: {loss:.4f}")
         loss = loss / len(dataloader)
