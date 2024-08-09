@@ -791,10 +791,13 @@ class VAE(nn.Module):
             row += len(mu)
 
 
+        logger.info(f"====> {split_name} set bce: {bce:.4f}")
+        logger.info(f"====> {split_name} set mse: {sse:.4f}")
         logger.info(f"====> {split_name} set loss: {loss:.4f}")
-
+        logger.info(f"====> {split_name} set kld: {kld:.4f}")
         loss = loss / len(dataloader)
 
+        # logger.info(f"====> {split_name} set bce: {likelihood:.4f}")
         logger.info(f"====> {split_name} set loss/len(dataloader): {loss:.4f}")
 
         latent = latent.numpy()
