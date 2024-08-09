@@ -798,15 +798,14 @@ class VAE(nn.Module):
         #     train_tot_kld = kld
 
         # if split_name == "test" or split_name is None:
-            tot_loss = loss
-            loss = loss / len(dataloader)
-            tot_likelihood = likelihood
-            likelihood = likelihood / len(dataloader)
-            tot_kld = kld
-            kld = kld / len(dataloader)
+        tot_loss = loss
+        loss = loss / len(dataloader)
+        tot_likelihood = likelihood
+        likelihood = likelihood / len(dataloader)
+        tot_kld = kld
+        kld = kld / len(dataloader)
 
-
-            logger.info("====> Test set loss: {:.4f}".format(test_loss))
+        logger.info(f"====> {split_name} set loss: {loss:.4f}")
 
         latent = latent.numpy()
         latent_var = latent_var.numpy()
