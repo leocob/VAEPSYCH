@@ -98,7 +98,7 @@ def training_loop(
 
             kld_weight += increment  # Increment kld_multiplier
 
-            print(f"Epoch {epoch} - Target KLD weight: {target_KLD_weight} - KLD weight: {kld_weight}")
+            # print(f"Epoch {epoch} - Target KLD weight: {target_KLD_weight} - KLD weight: {kld_weight}")
             warmup_log.append({
             "epoch": epoch,
             "kld_weight": kld_weight,
