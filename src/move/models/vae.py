@@ -772,13 +772,7 @@ class VAE(nn.Module):
             loss, bce, sse, kld = self.loss_function(
                 cat, cat_out, con, con_out, mu, logvar, kld_weight
             )
-            logger.info(f"bce: {bce:.4f}")
-            logger.info(f"sse: {sse:.4f}")
-            logger.info(f"likelihood: {likelihood:.4f}")
-            logger.info(f"kld: {kld:.4f}")
-            logger.info(f"loss: {loss:.4f}")
-
-            likelihood += bce.data.item() + sse.data.item()
+            likelihood += bce + sse
             loss += loss.data.item()
             kld += kld.data.item()
 
@@ -801,6 +795,7 @@ class VAE(nn.Module):
 
         # loss = CE + MSE + KLD * KLD_weight
         # from loss_function: return loss, CE, MSE, KLD * KLD_weight
+        # The BCE and MSe are not updated with +=
         logger.info(f"====> {split_name} set bce: {bce:.4f}")
         logger.info(f"====> {split_name} set mse: {sse:.4f}")
         logger.info(f"====> {split_name} set likelihood: {loss:.4f}")
