@@ -4,8 +4,8 @@ defaults:
 batch_size: 10
 
 reducer:
-  # _target_: sklearn.manifold.TSNE
-  _target_: umap.UMAP
+  _target_: sklearn.manifold.TSNE
+  # _target_: umap.UMAP
 
 model:
   categorical_weights: ${weights:${data.categorical_inputs}}
