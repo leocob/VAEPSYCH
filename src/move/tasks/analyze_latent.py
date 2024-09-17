@@ -166,7 +166,6 @@ def analyze_latent(config: MOVEConfig) -> None:
     logger.info("Projecting into latent space")
     latent_space = model.project(test_dataloader)
     # set seed to 42
-    # np.random.seed(42)
     reducer: TransformerMixin = hydra.utils.instantiate(task_config.reducer, random_state=42)
     embedding = reducer.fit_transform(latent_space)
 
